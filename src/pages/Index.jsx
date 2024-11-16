@@ -19,12 +19,12 @@ function Index() {
           </div>
 
           <Collections />
-
+          <Services />
           <AboutComponent />
 
-          <Photos />
+          {/* <Photos /> */}
 
-          <Services />
+     
         </main>
       </Layout>
     </div>

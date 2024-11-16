@@ -1,7 +1,170 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../layouts/Layout";
+import Newsletter from "../components/Newsletter";
+import Category from "../components/Category";
+import IgFeeds from "../components/IgFeeds";
+import RecentPost from "../components/RecentPost";
+import SearchBar from "../components/SearchBar";
+import { blogs } from "../mocks/mocks";
+import { useNavigate } from "react-router-dom";
 
 export default function Blog() {
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tag, setTag] = useState("");
+  const [item, setItem] = useState("all");
+  const [query, setQuery] = useState("");
+  const productsPerPage = 5;
+
+  // Calculate the indices of the products to be displayed on the current page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = blogs.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(blogs.length / productsPerPage);
+
+  // Handle page change
+  const lifoItems = [...currentProducts].reverse().slice(0, 3);
+
+  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
+  const handleClick = (blog) => {
+    navigate(`/blog/${blog}`);
+  };
+
+  const handleCategory = (currentProducts, catag) => {
+    const totalPage = Math.ceil(currentProducts.length / productsPerPage);
+    const nopage = Array.from({ length: totalPage }, (_, index) => index + 1);
+    const filteredProducts = currentProducts.filter(
+      (blog) => blog.category === catag
+    );
+
+    return (
+      <>
+        <div className="product-grid">
+          {filteredProducts.length > 0 ? (
+            filteredProducts
+              .filter((product) => {
+                if (
+                  query == "" ||
+                  product.title.toLowerCase().includes(query.toLowerCase()) ||
+                  product.description
+                    .toLowerCase()
+                    .includes(query.toLowerCase())
+                ) {
+                  return true; // This product matches the query or query is empty
+                }
+                return false; // This product does not match the query
+              })
+              .map((item, index) => (
+                <article className="blog_item" key={index}>
+                  <div className="blog_item_img">
+                    <img
+                      className="card-img rounded-0"
+                      src={item.image}
+                      alt={`Blog ${item.title}`}
+                    />
+                    <a href="#" className="blog_item_date">
+                      {item.date}
+                      <h3>15</h3>
+                      <p>Jan</p>
+                    </a>
+                  </div>
+                  <div className="blog_details">
+                    <a
+                      className="d-inline-block"
+                      href="#"
+                      onClick={() => handleClick(item.id)}
+                    >
+                      <h2
+                        className="blog-head"
+                        style={{ color: "#2d2d2d" }}
+                        onClick={() => handleClick(item.id)}
+                      >
+                        {item.title.toUpperCase()}
+                      </h2>
+                    </a>
+                    <p onClick={() => handleClick(item.id)}>
+                      {item.description}
+                    </p>
+                    <ul className="blog-info-link">
+                      <li>
+                        <a href="#">
+                          <i className="fa fa-user"></i> {item.category}
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i className="fa fa-comments"></i> Comments
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </article>
+              ))
+          ) : (
+            <p> No Record Found</p>
+          )}
+        </div>
+        <nav className="blog-pagination justify-content-center d-flex">
+          <ul className="pagination">
+            {/* Previous Button */}
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <a
+                href="#"
+                className="page-link"
+                aria-label="Previous"
+                onClick={() =>
+                  currentPage > 1 && handlePageClick(currentPage - 1)
+                }
+              >
+                <i className="ti-angle-left"></i>
+              </a>
+            </li>
+
+            {/* Page Numbers */}
+            {nopage.map((page) => (
+              <li
+                key={page}
+                className={`page-item ${page === currentPage ? "active" : ""}`}
+              >
+                <a
+                  href="#"
+                  className="page-link"
+                  onClick={() => handlePageClick(page)}
+                >
+                  {page}
+                </a>
+              </li>
+            ))}
+
+            {/* Next Button */}
+            <li
+              className={`page-item ${
+                currentPage === totalPage ? "disabled" : ""
+              }`}
+            >
+              <a
+                href="#"
+                className="page-link"
+                aria-label="Next"
+                onClick={() =>
+                  currentPage < totalPage && handlePageClick(currentPage + 1)
+                }
+              >
+                <i className="ti-angle-right"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </>
+    );
+  };
+
   return (
     <Layout>
       <main>
@@ -28,193 +191,153 @@ export default function Blog() {
           <div className="container">
             <div className="row">
               <div className="col-lg-8 mb-5 mb-lg-0">
-                <div className="blog_left_sidebar">
-                  {/** Blog Items */}
-                  {["1", "2", "3", "4", "5"].map((item, index) => (
-                    <article className="blog_item" key={index}>
-                      <div className="blog_item_img">
-                        <img
-                          className="card-img rounded-0"
-                          src={`assets/img/blog/single_blog_${item}.png`}
-                          alt={`Blog ${item}`}
-                        />
-                        <a href="#" className="blog_item_date">
-                          <h3>15</h3>
-                          <p>Jan</p>
-                        </a>
-                      </div>
-                      <div className="blog_details">
-                        <a className="d-inline-block" href="blog_details.html">
-                          <h2 className="blog-head" style={{ color: "#2d2d2d" }}>
-                            Google inks pact for new 35-storey office
-                          </h2>
-                        </a>
-                        <p>
-                          That dominion stars lights dominion divide years for
-                          fourth have don't stars is that he earth it first
-                          without heaven in place seed it second morning saying.
-                        </p>
-                        <ul className="blog-info-link">
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-user"></i> Travel, Lifestyle
+                {item === "all" && (
+                  <div className="blog_left_sidebar">
+                    {currentProducts.length > 0 ? (
+                      currentProducts &&
+                      currentProducts
+                        .filter((product) => {
+                          if (
+                            query == "" ||
+                            product.title
+                              .toLowerCase()
+                              .includes(query.toLowerCase()) ||
+                            product.description
+                              .toLowerCase()
+                              .includes(query.toLowerCase())
+                          ) {
+                            return true; // This product matches the query or query is empty
+                          }
+                          return false; // This product does not match the query
+                        })
+                        .map((item, index) => (
+                          <article className="blog_item" key={index}>
+                            <div className="blog_item_img">
+                              <img
+                                className="card-img w-50 h-auto rounded-0"
+                                src={item.image}
+                                alt={`Blog ${item.title}`}
+                              />
+                              <a href="#" className="blog_item_date">
+                                {item.date}
+                                <h3>15</h3>
+                                <p>Jan</p>
+                              </a>
+                            </div>
+                            <div className="blog_details">
+                              <a
+                                className="d-inline-block"
+                                href="#"
+                                onClick={() => handleClick(item.id)}
+                              >
+                                <h2
+                                  className="blog-head"
+                                  style={{ color: "#2d2d2d" }}
+                                  onClick={() => handleClick(item.id)}
+                                >
+                                  {item.title.toUpperCase()}
+                                </h2>
+                              </a>
+                              <p onClick={() => handleClick(item.id)}>
+                                {item.description}
+                              </p>
+                              <ul className="blog-info-link">
+                                <li>
+                                  <a href="#">
+                                    <i className="fa fa-user"></i>{" "}
+                                    {item.category}
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    <i className="fa fa-comments"></i> Comments
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          </article>
+                        ))
+                    ) : (
+                      <p> No Record Found</p>
+                    )}
+                    <nav className="blog-pagination justify-content-center d-flex">
+                      <ul className="pagination">
+                        {/* Previous Button */}
+                        <li
+                          className={`page-item ${
+                            currentPage === 1 ? "disabled" : ""
+                          }`}
+                        >
+                          <a
+                            href="#"
+                            className="page-link"
+                            aria-label="Previous"
+                            onClick={() =>
+                              currentPage > 1 &&
+                              handlePageClick(currentPage - 1)
+                            }
+                          >
+                            <i className="ti-angle-left"></i>
+                          </a>
+                        </li>
+
+                        {/* Page Numbers */}
+                        {pages.map((page) => (
+                          <li
+                            key={page}
+                            className={`page-item ${
+                              page === currentPage ? "active" : ""
+                            }`}
+                          >
+                            <a
+                              href="#"
+                              className="page-link"
+                              onClick={() => handlePageClick(page)}
+                            >
+                              {page}
                             </a>
                           </li>
-                          <li>
-                            <a href="#">
-                              <i className="fa fa-comments"></i> 03 Comments
-                            </a>
-                          </li>
-                        </ul>
-                      </div>
-                    </article>
-                  ))}
-                  <nav className="blog-pagination justify-content-center d-flex">
-                    <ul className="pagination">
-                      <li className="page-item">
-                        <a href="#" className="page-link" aria-label="Previous">
-                          <i className="ti-angle-left"></i>
-                        </a>
-                      </li>
-                      <li className="page-item">
-                        <a href="#" className="page-link">
-                          1
-                        </a>
-                      </li>
-                      <li className="page-item active">
-                        <a href="#" className="page-link">
-                          2
-                        </a>
-                      </li>
-                      <li className="page-item">
-                        <a href="#" className="page-link" aria-label="Next">
-                          <i className="ti-angle-right"></i>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
-                </div>
+                        ))}
+
+                        {/* Next Button */}
+                        <li
+                          className={`page-item ${
+                            currentPage === totalPages ? "disabled" : ""
+                          }`}
+                        >
+                          <a
+                            href="#"
+                            className="page-link"
+                            aria-label="Next"
+                            onClick={() =>
+                              currentPage < totalPages &&
+                              handlePageClick(currentPage + 1)
+                            }
+                          >
+                            <i className="ti-angle-right"></i>
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
+
+                {item === tag && <>{handleCategory(currentProducts, tag)}</>}
               </div>
 
               <div className="col-lg-4">
                 <div className="blog_right_sidebar">
-                  {/** Search Widget */}
-                  <aside className="single_sidebar_widget search_widget">
-                    <form action="#">
-                      <div className="form-group">
-                        <div className="input-group mb-3">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search Keyword"
-                            onFocus={(e) => (e.target.placeholder = '')}
-                            onBlur={(e) => (e.target.placeholder = 'Search Keyword')}
-                          />
-                          <div className="input-group-append">
-                            <button className="btns" type="button">
-                              <i className="ti-search"></i>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        className="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                        type="submit"
-                      >
-                        Search
-                      </button>
-                    </form>
-                  </aside>
+                  <SearchBar setQuery={setQuery} />
 
-                  {/** Category Widget */}
-                  <aside className="single_sidebar_widget post_category_widget">
-                    <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
-                      Category
-                    </h4>
-                    <ul className="list cat-list">
-                      {["Restaurant food", "Travel news", "Modern technology", "Product", "Inspiration", "Health Care"].map((category, index) => (
-                        <li key={index}>
-                          <a href="#" className="d-flex">
-                            <p>{category}</p>
-                            <p>({Math.floor(Math.random() * 40)})</p>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </aside>
-
+                  <Category setItem={setItem} setTag={setTag} />
                   {/** Popular Posts Widget */}
-                  <aside className="single_sidebar_widget popular_post_widget">
-                    <h3 className="widget_title" style={{ color: "#2d2d2d" }}>
-                      Recent Post
-                    </h3>
-                    {["1", "2", "3", "4"].map((post, index) => (
-                      <div className="media post_item" key={index}>
-                        <img src={`assets/img/post/post_${post}.png`} alt={`post ${post}`} />
-                        <div className="media-body">
-                          <a href="blog_details.html">
-                            <h3 style={{ color: "#2d2d2d" }}>
-                              {post === "1" ? "From life was you fish..." : "The Amazing Hubble"}
-                            </h3>
-                          </a>
-                          <p>January 12, 2019</p>
-                        </div>
-                      </div>
-                    ))}
-                  </aside>
-
-                  {/** Tag Clouds Widget */}
-                  <aside className="single_sidebar_widget tag_cloud_widget">
-                    <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
-                      Tag Clouds
-                    </h4>
-                    <ul className="list">
-                      {["project", "love", "technology", "travel", "restaurant", "life style", "design"].map((tag, index) => (
-                        <li key={index}>
-                          <a href="#">{tag}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  </aside>
+                  <RecentPost lifoItems={lifoItems} handleClick={handleClick} />
 
                   {/** Instagram Feeds Widget */}
-                  <aside className="single_sidebar_widget instagram_feeds">
-                    <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
-                      Instagram Feeds
-                    </h4>
-                    <ul className="instagram_row flex-wrap">
-                      {["5", "6", "7", "8", "9", "10"].map((post, index) => (
-                        <li key={index}>
-                          <a href="#">
-                            <img className="img-fluid" src={`assets/img/post/post_${post}.png`} alt="" />
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </aside>
+                  {/* <IgFeeds /> */}
 
                   {/** Newsletter Widget */}
-                  <aside className="single_sidebar_widget newsletter_widget">
-                    <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
-                      Newsletter
-                    </h4>
-                    <form action="#">
-                      <div className="form-group">
-                        <input
-                          type="email"
-                          className="form-control"
-                          placeholder="Enter email"
-                          required
-                        />
-                      </div>
-                      <button
-                        className="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
-                        type="submit"
-                      >
-                        Subscribe
-                      </button>
-                    </form>
-                  </aside>
+                  <Newsletter />
                 </div>
               </div>
             </div>

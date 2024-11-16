@@ -16,7 +16,7 @@ export default function About() {
                       <a href="/">Home</a>
                     </li>
                     <li class="breadcrumb-item">
-                      <a href="/about">about</a>
+                      <a href="/about">About</a>
                     </li>
                   </ol>
                 </nav>
@@ -92,8 +92,6 @@ export default function About() {
             </div>
           </div>
         </div>
-
-        <Collections />
 
         <Services />
       </main>

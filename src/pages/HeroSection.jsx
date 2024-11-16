@@ -9,11 +9,11 @@ function HeroSection() {
             <div class="col-xl-8 col-lg-9">
               <div class="hero__caption">
                 <h1>
-                  fashion
+                Style  
                   <br />
-                  changing
+                 That
                   <br />
-                  always
+                  Speaks
                 </h1>
                 <a href="/shop" class="btn">
                   Shop Now
@@ -30,11 +30,11 @@ function HeroSection() {
             <div class="col-xl-8 col-lg-9">
               <div class="hero__caption">
                 <h1>
-                  fashion
+                Comfort  
                   <br />
-                  changing
+                  That
                   <br />
-                  always
+                  Lasts
                 </h1>
                 <a href="/shop" class="btn">
                   Shop Now
@@ -45,17 +45,17 @@ function HeroSection() {
         </div>
       </div>
 
-      <div class="single-slider slider-bg3 hero-overly slider-height d-flex align-items-center">
+      {/* <div class="single-slider slider-bg3 hero-overly slider-height d-flex align-items-center">
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-xl-8 col-lg-9">
               <div class="hero__caption">
                 <h1>
-                  fashion
+               Craft
                   <br />
-                  changing
+               for
                   <br />
-                  always
+                  Confidence
                 </h1>
                 <a href="/shop" class="btn">
                   Shop Now
@@ -64,7 +64,7 @@ function HeroSection() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

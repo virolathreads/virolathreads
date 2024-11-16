@@ -63,7 +63,7 @@ function App() {
           ),
         },
         {
-          path: "/blog-details",
+          path: "/blog/:id",
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <BlogDetails />
