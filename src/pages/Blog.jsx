@@ -1,20 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../layouts/Layout";
 import Newsletter from "../components/Newsletter";
 import Category from "../components/Category";
 import IgFeeds from "../components/IgFeeds";
 import RecentPost from "../components/RecentPost";
 import SearchBar from "../components/SearchBar";
-import { blogs } from "../mocks/mocks";
 import { useNavigate } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
 export default function Blog() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [tag, setTag] = useState("");
+  const [blogs, setBlogs] = useState("");
   const [item, setItem] = useState("all");
   const [query, setQuery] = useState("");
   const productsPerPage = 5;
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const querySnapshot = await getDocs(collection(db, "blog"));
+      const blogList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBlogs(blogList);
+    };
+
+    fetchProducts();
+  }, []);
+
+  console.log(blogs);
 
   // Calculate the indices of the products to be displayed on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -64,7 +81,7 @@ export default function Blog() {
                 <article className="blog_item" key={index}>
                   <div className="blog_item_img">
                     <img
-                      className="card-img rounded-0"
+                      className="card-img   w-50 h-auto rounded-0"
                       src={item.image}
                       alt={`Blog ${item.title}`}
                     />

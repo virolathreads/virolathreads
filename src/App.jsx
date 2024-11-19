@@ -15,6 +15,11 @@ import Shop from "./pages/Shop";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import BlogDetails from "./pages/BlogDetails";
+import Login from "./pages/Login";
+
+import { BlogList } from "./pages/admin/BlogList";
+import { Upload } from "./pages/admin/Upload";
+import { Dashboard } from "./pages/admin/Dashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -63,10 +68,43 @@ function App() {
           ),
         },
         {
+          path: "/login",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Login />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/dashboard",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+         
+              <Dashboard />
+            </Suspense>
+          ),
+        },
+        {
           path: "/blog/:id",
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <BlogDetails />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/bloglist",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <BlogList />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/upload",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Upload />
             </Suspense>
           ),
         },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { blogs, comments } from "../mocks/mocks";
 import Category from "../components/Category";
 import IgFeeds from "../components/IgFeeds";
@@ -10,20 +10,16 @@ import CommentForm from "@/components/CommentForm";
 import RecentPost from "@/components/RecentPost";
 import Newsletter from "@/components/Newsletter";
 import CommentList from "@/components/CommentList";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig";
 
 function BlogDetails() {
   const { id } = useParams();
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
 
-  const [blog, setBlog] = useState(blogs);
+  const [blog, setBlog] = useState("");
   const [mainImage, setMainImage] = useState("");
-
-  const product = blog.find((p) => p.id.toString() === id);
-
-  const comment = comments.filter(
-    (comment) => comment.postId.toString() === id
-  );
 
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -37,20 +33,26 @@ function BlogDetails() {
   const handleClick = (blog) => {
     navigate(`/blog/${blog}`);
   };
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "products"));
-  //     const productsList = querySnapshot.docs.map((doc) => ({
-  //       id: doc.id,
-  //       ...doc.data(),
-  //     }));
-  //     setProducts(productsList);
-  //   };
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const querySnapshot = await getDocs(collection(db, "blog"));
+      const blogList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBlog(blogList);
+    };
 
-  //   fetchProducts();
-  // }, []);
+    fetchProducts();
+  }, []);
 
-  // const product = products.find((p) => p.id.toString() === id);
+  console.log(blog);
+
+  const product = blog.find((p) => p.id.toString() === id);
+
+  const comment = comments.filter(
+    (comment) => comment.postId.toString() === id
+  );
 
   // useEffect(() => {
   //   if (product && product.imageUrls.length > 0) {
