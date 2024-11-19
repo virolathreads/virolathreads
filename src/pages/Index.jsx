@@ -10,7 +10,7 @@ function Index() {
   return (
     <div class="full-wrapper">
       <Layout>
-        <PreLoader />
+        {/* <PreLoader /> */}
         <main>
           <div class="container-fluid">
             <div class="slider-area">
@@ -23,8 +23,6 @@ function Index() {
           <AboutComponent />
 
           {/* <Photos /> */}
-
-     
         </main>
       </Layout>
     </div>
