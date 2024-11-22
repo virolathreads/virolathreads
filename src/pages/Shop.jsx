@@ -7,6 +7,8 @@ import SearchBar from "@/components/SearchBar";
 import RecentPost from "@/components/RecentPost";
 import Category from "@/components/Category";
 import Newsletter from "@/components/Newsletter";
+import ContactForm from "@/components/ContactForm";
+import RecentProducts from "@/components/RecentProducts";
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -89,13 +91,13 @@ export default function Shop() {
 
                 <Category setItem={setItem} setTag={setTag} />
                 {/** Popular Posts Widget */}
-                <RecentPost lifoItems={lifoItems} handleClick={handleClick} />
+                <RecentProducts lifoItems={lifoItems} handleClick={handleClick} />
 
                 {/** Instagram Feeds Widget */}
                 {/* <IgFeeds /> */}
 
                 {/** Newsletter Widget */}
-                <Newsletter />
+                <ContactForm />
               </div>
             </div>
             <div class="col-xl-9 col-lg-9 col-md-8 ">
@@ -118,7 +120,9 @@ export default function Shop() {
                             </div>
                             <div class="popular-caption">
                               <h3>
-                                <a href="product_details.html">{prod.title}</a>
+                                <a href="product_details.html">
+                                  {prod.title.toUpperCase()}
+                                </a>
                               </h3>
                               <div class="rating mb-10">
                                 <p> {prod.description}</p>

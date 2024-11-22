@@ -12,7 +12,7 @@ export default function Header() {
           <div className="container mx-auto px-4">
             <div className="flex items-center h-28">
               {/* Logo */}
-              <div className="flex-shrink-0">
+              <div className="d-flex">
                 <a href="/">
                   <img
                     src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731457982/ef3tnweirfwsvvd1djwc.png"
