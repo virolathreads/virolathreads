@@ -10,7 +10,7 @@ export default function Header() {
       <div className="header-area">
         <div className="sticky top-0 bg-white">
           <div className="container mx-auto px-4">
-            <div className="flex items-center h-28">
+            <div className="flex justify-left items-center h-28">
               {/* Logo */}
               <div className="d-flex">
                 <a href="/">
