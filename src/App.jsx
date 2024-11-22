@@ -5,7 +5,6 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-
 import Root from "./roots/roots";
 import { LoadingHelper } from "./lib/LoadingHelper";
 import Index from "./pages/Index";
@@ -16,11 +15,14 @@ import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import BlogDetails from "./pages/BlogDetails";
 import Login from "./pages/Login";
-
 import { BlogList } from "./pages/admin/BlogList";
 import { Upload } from "./pages/admin/Upload";
 import { Dashboard } from "./pages/admin/Dashboard";
 import { ProductList } from "./pages/admin/ProductList";
+import Privacy from "./pages/Privacy";
+
+import Refund from "./pages/Refund";
+import Terms from "./pages/Terms";
 
 function App() {
   const router = createBrowserRouter([
@@ -65,6 +67,31 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <Contact />
+            </Suspense>
+          ),
+        },
+
+        {
+          path: "/privacy",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Privacy />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/refund",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Refund />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/terms",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Terms />
             </Suspense>
           ),
         },

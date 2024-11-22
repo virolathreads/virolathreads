@@ -5,6 +5,7 @@ import Photos from "../components/Photos";
 import Services from "../components/Services";
 import Collections from "./Collections";
 import AboutComponent from "./AboutComponent";
+import LatestBlog from "@/components/LatestBlog";
 
 function Index() {
   return (
@@ -21,7 +22,7 @@ function Index() {
           <Collections />
           <Services />
           <AboutComponent />
-
+          <LatestBlog />
           {/* <Photos /> */}
         </main>
       </Layout>

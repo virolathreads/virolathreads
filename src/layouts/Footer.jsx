@@ -18,7 +18,6 @@ export default function Footer() {
                 />
               </a>
             </div>
-           
           </div>
 
           {/* Quick Links Section */}
@@ -29,26 +28,26 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <a
-                  href="/shop"
+                  href="/privacy"
                   className="text-white hover:text-[#254f43] transition-colors"
                 >
-                  Shop
+                  Privacy Policy
                 </a>
               </li>
               <li>
                 <a
-                  href="/about"
+                  href="/refund"
                   className="text-white hover:text-[#254f43] transition-colors"
                 >
-                  About Us
+                  Refund Policy
                 </a>
               </li>
               <li>
                 <a
-                  href="/contact"
+                  href="/terms"
                   className="text-white hover:text-[#254f43] transition-colors"
                 >
-                  Contact Us
+                  Terms and Conditions
                 </a>
               </li>
             </ul>

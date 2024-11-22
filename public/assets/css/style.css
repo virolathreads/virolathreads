@@ -522,7 +522,7 @@ hr {
   background: #65867c;
   height: 50px;
   width: 50px;
-  right: 31px;
+  left: 31px;
   bottom: 18px;
   position: fixed;
   color: #fff;
@@ -536,7 +536,7 @@ hr {
 @media (max-width: 575px) {
   #scrollUp,
   #back-top {
-    right: 16px;
+    left: 16px;
   }
 }
 #scrollUp a i,

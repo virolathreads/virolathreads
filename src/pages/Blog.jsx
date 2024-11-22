@@ -32,17 +32,24 @@ export default function Blog() {
     fetchProducts();
   }, []);
 
-
   // Calculate the indices of the products to be displayed on the current page
+
+  const sortedBlogs =
+    blogs && blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // Now slice the sorted array to get the current page's products
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = blogs.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = sortedBlogs.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(blogs.length / productsPerPage);
 
   // Handle page change
-  const lifoItems = [...currentProducts].reverse().slice(0, 3);
+  const lifoItems = [...currentProducts].slice(0, 3);
 
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
