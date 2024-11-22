@@ -17,7 +17,7 @@ export default function Header() {
                   <img
                     src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731457982/ef3tnweirfwsvvd1djwc.png"
                     alt="Logo"
-                    className="h-96 w-full"
+                    className="h-20 w-auto sm:h-28 lg:h-96" // Adjust height for mobile
                   />
                 </a>
               </div>
