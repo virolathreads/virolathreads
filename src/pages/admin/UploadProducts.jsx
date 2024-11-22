@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { categories } from "@/mocks/mocks";
 
-export function Upload({ fetchBlogs }) {
+export function UploadProducts({ fetchProducts }) {
   const access = sessionStorage.getItem("virolatoken");
 
   if (!access) {
@@ -21,7 +21,11 @@ export function Upload({ fetchBlogs }) {
   const today = new Date().toISOString().split("T")[0];
   const [id, setId] = useState("");
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [variants, setVariants] = useState(""); //size, color, both
+  const [size, setSize] = useState("");
+  const [price, setPrice] = useState("");
+  const [color, setColor] = useState("");
+  const [status, setStatus] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [date, setDate] = useState(today);
@@ -29,16 +33,10 @@ export function Upload({ fetchBlogs }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-
-
-
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files); // Convert FileList to Array
     setFiles(files);
   };
-
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,11 +49,16 @@ export function Upload({ fetchBlogs }) {
     try {
       setIsLoading(true);
       // Add a new document with title and description
-      const docRef = await addDoc(collection(db, "blog"), {
+      const docRef = await addDoc(collection(db, "product"), {
         title: title,
         description: description,
         category: category,
-        content: content,
+        size: size,
+        variants: variants,
+        color: color,
+        price: price,
+        status: status,
+
         date: date,
       });
 
@@ -64,7 +67,7 @@ export function Upload({ fetchBlogs }) {
         // Iterate over selected files
         for (let i = 0; i < files.length; i++) {
           const file = files[i];
-          const storageRef = ref(storage, `blog/${docRef.id}/${file.name}`);
+          const storageRef = ref(storage, `product/${docRef.id}/${file.name}`);
           promises.push(uploadBytes(storageRef, file));
           // Wait for upload to complete and get download URL
           promises.push(
@@ -84,19 +87,23 @@ export function Upload({ fetchBlogs }) {
         const downloadURLs = await Promise.all(promises);
 
         // Update the document with the image URLs
-        await updateDoc(doc(db, "blog", docRef.id), {
+        await updateDoc(doc(db, "product", docRef.id), {
           imageUrls: downloadURLs.filter((url) => typeof url === "string"),
         });
       }
 
-      toast.success("Blog updated successfully");
-      await fetchBlogs();
+      toast.success("Product updated successfully");
+      await fetchProducts();
       // Upload file to Firebase Storage
       setIsLoading(false);
       // Reset the form
       setCategory("");
       setTitle("");
-      setContent("");
+      setSize("");
+      setStatus("");
+      setVariants("");
+      setColor("");
+      setPrice("");
       setDescription("");
       setDate(today);
       setFiles([]);
@@ -134,7 +141,18 @@ export function Upload({ fetchBlogs }) {
                 className=" bg-[#ffffff}"
               />
             </div>
+            <div className="space-y-1">
+              <Label htmlFor="price">Price</Label>
 
+              <Input
+                id="price"
+                name="price"
+                type="text"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className=" bg-[#ffffff}"
+              />
+            </div>
             <div className="space-y-1">
               <Label htmlFor="picture">Picture</Label>
 
@@ -194,7 +212,9 @@ export function Upload({ fetchBlogs }) {
                 )}
               </div>
             </div>
+          </div>
 
+          <div>
             <div className="space-y-1">
               <Label htmlFor="name">Category</Label>
               <select
@@ -213,17 +233,59 @@ export function Upload({ fetchBlogs }) {
                   })}
               </select>
             </div>
-          </div>
-          <div>
+
             <div className="space-y-1">
-              <Label htmlFor="content">Content</Label>
-              <Textarea
-                id="content"
-                name="content"
-                type="text"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-              />
+              <Label htmlFor="variants">Variants</Label>
+              <select
+                value={variants}
+                onChange={(e) => setVariants(e.target.value)}
+                className=" bg-[#ffffff}  flex h-14 w-full rounded-md border border-input bg-transparent px-3 py-1 text-lg shadow-sm transition-colors file:border-0 file:bg-transparent file:text-xl file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-xl"
+              >
+                <option value="">Select an option</option>
+                <option value="size">Size</option>
+                <option value="color">Color</option>
+                <option value="both">Both</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="status">Status</Label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className=" bg-[#ffffff}  flex h-14 w-full rounded-md border border-input bg-transparent px-3 py-1 text-lg shadow-sm transition-colors file:border-0 file:bg-transparent file:text-xl file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-xl"
+              >
+                <option value="">Select an option</option>
+                <option value="in-stock">In Stock</option>
+                <option value="out-of-stock">Out of Stock</option>
+              </select>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="color">Color</Label>
+              <select
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                className=" bg-[#ffffff}  flex h-14 w-full rounded-md border border-input bg-transparent px-3 py-1 text-lg shadow-sm transition-colors file:border-0 file:bg-transparent file:text-xl file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-xl"
+              >
+                <option value="">Select an option</option>
+                <option value="red">Red</option>
+                <option value="blue">Blue</option>
+              </select>
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="size">Size</Label>
+              <select
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+                className=" bg-[#ffffff}  flex h-14 w-full rounded-md border border-input bg-transparent px-3 py-1 text-lg shadow-sm transition-colors file:border-0 file:bg-transparent file:text-xl file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-xl"
+              >
+                <option value="">Select an option</option>
+                <option value="small">S</option>
+                <option value="medium">M</option>
+                <option value="large">L</option>
+                <option value="all">All</option>
+              </select>
             </div>
 
             <div className="space-y-1">

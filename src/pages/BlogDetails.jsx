@@ -33,32 +33,30 @@ function BlogDetails() {
   const handleClick = (blog) => {
     navigate(`/blog/${blog}`);
   };
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const querySnapshot = await getDocs(collection(db, "blog"));
-      const blogList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setBlog(blogList);
-    };
 
+  const fetchProducts = async () => {
+    const querySnapshot = await getDocs(collection(db, "blog"));
+    const blogList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setBlog(blogList);
+  };
+  useEffect(() => {
     fetchProducts();
   }, []);
 
-  console.log(blog);
-
-  const product = blog.find((p) => p.id.toString() === id);
+  const product = blog && blog.find((p) => p.id.toString() === id);
 
   const comment = comments.filter(
     (comment) => comment.postId.toString() === id
   );
 
-  // useEffect(() => {
-  //   if (product && product.imageUrls.length > 0) {
-  //     setMainImage(product.imageUrls[0]);
-  //   }
-  // }, [product]);
+  useEffect(() => {
+    if (product && product.imageUrls.length > 0) {
+      setMainImage(product.imageUrls[0]);
+    }
+  }, [product]);
   // const handleImageClick = (url) => {
   //   setMainImage(url);
   // };
@@ -103,7 +101,7 @@ function BlogDetails() {
               <div class="col-lg-8 posts-list">
                 <div class="single-post">
                   <div class="feature-img">
-                    <img class="img-fluid" src={product.image} alt="" />
+                    <img class="img-fluid" src={product.imageUrls} alt="" />
                   </div>
 
                   <div class="blog_details">
@@ -145,7 +143,7 @@ function BlogDetails() {
               </div>
               <div class="col-lg-4">
                 <div class="blog_right_sidebar">
-                  <RecentPost lifoItems={lifoItems} handleClick={handleClick} />
+                  <RecentPost  lifoItems={lifoItems} handleClick={handleClick} />
 
                   {/* <IgFeeds /> */}
                   <Newsletter />

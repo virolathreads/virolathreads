@@ -1,7 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../layouts/Layout";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./firebaseConfig";
+import { useNavigate } from "react-router-dom";
+import SearchBar from "@/components/SearchBar";
+import RecentPost from "@/components/RecentPost";
+import Category from "@/components/Category";
+import Newsletter from "@/components/Newsletter";
 
 export default function Shop() {
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tag, setTag] = useState("");
+  const [blogs, setBlogs] = useState("");
+  const [item, setItem] = useState("all");
+  const [query, setQuery] = useState("");
+  const productsPerPage = 5;
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const querySnapshot = await getDocs(collection(db, "product"));
+      const blogList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setBlogs(blogList);
+    };
+
+    fetchProducts();
+  }, []);
+
+  // Calculate the indices of the products to be displayed on the current page
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = blogs.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  // Calculate the total number of pages
+  const totalPages = Math.ceil(blogs.length / productsPerPage);
+
+  // Handle page change
+  const lifoItems = [...currentProducts].reverse().slice(0, 3);
+
+  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
+  const handleClick = (blog) => {
+    navigate(`/blog/${blog}`);
+  };
+  console.log(currentProducts);
+
   return (
     <Layout>
       <div class="page-notification">
@@ -35,283 +84,51 @@ export default function Shop() {
           </div>
           <div class="row">
             <div class="col-xl-3 col-lg-3 col-md-4 ">
-              <div class="category-listing mb-50">
-                <div class="single-listing">
-                  <div class="select-job-items2">
-                    <select name="select2">
-                      <option value="">Category</option>
-                      <option value="">Shat</option>
-                      <option value="">T-shart</option>
-                      <option value="">Pent</option>
-                      <option value="">Dress</option>
-                    </select>
-                  </div>
+              <div className="blog_right_sidebar">
+                <SearchBar setQuery={setQuery} />
 
-                  <div class="select-job-items2">
-                    <select name="select3">
-                      <option value="">Type</option>
-                      <option value="">SM</option>
-                      <option value="">LG</option>
-                      <option value="">XL</option>
-                      <option value="">XXL</option>
-                    </select>
-                  </div>
+                <Category setItem={setItem} setTag={setTag} />
+                {/** Popular Posts Widget */}
+                <RecentPost lifoItems={lifoItems} handleClick={handleClick} />
 
-                  <div class="select-job-items2">
-                    <select name="select4">
-                      <option value="">Size</option>
-                      <option value="">1.2ft</option>
-                      <option value="">2.5ft</option>
-                      <option value="">5.2ft</option>
-                      <option value="">3.2ft</option>
-                    </select>
-                  </div>
+                {/** Instagram Feeds Widget */}
+                {/* <IgFeeds /> */}
 
-                  <div class="select-job-items2">
-                    <select name="select5">
-                      <option value="">Color</option>
-                      <option value="">Whit</option>
-                      <option value="">Green</option>
-                      <option value="">Blue</option>
-                      <option value="">Sky Blue</option>
-                      <option value="">Gray</option>
-                    </select>
-                  </div>
-
-                  <div class="select-job-items2">
-                    <select name="select6">
-                      <option value="">Price range</option>
-                      <option value="">$10 to $20</option>
-                      <option value="">$20 to $30</option>
-                      <option value="">$50 to $80</option>
-                      <option value="">$100 to $120</option>
-                      <option value="">$200 to $300</option>
-                      <option value="">$500 to $600</option>
-                    </select>
-                  </div>
-                </div>
+                {/** Newsletter Widget */}
+                <Newsletter />
               </div>
             </div>
-
             <div class="col-xl-9 col-lg-9 col-md-8 ">
               <div class="new-arrival new-arrival2">
                 <div class="row">
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival2.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
+                  {currentProducts &&
+                    currentProducts.map((prod) => {
+                      return (
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                          <div class="single-new-arrival mb-50 text-center">
+                            <div class="popular-img">
+                              <img src={prod.imageUrls} alt="" />
+                              <div class="favorit-items">
+                                <span class="flaticon-heart"></span>
+                                <img
+                                  src="assets/img/gallery/favorit-card.png"
+                                  alt=""
+                                />
+                              </div>
+                            </div>
+                            <div class="popular-caption">
+                              <h3>
+                                <a href="product_details.html">{prod.title}</a>
+                              </h3>
+                              <div class="rating mb-10">
+                                <p> {prod.description}</p>
+                              </div>
+                              <span>₦ {prod.price + "." + "00"}</span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival3.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival4.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl43 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival5.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival6.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival7.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival8.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                    <div class="single-new-arrival mb-50 text-center">
-                      <div class="popular-img">
-                        <img src="assets/img/gallery/arrival1.png" alt="" />
-                        <div class="favorit-items">
-                          <span class="flaticon-heart"></span>
-                          <img
-                            src="assets/img/gallery/favorit-card.png"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="popular-caption">
-                        <h3>
-                          <a href="product_details.html">Knitted Jumper</a>
-                        </h3>
-                        <div class="rating mb-10">
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                          <i class="fas fa-star"></i>
-                        </div>
-                        <span>$ 30.00</span>
-                      </div>
-                    </div>
-                  </div>
+                      );
+                    })}
                 </div>
 
                 <div class="row justify-content-center">

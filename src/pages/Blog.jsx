@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../layouts/Layout";
+import { format } from "date-fns";
 import Newsletter from "../components/Newsletter";
 import Category from "../components/Category";
 import IgFeeds from "../components/IgFeeds";
@@ -31,7 +32,6 @@ export default function Blog() {
     fetchProducts();
   }, []);
 
-  console.log(blogs);
 
   // Calculate the indices of the products to be displayed on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -82,13 +82,11 @@ export default function Blog() {
                   <div className="blog_item_img">
                     <img
                       className="card-img   w-50 h-auto rounded-0"
-                      src={item.image}
+                      src={item.imageUrls[0]}
                       alt={`Blog ${item.title}`}
                     />
                     <a href="#" className="blog_item_date">
-                      {item.date}
-                      <h3>15</h3>
-                      <p>Jan</p>
+                      <p> {format(new Date(item.date), "dd MMM yyyy")}</p>
                     </a>
                   </div>
                   <div className="blog_details">
@@ -130,7 +128,7 @@ export default function Blog() {
         <nav className="blog-pagination justify-content-center d-flex">
           <ul className="pagination">
             {/* Previous Button */}
-            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+            <li className={`page-item ${currentPage === 1 ? "disabled " : ""}`}>
               <a
                 href="#"
                 className="page-link"
@@ -147,7 +145,7 @@ export default function Blog() {
             {nopage.map((page) => (
               <li
                 key={page}
-                className={`page-item ${page === currentPage ? "active" : ""}`}
+                className={`page-item ${page === currentPage ? "active " : ""}`}
               >
                 <a
                   href="#"
@@ -232,13 +230,14 @@ export default function Blog() {
                             <div className="blog_item_img">
                               <img
                                 className="card-img w-50 h-auto rounded-0"
-                                src={item.image}
+                                src={item.imageUrls}
                                 alt={`Blog ${item.title}`}
                               />
                               <a href="#" className="blog_item_date">
-                                {item.date}
-                                <h3>15</h3>
-                                <p>Jan</p>
+                                <p>
+                                  {" "}
+                                  {format(new Date(item.date), "dd MMM yyyy")}
+                                </p>
                               </a>
                             </div>
                             <div className="blog_details">

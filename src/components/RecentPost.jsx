@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function RecentPost({ lifoItems, handleClick }) {
-  console.log(lifoItems);
   return (
     <aside className="single_sidebar_widget popular_post_widget">
       <h3 className="widget_title" style={{ color: "#2d2d2d" }}>
@@ -13,7 +12,11 @@ export default function RecentPost({ lifoItems, handleClick }) {
           key={index}
           onClick={() => handleClick(post.id)}
         >
-          <img src={post.image} alt={`post ${post.title}`} className="w-50" />
+          <img
+            src={post.image || post.imageUrls}
+            alt={`post ${post.title}`}
+            className="w-50"
+          />
           <div className="media-body">
             <a href="#" onClick={() => handleClick(post.id)}>
               <h3 style={{ color: "#2d2d2d" }}>{post.title}</h3>

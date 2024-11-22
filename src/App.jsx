@@ -20,6 +20,7 @@ import Login from "./pages/Login";
 import { BlogList } from "./pages/admin/BlogList";
 import { Upload } from "./pages/admin/Upload";
 import { Dashboard } from "./pages/admin/Dashboard";
+import { ProductList } from "./pages/admin/ProductList";
 
 function App() {
   const router = createBrowserRouter([
@@ -79,7 +80,6 @@ function App() {
           path: "/dashboard",
           element: (
             <Suspense fallback={<LoadingHelper />}>
-         
               <Dashboard />
             </Suspense>
           ),
@@ -101,10 +101,10 @@ function App() {
           ),
         },
         {
-          path: "/upload",
+          path: "/productlist",
           element: (
             <Suspense fallback={<LoadingHelper />}>
-              <Upload />
+              <ProductList />
             </Suspense>
           ),
         },

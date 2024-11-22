@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { deleteObject, ref } from "firebase/storage";
 import { Edit } from "./Edit";
 
-export function BlogList() {
+export function Products() {
   const access = sessionStorage.getItem("virolatoken");
 
   if (!access) {
@@ -29,26 +29,26 @@ export function BlogList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [move, setMove] = useState("");
   const [userState, setUserState] = useState(null);
-  const [blogs, setBlogs] = useState(null);
+  const [products, setProducts] = useState(null);
   const productsPerPage = 5;
 
-  const fetchBlogs = async () => {
+  const fetchProducts = async () => {
     const querySnapshot = await getDocs(collection(db, "blog"));
     const blogList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setBlogs(blogList);
+    setProducts(blogList);
   };
 
   // Fetch data on component mount
   useEffect(() => {
-    fetchBlogs();
+    fetchProducts();
   }, []);
 
-  const totalPages = blogs ? Math.ceil(blogs.length / productsPerPage) : 0;
-  const currentBlogs = blogs
-    ? blogs.slice(
+  const totalPages = products ? Math.ceil(products.length / productsPerPage) : 0;
+  const currentBlogs = products
+    ? products.slice(
         (currentPage - 1) * productsPerPage,
         currentPage * productsPerPage
       )
@@ -79,13 +79,13 @@ export function BlogList() {
       toast.success("Image files deleted from storage");
 
       // Update local state to remove the deleted product
-      setBlogs(blogs.filter((_, i) => i !== index));
+      setProducts(products.filter((_, i) => i !== index));
     } catch (error) {
       console.error("Error deleting document and images:", error);
       toast.error("Error deleting document and images:", error);
     }
   };
-  if (!blogs) {
+  if (!products) {
     return (
       <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
         <div className="p-6">
@@ -106,13 +106,9 @@ export function BlogList() {
           )}
           {move === "add" && (
             <Upload
-              setBlogs={setBlogs}
-              fetchBlogs={fetchBlogs}
-              // handleMove={setMove}
-              // handleAddBlog={(newBlog) => {
-              //   setBlogs([newBlog,...blogs]);
-              //   setMove("");
-              // }}
+              setProducts={setProducts}
+              fetchProducts={fetchProducts}
+             
             />
           )}
           {move === "edit" && (

@@ -8,22 +8,16 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import ScrollToTop from "./ScrollToTop";
+import LoginHeader from "./LoginHeader";
+import Footer from "./Footer";
 
 // import { AppSidebar } from "@/components/ui/app-sidebar";
 export default function LoginLayout({ children }) {
   return (
     <>
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="flex h-10 shrink-0 items-center gap-2 border-b">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-          </header>
-
-          {children}
-        </SidebarInset>
-      </SidebarProvider>
+      <LoginHeader />
+      {children}
+      <Footer />
     </>
   );
 }

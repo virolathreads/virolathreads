@@ -37,36 +37,36 @@ export default function LoginHeader() {
                     </li>
                     <li>
                       <a
-                        href="/bloglist"
+                        href="/productlist"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
-                        Shop
+                        Products
                       </a>
                     </li>
-                    <li>
+                    {/* <li>
                       <a
                         href="/about"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
                         About
                       </a>
-                    </li>
+                    </li> */}
                     <li>
                       <a
-                        href="/blog"
+                        href="/bloglist"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
                         Blog
                       </a>
                     </li>
-                    <li>
+                    {/* <li>
                       <a
                         href="/contact"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
                         Contact
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </nav>
 
@@ -115,29 +115,29 @@ export default function LoginHeader() {
                     Home
                   </a>
                   <a
-                    href="/shop"
+                    href="/shoplist"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    Shop
+                    Product List
                   </a>
-                  <a
+                  {/* <a
                     href="/about"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
                     About
-                  </a>
+                  </a> */}
                   <a
-                    href="/blog"
+                    href="/bloglist"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    Blog
+                    Blog List
                   </a>
-                  <a
+                  {/* <a
                     href="/contact"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
                     Contact
-                  </a>
+                  </a> */}
                 </div>
 
                 {/* Mobile Social and Cart */}

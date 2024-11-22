@@ -17,8 +17,9 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { deleteObject, ref } from "firebase/storage";
 import { Edit } from "./Edit";
+import { UploadProducts } from "./UploadProducts";
 
-export function BlogList() {
+export function ProductList() {
   const access = sessionStorage.getItem("virolatoken");
 
   if (!access) {
@@ -29,34 +30,36 @@ export function BlogList() {
   const [currentPage, setCurrentPage] = useState(1);
   const [move, setMove] = useState("");
   const [userState, setUserState] = useState(null);
-  const [blogs, setBlogs] = useState(null);
-  const productsPerPage = 5;
+  const [products, setProducts] = useState(null);
+  const productsPerPage = 20;
 
-  const fetchBlogs = async () => {
-    const querySnapshot = await getDocs(collection(db, "blog"));
-    const blogList = querySnapshot.docs.map((doc) => ({
+  const fetchProducts = async () => {
+    const querySnapshot = await getDocs(collection(db, "product"));
+    const productList = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    setBlogs(blogList);
+    setProducts(productList);
   };
 
   // Fetch data on component mount
   useEffect(() => {
-    fetchBlogs();
+    fetchProducts();
   }, []);
 
-  const totalPages = blogs ? Math.ceil(blogs.length / productsPerPage) : 0;
-  const currentBlogs = blogs
-    ? blogs.slice(
+  const totalPages = products
+    ? Math.ceil(products.length / productsPerPage)
+    : 0;
+  const currentProducts = products
+    ? products.slice(
         (currentPage - 1) * productsPerPage,
         currentPage * productsPerPage
       )
     : [];
 
-  const handleEdit = (i, blog) => {
+  const handleEdit = (i, product) => {
     setMove("edit");
-    setUserState(blog);
+    setUserState(product);
   };
 
   const handlePageClick = (page) => setCurrentPage(page);
@@ -64,7 +67,7 @@ export function BlogList() {
   const handleDelete = async (index, docId, imagePaths) => {
     try {
       // Step 1: Delete the document from Firestore
-      const docRef = doc(firestore, "blog", docId);
+      const docRef = doc(firestore, "product", docId);
       await deleteDoc(docRef);
 
       toast.success("Document deleted from Firestore");
@@ -79,13 +82,13 @@ export function BlogList() {
       toast.success("Image files deleted from storage");
 
       // Update local state to remove the deleted product
-      setBlogs(blogs.filter((_, i) => i !== index));
+      setProducts(products.filter((_, i) => i !== index));
     } catch (error) {
       console.error("Error deleting document and images:", error);
       toast.error("Error deleting document and images:", error);
     }
   };
-  if (!blogs) {
+  if (!products) {
     return (
       <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
         <div className="p-6">
@@ -99,36 +102,21 @@ export function BlogList() {
     <LoginLayout>
       <div className="flex flex-col gap-8 bg-[#f3f4f6]">
         <div className="bg-white shadow-sm rounded-md p-4">
-        {move === "add" || move === "edit" ? (
+          {move === "add" || move === "edit" ? (
             <Button onClick={() => setMove("")}>Close</Button>
           ) : (
-            <Button onClick={() => setMove("add")}>Add Blog</Button>
+            <Button onClick={() => setMove("add")}>Add Products</Button>
           )}
           {move === "add" && (
-            <Upload
-              setBlogs={setBlogs}
-              fetchBlogs={fetchBlogs}
-              // handleMove={setMove}
-              // handleAddBlog={(newBlog) => {
-              //   setBlogs([newBlog,...blogs]);
-              //   setMove("");
-              // }}
-            />
+            <UploadProducts setProducts={setProducts} fetchProducts={fetchProducts} />
           )}
           {move === "edit" && (
             <Edit
-              setBlogs={setBlogs}
-              fetchBlogs={fetchBlogs}
+              setProducts={setProducts}
+              fetchProducts={fetchProducts}
               items={userState}
-              // handleMove={setMove}
-              // handleAddBlog={(newBlog) => {
-              //   setBlogs([newBlog,...blogs]);
-              //   setMove("");
-              // }}
             />
           )}
-
-        
         </div>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-md">
@@ -138,17 +126,21 @@ export function BlogList() {
                 <th className="px-4 py-3">S/N</th>
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3">Description</th>
+                <th className="px-4 py-3">Price</th>
                 <th className="px-4 py-3">Category</th>
-                <th className="px-4 py-3">Content</th>
+                <th className="px-4 py-3">Variants</th>
+                <th className="px-4 py-3">Size</th>
+                <th className="px-4 py-3">Color</th>
+                <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Image</th>
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3 text-right">Action</th>
               </tr>
             </thead>
             <tbody>
-              {currentBlogs.map((blog, i) => (
+              {currentProducts.map((product, i) => (
                 <tr
-                  key={blog.id}
+                  key={product.id}
                   className={`${
                     i % 2 === 0 ? "bg-[#f1f1f1]" : "bg-white"
                   } border-b hover:bg-gray-100 transition`}
@@ -156,18 +148,22 @@ export function BlogList() {
                   <td className="px-4 py-3">
                     {(currentPage - 1) * productsPerPage + i + 1}
                   </td>
-                  <td className="px-4 py-3">{blog.title}</td>
-                  <td className="px-4 py-3">{blog.description}</td>
-                  <td className="px-4 py-3">{blog.category}</td>
-                  <td className="px-4 py-3">{blog.content}</td>
+                  <td className="px-4 py-3">{product.title}</td>
+                  <td className="px-4 py-3">{product.description}</td>
+                  <td className="px-4 py-3">{product.price}</td>
+                  <td className="px-4 py-3">{product.category}</td>
+                  <td className="px-4 py-3">{product.variants}</td>
+                  <td className="px-4 py-3">{product.size}</td>
+                  <td className="px-4 py-3">{product.color}</td>
+                  <td className="px-4 py-3">{product.status}</td>
                   <td className="px-4 py-3">
-                    <img src={blog.imageUrls} alt={blog.title} />
+                    <img src={product.imageUrls} alt={product.title} />
                   </td>
-                  <td className="px-4 py-3">{blog.date}</td>
+                  <td className="px-4 py-3">{product.date}</td>
                   <td className="px-4 py-3 text-right">
                     <button
                       className="bg-black underline"
-                      onClick={() => handleEdit(i, blog)}
+                      onClick={() => handleEdit(i, product)}
                     >
                       Edit
                     </button>
@@ -175,7 +171,9 @@ export function BlogList() {
                   <td className="px-4 py-3 text-right bg-red ">
                     <button
                       className="text-red underline"
-                      onClick={() => handleDelete(i, blog.id, blog.imageUrls)}
+                      onClick={() =>
+                        handleDelete(i, product.id, product.imageUrls)
+                      }
                     >
                       Delete
                     </button>
