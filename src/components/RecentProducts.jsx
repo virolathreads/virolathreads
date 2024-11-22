@@ -21,7 +21,6 @@ export default function RecentProducts({ lifoItems, handleClick }) {
             <a href="#" onClick={() => handleClick(post.id)}>
               <h3 style={{ color: "#2d2d2d" }}>{post.title}</h3>
             </a>
-            <p>{post.date}</p>
           </div>
         </div>
       ))}

@@ -6,6 +6,7 @@ import Services from "../components/Services";
 import Collections from "./Collections";
 import AboutComponent from "./AboutComponent";
 import LatestBlog from "@/components/LatestBlog";
+import Testimonials from "@/components/Testimonials";
 
 function Index() {
   return (
@@ -22,6 +23,7 @@ function Index() {
           <Collections />
           <Services />
           <AboutComponent />
+          <Testimonials />
           <LatestBlog />
           {/* <Photos /> */}
         </main>

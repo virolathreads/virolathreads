@@ -95,6 +95,13 @@ function Collections() {
             </div>
           </div>
         </div>
+        <div class="row justify-content-center">
+          <div class="room-btn mt-20">
+            <a href="/shop" class="border-btn">
+              Browse More
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );

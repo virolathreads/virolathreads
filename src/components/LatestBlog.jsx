@@ -3,6 +3,7 @@ import React from "react";
 export default function LatestBlog() {
   return (
     <div class="popular-product pt-50">
+      {/* <h3>Latest Blog Posts</h3> */}
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-12">

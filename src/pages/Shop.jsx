@@ -31,17 +31,22 @@ export default function Shop() {
 
     fetchProducts();
   }, []);
-
+  const sortedProduct = blogs.sort(
+    (a, b) => new Date(b.date) - new Date(a.date)
+  );
   // Calculate the indices of the products to be displayed on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = blogs.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = sortedProduct.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
 
   // Calculate the total number of pages
   const totalPages = Math.ceil(blogs.length / productsPerPage);
 
   // Handle page change
-  const lifoItems = [...currentProducts].reverse().slice(0, 3);
+  const lifoItems = [...currentProducts]().slice(0, 3);
 
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
@@ -91,7 +96,10 @@ export default function Shop() {
 
                 <Category setItem={setItem} setTag={setTag} />
                 {/** Popular Posts Widget */}
-                <RecentProducts lifoItems={lifoItems} handleClick={handleClick} />
+                <RecentProducts
+                  lifoItems={lifoItems}
+                  handleClick={handleClick}
+                />
 
                 {/** Instagram Feeds Widget */}
                 {/* <IgFeeds /> */}
@@ -135,13 +143,7 @@ export default function Shop() {
                     })}
                 </div>
 
-                <div class="row justify-content-center">
-                  <div class="room-btn mt-20">
-                    <a href="catagori.html" class="border-btn">
-                      Browse More
-                    </a>
-                  </div>
-                </div>
+                {/* pagination */}
               </div>
             </div>
           </div>
