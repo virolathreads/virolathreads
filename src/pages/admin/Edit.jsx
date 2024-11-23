@@ -1,3 +1,4 @@
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { updateDoc, doc } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
@@ -16,37 +17,54 @@ export function Edit({ fetchBlogs, items }) {
     sessionStorage.setItem("virolatoken", "");
     toast.info("You are not allowed to view this page.");
   }
-  const [id, setId] = useState(items.id);
-  const [title, setTitle] = useState(items.title);
-  const [content, setContent] = useState(items.content);
-  const [description, setDescription] = useState(items.description);
-  const [category, setCategory] = useState(items.category);
-  const [date, setDate] = useState(items.date);
-
+  const [id, setId] = useState(items?.id || "");
+  const [title, setTitle] = useState(items?.title || "");
   const [isLoading, setIsLoading] = useState(false);
+  const [content, setContent] = useState(items?.content || "");
+  const [description, setDescription] = useState(items?.description || "");
+  const [category, setCategory] = useState(items?.category || "");
+  const [date, setDate] = useState(items?.date || "");
 
-  const handleUpdate = async () => {
-    console.log(items)
+  React.useEffect(() => {
+    if (items) {
+      setId(items.id);
+      setTitle(items.title);
+      setContent(items.content);
+      setDescription(items.description);
+      setCategory(items.category);
+      setDate(items.date);
+    }
+  }, [items]);
+
+  const handleUpdate = async (e) => {
+    e.preventDefault(); // Prevent form submission
+    if (!id) {
+      toast.error("Invalid blog ID. Unable to update.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      var docRef = doc(firestore, "blog", id);
-
+      const docRef = doc(firestore, "blog", id);
       await updateDoc(docRef, {
-        title: title,
-        description: description,
-        category: category,
-        content: content,
-        date: date,
+        title,
+        description,
+        category,
+        content,
+        date,
       });
+
       toast.success("Blog updated successfully");
-      setIsLoading(false);
 
       await fetchBlogs();
     } catch (error) {
+      console.error("Error updating blog:", error);
+      toast.error(
+        `Failed to update: ${error.message || "Unexpected error occurred"}`
+      );
+    } finally {
       setIsLoading(false);
-      console.log(error);
-      toast.error("Failed to update document");
     }
   };
   return (

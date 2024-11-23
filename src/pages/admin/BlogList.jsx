@@ -164,14 +164,14 @@ export function BlogList() {
                     <img src={blog.imageUrls} alt={blog.title} />
                   </td>
                   <td className="px-4 py-3">{blog.date}</td>
-                  {/* <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3 text-right">
                     <button
                       className="bg-black underline"
                       onClick={() => handleEdit(i, blog)}
                     >
                       Edit
                     </button>
-                  </td> */}
+                  </td>
                   <td className="px-4 py-3 text-right bg-red ">
                     <button
                       className="text-red underline"
