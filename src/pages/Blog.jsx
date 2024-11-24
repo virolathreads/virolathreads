@@ -252,7 +252,7 @@ export default function Blog() {
                                   {" "}
                                   {format(
                                     new Date(item.date),
-                                    
+
                                     "dd MMMM yyyy"
                                   ).toUpperCase()}
                                 </p>
@@ -284,6 +284,7 @@ export default function Blog() {
                                 </li>
                                 <li>
                                   <a href="#">
+                                    {item.comments && item.comments.length + " "}
                                     <i className="fa fa-comments"></i> Comments
                                   </a>
                                 </li>

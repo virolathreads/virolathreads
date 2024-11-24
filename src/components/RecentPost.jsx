@@ -22,7 +22,7 @@ export default function RecentPost({ lifoItems, handleClick }) {
             <a href="#" onClick={() => handleClick(post.id)}>
               <h3 style={{ color: "#2d2d2d" }}>{post.title}</h3>
             </a>
-            <p> {moment(post.date).format("MMMM Do YYYY")}</p>
+            <p> {moment(post.date).format("MMMM Do YYYY").toUpperCase()}</p>
           </div>
         </div>
       ))}

@@ -153,14 +153,12 @@ function BlogDetails() {
                 </div>
                 <div class="navigation-top">
                   <div class="d-sm-flex justify-content-between text-center">
-                    <div class="col-sm-4 text-center my-2 my-sm-0">
-                      {" "}
-                      Share to Friends
-                    </div>
+                    {" "}
+                    SHARE TO FRIENDS
                     <ul class="social-icons">
                       <li onClick={shareOnFacebook}>
                         <i
-                          class="fab fa-facebook"
+                          class="fab fa-facebook "
                           onClick={shareOnFacebook}
                         ></i>
                       </li>
@@ -176,7 +174,7 @@ function BlogDetails() {
                     </ul>
                   </div>
                 </div>
-                <CommentList comment={product.comments}  />
+                <CommentList comment={product.comments} />
                 <CommentForm id={product.id} fetchComments={fetchProducts} />
               </div>
               <div class="col-lg-4">
