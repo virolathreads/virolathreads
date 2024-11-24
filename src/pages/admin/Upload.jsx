@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { db, storage } from "../firebaseConfig";
 import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -29,16 +31,10 @@ export function Upload({ fetchBlogs }) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-
-
-
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files); // Convert FileList to Array
     setFiles(files);
   };
-
-
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -217,12 +213,18 @@ export function Upload({ fetchBlogs }) {
           <div>
             <div className="space-y-1">
               <Label htmlFor="content">Content</Label>
-              <Textarea
+              {/* <Textarea
                 id="content"
                 name="content"
                 type="text"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+              /> */}
+              <ReactQuill
+                className="editor"
+                theme="snow"
+                value={content}
+                onChange={setContent}
               />
             </div>
 

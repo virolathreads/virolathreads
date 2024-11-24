@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../layouts/Layout";
 import { format } from "date-fns";
+
 import Newsletter from "../components/Newsletter";
 import Category from "../components/Category";
 import IgFeeds from "../components/IgFeeds";

@@ -2,12 +2,14 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { updateDoc, doc } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
+import "react-quill/dist/quill.snow.css";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { categories } from "@/mocks/mocks";
 import { firestore } from "../firebaseConfig";
+import ReactQuill from "react-quill";
 
 export function Edit({ fetchBlogs, items }) {
   const access = sessionStorage.getItem("virolatoken");
@@ -118,12 +120,11 @@ export function Edit({ fetchBlogs, items }) {
           <div>
             <div className="space-y-1">
               <Label htmlFor="content">Content</Label>
-              <Textarea
-                id="content"
-                name="content"
-                type="text"
+              <ReactQuill
+                className="editor"
+                theme="snow"
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={setContent}
               />
             </div>
 

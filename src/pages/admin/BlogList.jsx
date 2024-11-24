@@ -47,8 +47,14 @@ export function BlogList() {
   }, []);
 
   const totalPages = blogs ? Math.ceil(blogs.length / productsPerPage) : 0;
-  const currentBlogs = blogs
-    ? blogs.slice(
+
+  const sortedBlogs =
+    blogs && blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  // Now slice the sorted array to get the current page's products
+
+  const currentBlogs = sortedBlogs
+    ? sortedBlogs.slice(
         (currentPage - 1) * productsPerPage,
         currentPage * productsPerPage
       )
@@ -99,7 +105,7 @@ export function BlogList() {
     <LoginLayout>
       <div className="flex flex-col gap-8 bg-[#f3f4f6]">
         <div className="bg-white shadow-sm rounded-md p-4">
-        {move === "add" || move === "edit" ? (
+          {move === "add" || move === "edit" ? (
             <Button onClick={() => setMove("")}>Close</Button>
           ) : (
             <Button onClick={() => setMove("add")}>Add Blog</Button>
@@ -127,8 +133,6 @@ export function BlogList() {
               // }}
             />
           )}
-
-        
         </div>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-md">
@@ -159,7 +163,13 @@ export function BlogList() {
                   <td className="px-4 py-3">{blog.title}</td>
                   <td className="px-4 py-3">{blog.description}</td>
                   <td className="px-4 py-3">{blog.category}</td>
-                  <td className="px-4 py-3">{blog.content}</td>
+
+                  <td
+                    className="px-4 py-3"
+                    dangerouslySetInnerHTML={{
+                      __html: blog.content,
+                    }}
+                  ></td>
                   <td className="px-4 py-3">
                     <img src={blog.imageUrls} alt={blog.title} />
                   </td>

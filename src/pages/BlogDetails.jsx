@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { blogs, comments } from "../mocks/mocks";
+import DOMPurify from "dompurify";
 import Category from "../components/Category";
 import IgFeeds from "../components/IgFeeds";
 import SearchBar from "../components/SearchBar";
@@ -60,7 +61,7 @@ function BlogDetails() {
   // const handleImageClick = (url) => {
   //   setMainImage(url);
   // };
-
+  const sanitizedContent = DOMPurify.sanitize(product.content);
   if (!product) {
     return (
       <div>
@@ -122,7 +123,12 @@ function BlogDetails() {
                     <p class="excert">{product.description}</p>
 
                     <div class="quote-wrapper">
-                      <div class="quotes">{product.content}</div>
+                      <div
+                        class="quotes"
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizedContent,
+                        }}
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -143,7 +149,7 @@ function BlogDetails() {
               </div>
               <div class="col-lg-4">
                 <div class="blog_right_sidebar">
-                  <RecentPost  lifoItems={lifoItems} handleClick={handleClick} />
+                  <RecentPost lifoItems={lifoItems} handleClick={handleClick} />
 
                   {/* <IgFeeds /> */}
                   <Newsletter />

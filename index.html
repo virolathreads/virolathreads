@@ -4,8 +4,31 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VIROLA || THREADS</title>
-    <!-- CSS here -->
+    <title>
+      VIROLA THREADS | Fashion Store | Trendy Clothing for Every Occasion
+    </title>
+    <meta
+      name="description"
+      content="Explore the latest trends in fashion clothing for women. Shop stylish apparel and accessories at unbeatable prices"
+    />
+    <meta
+      name="keywords"
+      content="fashion, trendy clothes, clothing store, modern fashion, affordable fashion"
+    />
+    <meta name="author" content="Your Brand" />
+    <meta
+      property="og:title"
+      content="Fashion Forward: Shop the Latest Trends in Clothing"
+    />
+    <meta
+      property="og:description"
+      content="Discover trendy fashion for every occasion. Shop now for the latest looks in men's and women's apparel."
+    />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731457982/ef3tnweirfwsvvd1djwc.png"
+    />
+    <meta property="og:url" content="https://www.virolathreads.com/" />
     <link rel="stylesheet" href="/src/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/src/assets/css/owl.carousel.min.css" />
     <link rel="stylesheet" href="/src/assets/css/slicknav.css" />
@@ -20,7 +43,6 @@
     <link rel="stylesheet" href="/src/assets/css/slick.css" />
     <link rel="stylesheet" href="/src/assets/css/nice-select.css" />
     <link rel="stylesheet" href="/src/assets/css/style.css" />
-    
   </head>
   <body>
     <div id="root"></div>
@@ -29,30 +51,44 @@
     <!-- JS here -->
     <!-- Jquery, Popper, Bootstrap -->
     <script>
-      var url = 'https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?55049';
-      var s = document.createElement('script');
-      s.type = 'text/javascript';
+      var url =
+        "https://wati-integration-prod-service.clare.ai/v2/watiWidget.js?55049";
+      var s = document.createElement("script");
+      s.type = "text/javascript";
       s.async = true;
       s.src = url;
       var options = {
-      "enabled":true,
-      "chatButtonSetting":{
-          "backgroundColor":"#5e897c",
-          "ctaText":"Chat with us",
-          "borderRadius":"25",
-          "marginLeft": "0",
-          "marginRight": "20",
-          "marginBottom": "20",
-          "ctaIconWATI":true,
-          "position":"right"
-      },
+        enabled: true,
+        chatButtonSetting: {
+          backgroundColor: "#5e897c",
+          ctaText: "Chat with us",
+          borderRadius: "25",
+          marginLeft: "0",
+          marginRight: "20",
+          marginBottom: "20",
+          ctaIconWATI: true,
+          position: "right",
+        },
+        brandSetting: {
+          brandName: "Virola Threads",
+          brandSubTitle: "undefined",
+          brandImg:
+            "https://www.wati.io/wp-content/uploads/2023/04/Wati-logo.svg",
+          welcomeText: "Hi there!\nHow can I help you?",
+          messageText: "Hello, %0A I want to make enquiries",
+          backgroundColor: "#5e897c",
+          ctaText: "Chat with us",
+          borderRadius: "25",
+          autoShow: false,
+          phoneNumber: "2347066657908",
+        },
       };
-      s.onload = function() {
-          CreateWhatsappChatWidget(options);
+      s.onload = function () {
+        CreateWhatsappChatWidget(options);
       };
-      var x = document.getElementsByTagName('script')[0];
+      var x = document.getElementsByTagName("script")[0];
       x.parentNode.insertBefore(s, x);
-  </script>
+    </script>
     <script src="/src/assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="/src/assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="/src/assets/js/popper.min.js"></script>
