@@ -1,7 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../layouts/Layout";
+import Swal from "sweetalert2";
 
 function Contact() {
+  const [fields, setFields] = useState("");
+  const [load, setLoad] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFields({ ...fields, [name]: value });
+  };
+
+  const sendFeedback = (templateId, variables) => {
+    setLoad(true);
+    window.emailjs
+      .send("service_av5jfrg", templateId, variables)
+      .then((res) => {
+        setLoad(false);
+        setFields({ name: "", email: "", message: "" });
+        Swal.fire({
+          title: "Successful!",
+          text: "We have recieved your message. Our team will contact you within 24 hours! Thank you.",
+          icon: "success",
+          confirmButtonColor: "#65867c",
+        });
+      })
+      // Handle errors here however you like, or use a React error boundary
+      .catch((err) => {
+        setLoad(false);
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong" + err.message,
+          icon: "error",
+          confirmButtonColor: "#65867c",
+        });
+      });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const templateId = "template_qexpy1f";
+    const variables = {
+      message: fields.message,
+      from_name: fields.name,
+      reply_to: fields.email,
+      to_name: fields.phone,
+    };
+    sendFeedback(templateId, variables);
+  };
   return (
     <Layout>
       <main>
@@ -33,41 +80,22 @@ function Contact() {
                 </div> */}
             <div class="row">
               <div class="col-12">
-                <h2 class="contact-title">Get in Touch</h2>
+                <h2 class="contact-title text-left">Get in Touch</h2>
               </div>
               <div class="col-lg-8">
-                <form
-                  class="form-contact contact_form"
-                  action="contact_process.php"
-                  method="post"
-                  id="contactForm"
-                  novalidate="novalidate"
-                >
+                <form class="form-contact contact_form" onSubmit={handleSubmit}>
                   <div class="row">
-                    <div class="col-12">
-                      <div class="form-group">
-                        <textarea
-                          class="form-control w-100"
-                          name="message"
-                          id="message"
-                          cols="30"
-                          rows="9"
-                          onfocus="this.placeholder = ''"
-                          onblur="this.placeholder = 'Enter Message'"
-                          placeholder=" Enter Message"
-                        ></textarea>
-                      </div>
-                    </div>
                     <div class="col-sm-6">
                       <div class="form-group">
                         <input
                           class="form-control valid"
                           name="name"
+                          onChange={handleChange}
                           id="name"
                           type="text"
                           onfocus="this.placeholder = ''"
-                          onblur="this.placeholder = 'Enter your name'"
-                          placeholder="Enter your name"
+                          onblur="this.placeholder = 'Enter Your Name'"
+                          placeholder="Enter your Name"
                         />
                       </div>
                     </div>
@@ -78,33 +106,46 @@ function Contact() {
                           name="email"
                           id="email"
                           type="email"
+                          onChange={handleChange}
                           onfocus="this.placeholder = ''"
-                          onblur="this.placeholder = 'Enter email address'"
-                          placeholder="Email"
+                          onblur="this.placeholder = 'Enter Email Address'"
+                          placeholder="Enter Email Address"
                         />
                       </div>
                     </div>
                     <div class="col-12">
                       <div class="form-group">
-                        <input
-                          class="form-control"
-                          name="subject"
-                          id="subject"
-                          type="text"
+                        <textarea
+                          class="form-control w-100"
+                          name="message"
+                          id="message"
+                          onChange={handleChange}
+                          cols="30"
+                          rows="9"
                           onfocus="this.placeholder = ''"
-                          onblur="this.placeholder = 'Enter Subject'"
-                          placeholder="Enter Subject"
-                        />
+                          onblur="this.placeholder = 'Enter Message'"
+                          placeholder=" Enter Message"
+                        ></textarea>
                       </div>
                     </div>
                   </div>
                   <div class="form-group mt-3">
-                    <button
-                      type="submit"
-                      class="button button-contactForm boxed-btn"
-                    >
-                      Send
-                    </button>
+                    {load ? (
+                      <button
+                        type="submit"
+                        disabled
+                        class="button button-contactForm boxed-btn"
+                      >
+                        Submitting
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        class="button button-contactForm boxed-btn"
+                      >
+                        Send
+                      </button>
+                    )}
                   </div>
                 </form>
               </div>

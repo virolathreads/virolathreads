@@ -10,24 +10,28 @@ import SearchBar from "../components/SearchBar";
 import { useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
+import PreLoader from "@/lib/PreLoader";
 
 export default function Blog() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [tag, setTag] = useState("");
   const [blogs, setBlogs] = useState("");
+  const [loading, setLoading] = useState(false);
   const [item, setItem] = useState("all");
   const [query, setQuery] = useState("");
   const productsPerPage = 5;
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       const querySnapshot = await getDocs(collection(db, "blog"));
       const blogList = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       setBlogs(blogList);
+      setLoading(false);
     };
 
     fetchProducts();
@@ -60,6 +64,10 @@ export default function Blog() {
   const handleClick = (blog) => {
     navigate(`/blog/${blog}`);
   };
+
+  if (loading) {
+    return <PreLoader />;
+  }
 
   const handleCategory = (currentProducts, catag) => {
     const totalPage = Math.ceil(currentProducts.length / productsPerPage);
