@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { blogs, comments } from "../mocks/mocks";
 import DOMPurify from "dompurify";
-import Category from "../components/Category";
-import IgFeeds from "../components/IgFeeds";
-import SearchBar from "../components/SearchBar";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import CommentForm from "@/components/CommentForm";
@@ -15,6 +13,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
 
 function BlogDetails() {
+  const fullUrl = window.location.href;
+  console.log(fullUrl);
   const { id } = useParams();
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
@@ -61,6 +61,28 @@ function BlogDetails() {
   // const handleImageClick = (url) => {
   //   setMainImage(url);
   // };
+
+  const shareOnFacebook = () => {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      fullUrl
+    )}`;
+    window.open(facebookUrl, "_blank", "width=600,height=400");
+  };
+
+  const shareOnTwitter = () => {
+    const twitterUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+      fullUrl
+    )}&text=${encodeURIComponent(product.title)}`;
+    window.open(twitterUrl, "_blank", "width=600,height=400");
+  };
+
+  const shareOnLinkedIn = () => {
+    const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+      fullUrl
+    )}`;
+    window.open(linkedInUrl, "_blank", "width=600,height=400");
+  };
+
   const sanitizedContent = DOMPurify.sanitize(product.content);
   if (!product) {
     return (
@@ -134,12 +156,25 @@ function BlogDetails() {
                 </div>
                 <div class="navigation-top">
                   <div class="d-sm-flex justify-content-between text-center">
-                    <div class="col-sm-4 text-center my-2 my-sm-0"></div>
+                    <div class="col-sm-4 text-center my-2 my-sm-0">
+                      {" "}
+                      Share to Friends
+                    </div>
                     <ul class="social-icons">
-                      <li>
-                        <a href="#">
-                          <i class="fab fa-instagram"></i>
-                        </a>
+                      <li onClick={shareOnFacebook}>
+                        <i
+                          class="fab fa-facebook"
+                          onClick={shareOnFacebook}
+                        ></i>
+                      </li>
+                      <li onClick={shareOnLinkedIn}>
+                        <i
+                          class="fab fa-linkedin"
+                          onClick={shareOnLinkedIn}
+                        ></i>
+                      </li>
+                      <li onClick={shareOnTwitter}>
+                        <i class="fab fa-twitter" onClick={shareOnTwitter}></i>
                       </li>
                     </ul>
                   </div>
