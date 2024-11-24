@@ -114,34 +114,23 @@ export function BlogList() {
 
   return (
     <LoginLayout>
-      <div className="flex flex-col gap-8 bg-[#f3f4f6]">
+      <div className="flex flex-col gap-8 bg-[#0c392d] ">
         <div className="bg-white shadow-sm rounded-md p-4">
           {move === "add" || move === "edit" || move === "comments" ? (
             <Button onClick={() => setMove("")}>Close</Button>
           ) : (
-            <Button onClick={() => setMove("add")}>Add Blog</Button>
+            <Button className="bg-[#0c392d]" onClick={() => setMove("add")}>
+              Add Blog
+            </Button>
           )}
           {move === "add" && (
-            <Upload
-              setBlogs={setBlogs}
-              fetchBlogs={fetchBlogs}
-              // handleMove={setMove}
-              // handleAddBlog={(newBlog) => {
-              //   setBlogs([newBlog,...blogs]);
-              //   setMove("");
-              // }}
-            />
+            <Upload setBlogs={setBlogs} fetchBlogs={fetchBlogs} />
           )}
           {move === "edit" && (
             <Edit
               setBlogs={setBlogs}
               fetchBlogs={fetchBlogs}
               items={userState}
-              // handleMove={setMove}
-              // handleAddBlog={(newBlog) => {
-              //   setBlogs([newBlog,...blogs]);
-              //   setMove("");
-              // }}
             />
           )}
           {move === "comments" && (

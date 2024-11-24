@@ -3,19 +3,31 @@ import DOMPurify from "dompurify";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../layouts/Layout";
+import { FaArrowLeft } from "react-icons/fa";
 import CommentForm from "@/components/CommentForm";
 import RecentPost from "@/components/RecentPost";
 import Newsletter from "@/components/Newsletter";
 import CommentList from "@/components/CommentList";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./firebaseConfig";
+import {
+  collection,
+  doc,
+  getDocs,
+  increment,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { db, firestore } from "./firebaseConfig";
 
 function BlogDetails() {
-  const fullUrl = window.location.href;
-
   const { id } = useParams();
-  const [load, setLoad] = useState(false);
+  const [count, setCount] = useState("");
   const navigate = useNavigate();
+
+  const handleBack = () => {
+    navigate(-1); // Navigate back one step in history
+  };
+
+  const fullUrl = window.location.href;
 
   const [blog, setBlog] = useState("");
   const [mainImage, setMainImage] = useState("");
@@ -35,7 +47,7 @@ function BlogDetails() {
   }, []);
 
   const product = blog && blog.find((p) => p.id.toString() === id);
-  console.log(product);
+
   const productsPerPage = 5;
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -47,11 +59,40 @@ function BlogDetails() {
     navigate(`/blog/${blog}`);
   };
 
+  const blogId = product?.id;
+
   useEffect(() => {
-    if (product && product.imageUrls.length > 0) {
-      setMainImage(product.imageUrls[0]);
-    }
-  }, [product]);
+    const fetchBlogDetails = async () => {
+      try {
+        // Fetch the blog details (you can use a separate function here)
+        const blogRef = doc(firestore, "blog", blogId);
+
+        // Increment the view count
+        await updateDoc(blogRef, {
+          views: increment(1),
+        });
+      } catch (error) {
+        // toast.error("Failed to log page view.");
+      }
+    };
+    fetchBlogDetails();
+
+    if (!blogId) return;
+
+    const blogRef = doc(firestore, "blog", blogId);
+
+    const unsubscribe = onSnapshot(blogRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+
+        setCount(data.views || 0); // Ensure views is handled even if undefined
+      } else {
+        console.warn("Document does not exist!");
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener
+  }, [blogId]);
   // const handleImageClick = (url) => {
   //   setMainImage(url);
   // };
@@ -113,6 +154,24 @@ function BlogDetails() {
           </div>
         </div>
         <section class="blog_area single-post-area section-padding">
+          <button
+            className="text-xl widget_title font-light"
+            onClick={handleBack}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
+
+              padding: "10px 15px",
+              // backgroundColor: "#007BFF",
+              color: "#000",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            <FaArrowLeft /> GO BACK
+          </button>
           <div class="container">
             <div class="row">
               <div class="col-lg-8 posts-list">
@@ -136,6 +195,14 @@ function BlogDetails() {
                           {product.comments && product.comments.length < 2
                             ? "Comment"
                             : "Comments"}
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-eye"></i>{" "}
+                          {count && count < 2
+                            ? count + " " + "View" || ""
+                            : count + " " + "Views" || ""}
                         </a>
                       </li>
                     </ul>
@@ -175,7 +242,7 @@ function BlogDetails() {
                   </div>
                 </div>
                 <CommentList comment={product.comments} />
-                <CommentForm id={product.id} fetchComments={fetchProducts} />
+                <CommentForm id={blogId} fetchComments={fetchProducts} />
               </div>
               <div class="col-lg-4">
                 <div class="blog_right_sidebar">

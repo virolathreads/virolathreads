@@ -16,7 +16,7 @@ export default function Newsletter() {
           />
         </div>
         <button
-          className="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+          className="button rounded-0 primary-bg  w-100 btn_1 boxed-btn"
           type="submit"
         >
           Subscribe

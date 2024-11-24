@@ -55,7 +55,6 @@ export default function Shop() {
   const handleClick = (blog) => {
     navigate(`/blog/${blog}`);
   };
-  console.log(currentProducts);
 
   return (
     <Layout>

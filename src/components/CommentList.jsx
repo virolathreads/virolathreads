@@ -2,11 +2,11 @@ import moment from "moment";
 import React from "react";
 
 export default function CommentList({ comment }) {
-  console.log(comment);
   return (
     <div class="comments-area">
       <h4>
-        {comment && comment.length} Comment{ + comment.length > 0 ? "s" : ""}
+        {comment && comment.length} Comment
+        {+comment && comment.length > 0 ? "s" : ""}
       </h4>
       <div class="comment-list">
         {comment &&

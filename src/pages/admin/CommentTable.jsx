@@ -6,7 +6,8 @@ import { firestore } from "../firebaseConfig";
 export default function CommentTable({ comments, blogId }) {
   const [comm, setComm] = React.useState(comments);
 
-  const handleDelete = async (commentToDelete) => {
+  const handleDelete = async (i, commentToDelete) => {
+  
     try {
       const blogRef = doc(firestore, "blog", blogId);
 
@@ -36,8 +37,8 @@ export default function CommentTable({ comments, blogId }) {
           </tr>
         </thead>
         <tbody>
-          {comments &&
-            comments.map((blog, i) => (
+          {comm &&
+            comm.map((blog, i) => (
               <tr
                 key={blog.id}
                 className={`${

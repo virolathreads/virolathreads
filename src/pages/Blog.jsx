@@ -128,7 +128,15 @@ export default function Blog() {
                       </li>
                       <li>
                         <a href="#">
+                          {(item.comments && item.comments.length + " ") ||
+                            0 + " "}
                           <i className="fa fa-comments"></i> Comments
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          {(item.views && item.views + " ") || 0 + " "}
+                          <i className="fa fa-eye"></i> Views
                         </a>
                       </li>
                     </ul>
@@ -284,8 +292,17 @@ export default function Blog() {
                                 </li>
                                 <li>
                                   <a href="#">
-                                    {item.comments && item.comments.length + " "}
+                                    {(item.comments &&
+                                      item.comments.length + " ") ||
+                                      0 + " "}
                                     <i className="fa fa-comments"></i> Comments
+                                  </a>
+                                </li>
+                                <li>
+                                  <a href="#">
+                                    {(item.views && item.views + " ") ||
+                                      0 + " "}
+                                    <i className="fa fa-eye"></i> Views
                                   </a>
                                 </li>
                               </ul>
