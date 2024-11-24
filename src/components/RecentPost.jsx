@@ -1,3 +1,4 @@
+import moment from "moment";
 import React from "react";
 
 export default function RecentPost({ lifoItems, handleClick }) {
@@ -21,7 +22,7 @@ export default function RecentPost({ lifoItems, handleClick }) {
             <a href="#" onClick={() => handleClick(post.id)}>
               <h3 style={{ color: "#2d2d2d" }}>{post.title}</h3>
             </a>
-            <p>{post.date}</p>
+            <p> {moment(post.date).format("MMMM Do YYYY")}</p>
           </div>
         </div>
       ))}

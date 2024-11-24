@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { blogs, comments } from "../mocks/mocks";
 import DOMPurify from "dompurify";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import CommentForm from "@/components/CommentForm";
@@ -14,7 +12,7 @@ import { db } from "./firebaseConfig";
 
 function BlogDetails() {
   const fullUrl = window.location.href;
-  console.log(fullUrl);
+
   const { id } = useParams();
   const [load, setLoad] = useState(false);
   const navigate = useNavigate();
@@ -23,17 +21,6 @@ function BlogDetails() {
   const [mainImage, setMainImage] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
-
-  const productsPerPage = 5;
-
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = blogs.slice(indexOfFirstProduct, indexOfLastProduct);
-
-  const lifoItems = [...currentProducts].reverse().slice(0, 3);
-  const handleClick = (blog) => {
-    navigate(`/blog/${blog}`);
-  };
 
   const fetchProducts = async () => {
     const querySnapshot = await getDocs(collection(db, "blog"));
@@ -48,10 +35,17 @@ function BlogDetails() {
   }, []);
 
   const product = blog && blog.find((p) => p.id.toString() === id);
+  console.log(product);
+  const productsPerPage = 5;
 
-  const comment = comments.filter(
-    (comment) => comment.postId.toString() === id
-  );
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = blog.slice(indexOfFirstProduct, indexOfLastProduct);
+
+  const lifoItems = [...currentProducts].reverse().slice(0, 3);
+  const handleClick = (blog) => {
+    navigate(`/blog/${blog}`);
+  };
 
   useEffect(() => {
     if (product && product.imageUrls.length > 0) {
@@ -137,8 +131,11 @@ function BlogDetails() {
                       </li>
                       <li>
                         <a href="#">
-                          <i class="fa fa-comments"></i> {comment.length}{" "}
-                          {comment.length < 2 ? "Comment" : "Comments"}
+                          <i class="fa fa-comments"></i>{" "}
+                          {product.comments && product.comments.length}{" "}
+                          {product.comments && product.comments.length < 2
+                            ? "Comment"
+                            : "Comments"}
                         </a>
                       </li>
                     </ul>
@@ -179,8 +176,8 @@ function BlogDetails() {
                     </ul>
                   </div>
                 </div>
-                <CommentList comment={comment} />
-                <CommentForm />
+                <CommentList comment={product.comments}  />
+                <CommentForm id={product.id} fetchComments={fetchProducts} />
               </div>
               <div class="col-lg-4">
                 <div class="blog_right_sidebar">

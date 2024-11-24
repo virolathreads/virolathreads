@@ -17,10 +17,13 @@ import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { deleteObject, ref } from "firebase/storage";
 import { Edit } from "./Edit";
+import CommentTable from "./CommentTable";
 
 export function BlogList() {
   const access = sessionStorage.getItem("virolatoken");
-
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+  };
   if (!access) {
     window.location.href = "/login";
     sessionStorage.setItem("virolatoken", "");
@@ -28,6 +31,7 @@ export function BlogList() {
   }
   const [currentPage, setCurrentPage] = useState(1);
   const [move, setMove] = useState("");
+  const [comment, setComment] = useState();
   const [userState, setUserState] = useState(null);
   const [blogs, setBlogs] = useState(null);
   const productsPerPage = 5;
@@ -63,6 +67,13 @@ export function BlogList() {
   const handleEdit = (i, blog) => {
     setMove("edit");
     setUserState(blog);
+  };
+
+  const handleView = (i, blogComments, blog) => {
+    if (!blogComments?.length) return toast.error(`No comments`);
+    setMove("comments");
+    setUserState(blog);
+    setComment(blogComments);
   };
 
   const handlePageClick = (page) => setCurrentPage(page);
@@ -105,7 +116,7 @@ export function BlogList() {
     <LoginLayout>
       <div className="flex flex-col gap-8 bg-[#f3f4f6]">
         <div className="bg-white shadow-sm rounded-md p-4">
-          {move === "add" || move === "edit" ? (
+          {move === "add" || move === "edit" || move === "comments" ? (
             <Button onClick={() => setMove("")}>Close</Button>
           ) : (
             <Button onClick={() => setMove("add")}>Add Blog</Button>
@@ -133,6 +144,9 @@ export function BlogList() {
               // }}
             />
           )}
+          {move === "comments" && (
+            <CommentTable comments={comment} blogId={userState.id} />
+          )}
         </div>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-md">
@@ -145,6 +159,7 @@ export function BlogList() {
                 <th className="px-4 py-3">Category</th>
                 <th className="px-4 py-3">Content</th>
                 <th className="px-4 py-3">Image</th>
+                <th className="px-4 py-3">Comments</th>
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3 text-right">Action</th>
               </tr>
@@ -163,7 +178,6 @@ export function BlogList() {
                   <td className="px-4 py-3">{blog.title}</td>
                   <td className="px-4 py-3">{blog.description}</td>
                   <td className="px-4 py-3">{blog.category}</td>
-
                   <td
                     className="px-4 py-3"
                     dangerouslySetInnerHTML={{
@@ -173,11 +187,19 @@ export function BlogList() {
                   <td className="px-4 py-3">
                     <img src={blog.imageUrls} alt={blog.title} />
                   </td>
+                  <td className="px-4 py-3">
+                    {blog.comments && blog.comments.length > 0
+                      ? blog.comments.length
+                      : "0"}
+                  </td>
                   <td className="px-4 py-3">{blog.date}</td>
                   <td className="px-4 py-3 text-right">
                     <button
                       className="bg-black underline"
-                      onClick={() => handleEdit(i, blog)}
+                      onClick={() => {
+                        handleEdit(i, blog);
+                        handleClick;
+                      }}
                     >
                       Edit
                     </button>
@@ -188,6 +210,17 @@ export function BlogList() {
                       onClick={() => handleDelete(i, blog.id, blog.imageUrls)}
                     >
                       Delete
+                    </button>
+                  </td>{" "}
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      className="bg-black underline"
+                      onClick={() => {
+                        handleView(i, blog.comments, blog);
+                        handleClick();
+                      }}
+                    >
+                      View Comments
                     </button>
                   </td>
                 </tr>

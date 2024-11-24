@@ -1,10 +1,13 @@
+import moment from "moment";
 import React from "react";
 
 export default function CommentList({ comment }) {
   console.log(comment);
   return (
     <div class="comments-area">
-      <h4>{comment.length} Comments</h4>
+      <h4>
+        {comment && comment.length} Comment{ + comment.length > 0 ? "s" : ""}
+      </h4>
       <div class="comment-list">
         {comment &&
           comment.map((comment, i) => {
@@ -19,13 +22,17 @@ export default function CommentList({ comment }) {
                   </div>
                   <div class="desc">
                     <div key={i}>
-                      <p class="comment">{comment.content}</p>
+                      <p class="comment">{comment.comment}</p>
                       <div class="d-flex justify-content-between">
                         <div class="d-flex align-items-center">
                           <h5>
                             <a href="#">{comment.name}</a>
                           </h5>
-                          <p class="date">{comment.created_at}</p>
+                          <p class="date">
+                            {moment(comment.date).format(
+                              "MMMM Do YYYY, h:mm:ss a"
+                            )}
+                          </p>
                         </div>
                         {/* <div class="reply-btn">
                         <a href="#" class="btn-reply text-uppercase">

@@ -94,7 +94,13 @@ export default function Blog() {
                       alt={`Blog ${item.title}`}
                     />
                     <a href="#" className="blog_item_date">
-                      <p> {format(new Date(item.date), "dd MMM yyyy")}</p>
+                      <p>
+                        {" "}
+                        {format(
+                          new Date(item.date),
+                          "dd MMMM yyyy"
+                        ).toUpperCase()}
+                      </p>
                     </a>
                   </div>
                   <div className="blog_details">
@@ -244,7 +250,11 @@ export default function Blog() {
                               <a href="#" className="blog_item_date">
                                 <p>
                                   {" "}
-                                  {format(new Date(item.date), "dd MMM yyyy")}
+                                  {format(
+                                    new Date(item.date),
+                                    
+                                    "dd MMMM yyyy"
+                                  ).toUpperCase()}
                                 </p>
                               </a>
                             </div>
