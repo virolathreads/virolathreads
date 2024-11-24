@@ -32,7 +32,7 @@ export default function Header() {
                         href="/"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
-                        Home
+                        HOME
                       </a>
                     </li>
                     <li>
@@ -40,7 +40,7 @@ export default function Header() {
                         href="/shop"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
-                        Shop
+                        SHOP
                       </a>
                     </li>
                     <li>
@@ -48,7 +48,7 @@ export default function Header() {
                         href="/about"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
-                        About
+                        ABOUT
                       </a>
                     </li>
                     <li>
@@ -56,7 +56,7 @@ export default function Header() {
                         href="/blog"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
-                        Blog
+                        BLOG
                       </a>
                     </li>
                     <li>
@@ -64,7 +64,7 @@ export default function Header() {
                         href="/contact"
                         className="text-gray-700 hover:text-blue-600 font-medium"
                       >
-                        Contact
+                        CONTACT
                       </a>
                     </li>
                   </ul>

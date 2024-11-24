@@ -3,14 +3,11 @@ import { motion } from "framer-motion";
 
 function HeroSection() {
   const images = [
-    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581267/1731155539007_lx9y6d.png')",
-    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581264/1731153922634_2_yl70w7.png')",
+    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581263/1731144144261_d97xed.png')",
+    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582471/1731157979871_wnnwiv.png')",
     "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582470/1731157997456_ym91xn.png')",
-    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581268/1731155374791_xaknvu.png')",
+    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582477/1731158528565_o6lahu.png')",
     "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582480/1731159377755_ccditd.png')",
-    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582708/1731154020032_b5uob4.png')",
-    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582706/1731153957887_ymaiqj.pngg')",
-    "url('https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582682/1731141456029_njzecm.png')",
 
     // "url('/path-to-image4.jpg')",
   ];
@@ -21,7 +18,7 @@ function HeroSection() {
   React.useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000); // Switch every 2 seconds
+    }, 3000); // Switch every 2 seconds
 
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, [images.length]);
@@ -32,6 +29,7 @@ function HeroSection() {
         class="single-slider hero-overly slider-height d-flex align-items-center"
         style={{
           height: "180vh",
+          width: "auto",
           backgroundSize: "cover",
           // backgroundPosition: "center",
           display: "flex",

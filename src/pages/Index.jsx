@@ -7,6 +7,8 @@ import Collections from "./Collections";
 import AboutComponent from "./AboutComponent";
 import LatestBlog from "@/components/LatestBlog";
 import Testimonials from "@/components/Testimonials";
+import EmbeddedWixEvents from "./EmbeddedWixEvents";
+import EventCard from "./EventCard";
 
 function Index() {
   return (
@@ -20,7 +22,9 @@ function Index() {
             </div>
           </div>
 
+          {/* <EmbeddedWixEvents /> */}
           <Collections />
+          <EventCard />
           <Services />
           <AboutComponent />
           <Testimonials />

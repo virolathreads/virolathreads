@@ -1,7 +1,5 @@
 import React from "react";
 import Layout from "../layouts/Layout";
-import Collections from "./Collections";
-import Services from "../components/Services";
 export default function About() {
   return (
     <Layout>

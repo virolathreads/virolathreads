@@ -23,6 +23,7 @@ import Privacy from "./pages/Privacy";
 
 import Refund from "./pages/Refund";
 import Terms from "./pages/Terms";
+import EmbeddedWixEvents from "./pages/EmbeddedWixEvents";
 
 function App() {
   const router = createBrowserRouter([
@@ -95,6 +96,7 @@ function App() {
             </Suspense>
           ),
         },
+
         {
           path: "/login",
           element: (
@@ -135,6 +137,15 @@ function App() {
             </Suspense>
           ),
         },
+        {
+          path: "/events",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <EmbeddedWixEvents />
+            </Suspense>
+          ),
+        },
+
         {
           path: "*",
           element: (
