@@ -210,7 +210,7 @@ function BlogDetails() {
 
                     <div class="quote-wrapper">
                       <div
-                        class="quotes"
+                        class="quotes text-left"
                         dangerouslySetInnerHTML={{
                           __html: sanitizedContent,
                         }}
