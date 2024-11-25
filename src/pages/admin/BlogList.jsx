@@ -114,8 +114,8 @@ export function BlogList() {
 
   return (
     <LoginLayout>
-      <div className="flex flex-col gap-8 bg-[#0c392d] ">
-        <div className="bg-white shadow-sm rounded-md p-4">
+      <div className="flex flex-col gap-8 ">
+        <div className="bg-white shadow-sm rounded-md p-4 bg-[#0c392d]">
           {move === "add" || move === "edit" || move === "comments" ? (
             <Button onClick={() => setMove("")}>Close</Button>
           ) : (
@@ -140,7 +140,7 @@ export function BlogList() {
 
         <div className="overflow-x-auto bg-white shadow-md rounded-md">
           <table className="min-w-full text-xl text-gray-600">
-            <thead className="bg-gray-100 text-lg uppercase text-gray-700">
+            <thead className="bg-gray-100 text-lg uppercase text-gray-700 ">
               <tr>
                 <th className="px-4 py-3">S/N</th>
                 <th className="px-4 py-3">Title</th>
@@ -152,7 +152,7 @@ export function BlogList() {
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3 text-right">Action</th>
               </tr>
-            </thead>
+            </thead>{" "}
             <tbody>
               {currentBlogs.map((blog, i) => (
                 <tr
@@ -161,47 +161,59 @@ export function BlogList() {
                     i % 2 === 0 ? "bg-[#f1f1f1]" : "bg-white"
                   } border-b hover:bg-gray-100 transition`}
                 >
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3" data-label="S/N">
                     {(currentPage - 1) * productsPerPage + i + 1}
                   </td>
-                  <td className="px-4 py-3">{blog.title}</td>
-                  <td className="px-4 py-3">{blog.description}</td>
-                  <td className="px-4 py-3">{blog.category}</td>
+                  <td className="px-4 py-3" data-label="Title">
+                    {blog.title}
+                  </td>
+                  <td className="px-4 py-3" data-label="Description">
+                    {blog.description}
+                  </td>
+                  <td className="px-4 py-3" data-label="Category">
+                    {blog.category}
+                  </td>
                   <td
                     className="px-4 py-3"
+                    data-label="Content"
                     dangerouslySetInnerHTML={{
                       __html: blog.content,
                     }}
                   ></td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3" data-label="Image">
                     <img src={blog.imageUrls} alt={blog.title} />
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-4 py-3" data-label="Comments">
                     {blog.comments && blog.comments.length > 0
                       ? blog.comments.length
                       : "0"}
                   </td>
-                  <td className="px-4 py-3">{blog.date}</td>
-                  <td className="px-4 py-3 text-right">
+                  <td className="px-4 py-3" data-label="Date">
+                    {blog.date}
+                  </td>
+                  <td className="px-4 py-3 text-right" data-label="Action">
                     <button
                       className="bg-black underline"
                       onClick={() => {
                         handleEdit(i, blog);
-                        handleClick;
+                        handleClick();
                       }}
                     >
                       Edit
                     </button>
                   </td>
-                  <td className="px-4 py-3 text-right bg-red ">
+                  <td className="px-4 py-3 text-right" data-label="Delete">
                     <button
                       className="text-red underline"
                       onClick={() => handleDelete(i, blog.id, blog.imageUrls)}
                     >
                       Delete
                     </button>
-                  </td>{" "}
-                  <td className="px-4 py-3 text-right">
+                  </td>
+                  <td
+                    className="px-4 py-3 text-right"
+                    data-label="View Comments"
+                  >
                     <button
                       className="bg-black underline"
                       onClick={() => {
@@ -233,7 +245,9 @@ export function BlogList() {
                   <PaginationLink
                     onClick={() => handlePageClick(i + 1)}
                     className={
-                      currentPage === i + 1 ? "font-bold text-lg" : "text-lg"
+                      currentPage === i + 1
+                        ? "font-bold text-2xl "
+                        : "text-2xl "
                     }
                   >
                     {i + 1}
