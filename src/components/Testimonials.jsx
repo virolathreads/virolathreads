@@ -2,26 +2,34 @@ import React, { useState, useEffect } from "react";
 
 const testimonialsData = [
   {
-    text: `"Flowbite is just awesome. It contains tons of predesigned components and pages starting from login screen to complex dashboard. Perfect choice for your next SaaS application."`,
-    name: "Micheal Gough",
-    position: "CEO at Google",
+    text: `"Virola Threads is my go-to for authentic yet modern African fashion. Every piece feels like it was made just for me. I always get compliments when I wear their designs!"`,
+    name: "Aisha O.",
+    position: "Lagos",
     image:
       "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png",
   },
   {
-    text: `"This platform is fantastic. It's a great tool for managing everything from project planning to execution. It helped our team stay on track with our goals."`,
-    name: "Sarah Lee",
-    position: "CTO at Microsoft",
+    text: `"The quality of the Aso-Oke jacket I purchased is unmatched. You can tell the fabric and stitching are handled with care. I’ll definitely be ordering more!"`,
+    name: "James T.",
+    position: "London",
     image:
       "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/sarah-lee.png",
   },
   {
-    text: `"I love how intuitive and user-friendly this service is. It has improved the way we collaborate across teams, and we've seen a significant increase in productivity."`,
-    name: "John Doe",
-    position: "Product Manager at Tesla",
+    text: `"Shopping with Virola Threads was a breeze. The team was so helpful in customizing my order, and delivery was fast. I’m impressed!"`,
+    name: "Grace A.",
+    position: "Accra",
     image:
       "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/john-doe.png",
   },
+  {
+    text: `"I wore a Virola Threads dress to a wedding, and everyone wanted to know where I got it. It made me feel confident and proud of my heritage."`,
+    name: "Rita E.",
+    position: "Abuja",
+    image:
+      "https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/john-doe.png",
+  },
+
   // Add more testimonials here
 ];
 
