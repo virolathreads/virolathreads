@@ -6,6 +6,7 @@ export default function EmbeddedWixEvents() {
   return (
     <div style={{ width: "100%", height: "100vh", border: "none" }}>
       <iframe
+        sandbox="allow-scripts allow-forms allow-same-origin"
         src={wixEventPageURL}
         title="Wix Events"
         style={{
