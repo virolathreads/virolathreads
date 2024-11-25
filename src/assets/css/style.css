@@ -2800,7 +2800,7 @@ hr {
 }
 .popular-items .single-popular-items .popular-img .img-cap span {
   color: #fff;
-  background: rgba(29, 37, 71, 0.5);
+  background: #6e857399;
   padding: 20px 0;
   display: block;
   cursor: pointer;

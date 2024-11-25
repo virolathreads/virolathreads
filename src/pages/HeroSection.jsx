@@ -28,7 +28,7 @@ function HeroSection() {
       <motion.div
         class="single-slider hero-overly slider-height d-flex align-items-center"
         style={{
-          height: "180vh",
+          height: window.innerWidth < 768 ? "auto" : "150vh",
           width: "auto",
           backgroundSize: "cover",
           // backgroundPosition: "center",

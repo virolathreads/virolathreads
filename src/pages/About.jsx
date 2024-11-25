@@ -53,7 +53,7 @@ export default function About() {
             <div class="row justify-content-center">
               <div class="col-lg-10">
                 <div class="section-tittle mb-60 text-center pt-10">
-                  <h2>Journey start from 2020</h2>
+                  <h2>Journey start from 2019</h2>
                   <p class="pera">
                     Virola Threads began as a dream fueled by passion and
                     determination. Virtue, inspired by the beauty of African

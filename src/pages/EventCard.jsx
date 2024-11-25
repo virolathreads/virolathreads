@@ -57,17 +57,16 @@ export default function EventCard() {
 
         {/* Event Content */}
         <motion.div
-          style={{ padding: "2rem", color: "#65867c",    textAlign: "left",  }}
+          style={{ padding: "2rem", color: "#65867c", textAlign: "left" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          
           transition={{ duration: 1, delay: 0.5 }}
         >
           <h1
             style={{
               fontSize: "2.5rem",
               fontWeight: "bold",
-         
+              color: "gray",
               marginBottom: "1rem",
             }}
           >
@@ -77,14 +76,15 @@ export default function EventCard() {
             <strong>When:</strong> 6th of December 2024, 19:00 – 21:00
           </p>
           <p style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
-            <strong>Where:</strong> Oriental Hotel, Victoria Island, Lagos, Nigeria
+            <strong>Where:</strong> Oriental Hotel, Victoria Island, Lagos,
+            Nigeria
           </p>
 
           {/* Call-to-Action Button centered with Hover animation */}
           <motion.div
             style={{
               display: "flex",
-              justifyContent: "left",  // Center the button
+              justifyContent: "left", // Center the button
               gap: "1rem",
               marginTop: "1.5rem",
             }}
@@ -108,7 +108,10 @@ export default function EventCard() {
                 backgroundColor: "#4e6b5e",
               }}
             >
-              <a href="/events" style={{ color: "white", textDecoration: "none" }}>
+              <a
+                href="/events"
+                style={{ color: "white", textDecoration: "none" }}
+              >
                 Register Now
               </a>
             </motion.button>

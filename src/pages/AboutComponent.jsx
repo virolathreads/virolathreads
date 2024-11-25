@@ -21,7 +21,7 @@ function AboutComponent() {
                 collection houses our first-ever
               </h2>
               <a
-                href="about.html"
+                href="/about"
                 className="btn wow fadeInUp"
                 data-wow-duration="2s"
                 data-wow-delay=".4s"
