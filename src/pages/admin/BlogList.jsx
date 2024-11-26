@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import "./blog.css";
 import LoginLayout from "@/layouts/LoginLayout";
 import { Upload } from "./Upload";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
