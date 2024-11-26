@@ -58,10 +58,10 @@ const SizeChart = () => {
           <tbody>
             {sizeData.sizes.map((row, index) => (
               <tr key={index}>
-                <td data-label="UK Size">{row.uk}</td>
-                <td data-label="Bust">{row.bust}</td>
-                <td data-label="Waist">{row.waist}</td>
-                <td data-label="Hip">{row.hip}</td>
+                <td>{row.uk}</td>
+                <td>{row.bust}</td>
+                <td>{row.waist}</td>
+                <td>{row.hip}</td>
               </tr>
             ))}
           </tbody>

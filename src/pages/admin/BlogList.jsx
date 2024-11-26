@@ -8,7 +8,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import "./blog.css";
 import LoginLayout from "@/layouts/LoginLayout";
 import { Upload } from "./Upload";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
@@ -140,18 +139,18 @@ export function BlogList() {
         </div>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-md">
-          <table className="min-w-full text-xl text-gray-600">
-            <thead className="bg-gray-100 text-lg uppercase text-gray-700 ">
-              <tr>
-                <th className="px-4 py-3">S/N</th>
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Description</th>
-                <th className="px-4 py-3">Category</th>
-                <th className="px-4 py-3">Content</th>
-                <th className="px-4 py-3">Image</th>
-                <th className="px-4 py-3">Comments</th>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3 text-right">Action</th>
+          <table className="min-w-full text-xl text-gray-600 tables">
+            <thead className="bg-gray-100 text-lg uppercase text-gray-700 theads">
+              <tr className="tr">
+                <th className="px-4 py-3 th">S/N</th>
+                <th className="px-4 py-3 th">Title</th>
+                <th className="px-4 py-3 th">Description</th>
+                <th className="px-4 py-3 th">Category</th>
+                <th className="px-4 py-3 th">Content</th>
+                <th className="px-4 py-3 th">Image</th>
+                <th className="px-4 py-3 th">Comments</th>
+                <th className="px-4 py-3 th">Date</th>
+                <th className="px-4 py-3 th text-right">Action</th>
               </tr>
             </thead>{" "}
             <tbody>
@@ -162,37 +161,37 @@ export function BlogList() {
                     i % 2 === 0 ? "bg-[#f1f1f1]" : "bg-white"
                   } border-b hover:bg-gray-100 transition`}
                 >
-                  <td className="px-4 py-3" data-label="S/N">
+                  <td className="px-4 py-3 td" data-label="S/N">
                     {(currentPage - 1) * productsPerPage + i + 1}
                   </td>
-                  <td className="px-4 py-3" data-label="Title">
+                  <td className="px-4 py-3 td" data-label="Title">
                     {blog.title}
                   </td>
-                  <td className="px-4 py-3" data-label="Description">
+                  <td className="px-4 py-3 td" data-label="Description">
                     {blog.description}
                   </td>
-                  <td className="px-4 py-3" data-label="Category">
+                  <td className="px-4 py-3 td" data-label="Category">
                     {blog.category}
                   </td>
                   <td
-                    className="px-4 py-3"
+                    className="px-4 py-3 td"
                     data-label="Content"
                     dangerouslySetInnerHTML={{
                       __html: blog.content,
                     }}
                   ></td>
-                  <td className="px-4 py-3" data-label="Image">
+                  <td className="px-4 py-3 td" data-label="Image">
                     <img src={blog.imageUrls} alt={blog.title} />
                   </td>
-                  <td className="px-4 py-3" data-label="Comments">
+                  <td className="px-4 py-3 td" data-label="Comments">
                     {blog.comments && blog.comments.length > 0
                       ? blog.comments.length
                       : "0"}
                   </td>
-                  <td className="px-4 py-3" data-label="Date">
+                  <td className="px-4 py-3 td" data-label="Date">
                     {blog.date}
                   </td>
-                  <td className="px-4 py-3 text-right" data-label="Action">
+                  <td className="px-4 py-3 td text-right" data-label="Action">
                     <button
                       className="bg-black underline"
                       onClick={() => {
@@ -203,7 +202,7 @@ export function BlogList() {
                       Edit
                     </button>
                   </td>
-                  <td className="px-4 py-3 text-right" data-label="Delete">
+                  <td className="px-4 py-3 td text-right" data-label="Delete">
                     <button
                       className="text-red underline"
                       onClick={() => handleDelete(i, blog.id, blog.imageUrls)}
@@ -212,7 +211,7 @@ export function BlogList() {
                     </button>
                   </td>
                   <td
-                    className="px-4 py-3 text-right"
+                    className="px-4 py-3 td text-right"
                     data-label="View Comments"
                   >
                     <button
