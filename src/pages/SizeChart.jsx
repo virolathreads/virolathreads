@@ -25,25 +25,25 @@ const SizeChart = () => {
   return (
     <Layout>
       <div className="size-chart">
-        <motion.div    initial={{ opacity: 0, y: -20 }}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}>
-          
-        <motion.h2
-          style={{
-            textAlign: "center",
-            fontSize: "2.5rem",
-            color: "#65867c",
-            paddingTop: "3rem",
-            fontWeight: "bold",
-            marginBottom: "2rem",
-          }}
-       
+          transition={{ duration: 1 }}
         >
-          SIZE GUIDE
-        </motion.h2>
-        <p>PLEASE NOTE THAT ALL OF OUR SIZES ARE UK SIZES</p>
-        <p>VIROLA MEASUREMENT GUIDE</p>
+          <motion.h2
+            style={{
+              textAlign: "center",
+              fontSize: "2.5rem",
+              color: "#65867c",
+              paddingTop: "3rem",
+              fontWeight: "bold",
+              marginBottom: "2rem",
+            }}
+          >
+            SIZE GUIDE
+          </motion.h2>
+          <p>PLEASE NOTE THAT ALL OF OUR SIZES ARE UK SIZES</p>
+          <p>VIROLA MEASUREMENT GUIDE</p>
         </motion.div>
         <h1 className="pt-5">Size Chart</h1>
         <table>
@@ -58,10 +58,10 @@ const SizeChart = () => {
           <tbody>
             {sizeData.sizes.map((row, index) => (
               <tr key={index}>
-                <td>{row.uk}</td>
-                <td>{row.bust}</td>
-                <td>{row.waist}</td>
-                <td>{row.hip}</td>
+                <td data-label="UK Size">{row.uk}</td>
+                <td data-label="Bust">{row.bust}</td>
+                <td data-label="Waist">{row.waist}</td>
+                <td data-label="Hip">{row.hip}</td>
               </tr>
             ))}
           </tbody>
