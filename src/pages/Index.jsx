@@ -9,6 +9,7 @@ import LatestBlog from "@/components/LatestBlog";
 import Testimonials from "@/components/Testimonials";
 import EmbeddedWixEvents from "./EmbeddedWixEvents";
 import EventCard from "./EventCard";
+import HeroSlider from "@/components/HeroSlider";
 
 function Index() {
   return (
@@ -18,7 +19,8 @@ function Index() {
         <main>
           <div class="container-fluid">
             <div class="slider-area">
-              <HeroSection />
+              {/* <HeroSection /> */}
+              <HeroSlider />
             </div>
           </div>
 
