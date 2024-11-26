@@ -26,6 +26,14 @@ export default function Footer() {
               Quick Links
             </h2>
             <ul className="space-y-3">
+            <li>
+                <a
+                  href="/size"
+                  className="text-white hover:text-[#254f43] transition-colors"
+                >
+                 Size Guide
+                </a>
+              </li>
               <li>
                 <a
                   href="/privacy"

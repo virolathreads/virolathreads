@@ -24,6 +24,7 @@ import Privacy from "./pages/Privacy";
 import Refund from "./pages/Refund";
 import Terms from "./pages/Terms";
 import EmbeddedWixEvents from "./pages/EmbeddedWixEvents";
+import SizeChart from "./pages/SizeChart";
 
 function App() {
   const router = createBrowserRouter([
@@ -126,6 +127,14 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <BlogList />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/size",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <SizeChart />
             </Suspense>
           ),
         },

@@ -112,31 +112,31 @@ export default function Header() {
                     href="/"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    Home
+                    HOME
                   </a>
                   <a
                     href="/shop"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    Shop
+                    SHOP
                   </a>
                   <a
                     href="/about"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    About
+                    ABOUT
                   </a>
                   <a
                     href="/blog"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    Blog
+                    BLOG
                   </a>
                   <a
                     href="/contact"
                     className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
                   >
-                    Contact
+                    CONTACT
                   </a>
                 </div>
 
