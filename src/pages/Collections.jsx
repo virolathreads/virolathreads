@@ -1,8 +1,30 @@
+import { motion } from "framer-motion";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 function Collections() {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/shop`);
+  };
   return (
     <div class="popular-items  pt-50">
+      <motion.h2
+        style={{
+          textAlign: "center",
+          fontSize: "3.5rem",
+          color: "#65867c",
+          padding: "3rem",
+          fontWeight: "light",
+          marginBottom: "2rem",
+        }}
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+      >
+        DISCOVER
+      </motion.h2>
+
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
@@ -10,6 +32,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".1s"
+              onClick={() => handleClick()}
             >
               <div class="popular-img">
                 <img
@@ -17,13 +40,13 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>Bridal</span>
+                  <span>SS22</span>
                 </div>
-                <div class="favorit-items">
+                {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
                     Shop Now
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -32,6 +55,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".2s"
+              onClick={() => handleClick()}
             >
               <div class="popular-img">
                 <img
@@ -39,13 +63,13 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>Modern </span>
+                  <span>SS23 </span>
                 </div>
-                <div class="favorit-items">
+                {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
                     Shop Now
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -55,6 +79,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".6s"
+              onClick={() => handleClick()}
             >
               <div class="popular-img">
                 <img
@@ -62,13 +87,13 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>Afro </span>
+                  <span>SS24 </span>
                 </div>
-                <div class="favorit-items">
+                {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
                     Shop Now
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -77,6 +102,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".6s"
+              onClick={() => handleClick()}
             >
               <div class="popular-img">
                 <img
@@ -86,11 +112,11 @@ function Collections() {
                 <div class="img-cap">
                   <span>All Collections </span>
                 </div>
-                <div class="favorit-items">
+                {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
                     Shop Now
                   </a>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

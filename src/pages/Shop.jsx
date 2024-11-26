@@ -92,7 +92,7 @@ export default function Shop() {
               <div className="blog_right_sidebar">
                 <SearchBar setQuery={setQuery} />
 
-                <Category setItem={setItem} setTag={setTag} />
+                {/* <Category setItem={setItem} setTag={setTag} /> */}
                 {/** Popular Posts Widget */}
                 <RecentProducts
                   lifoItems={lifoItems}
