@@ -150,7 +150,9 @@ export function BlogList() {
                 <th className="px-4 py-3 th">Image</th>
                 <th className="px-4 py-3 th">Comments</th>
                 <th className="px-4 py-3 th">Date</th>
-                <th className="px-4 py-3 th text-right">Action</th>
+                <th className="px-4 py-3 th text-right">Edit</th>
+                <th className="px-4 py-3 th text-right">Delete</th>
+                <th className="px-4 py-3 th text-right">View Comments</th>
               </tr>
             </thead>{" "}
             <tbody>
@@ -191,7 +193,7 @@ export function BlogList() {
                   <td className="px-4 py-3 td" data-label="Date">
                     {blog.date}
                   </td>
-                  <td className="px-4 py-3 td text-right" data-label="Action">
+                  <td className="px-4 py-3 td text-right" data-label="Edit">
                     <button
                       className="bg-black underline"
                       onClick={() => {
