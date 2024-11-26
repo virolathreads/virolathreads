@@ -6245,3 +6245,56 @@ del {
 .switch-wrap {
   margin-bottom: 10px;
 }
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  justify-content: center; /* Center the pagination */
+  padding: 10px 0;
+  margin: 0;
+  list-style: none;
+}
+
+.page-item {
+  margin: 0 5px; /* Spacing between pagination buttons */
+}
+
+.page-link {
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #007bff;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: #fff;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.page-link:hover {
+  background-color: #65867c;
+  color: #fff;
+}
+
+.page-item.active .page-link {
+  background-color: #65867c !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none; /* Disable clicking */
+  background-color: #f8f9fa;
+}
+
+@media (max-width: 576px) {
+  .page-link {
+    padding: 8px 10px; /* Smaller padding for smaller screens */
+    font-size: 14px;
+  }
+
+  .page-item {
+    margin: 0 3px; /* Reduce spacing */
+  }
+}

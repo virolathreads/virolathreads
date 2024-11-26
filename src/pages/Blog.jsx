@@ -158,9 +158,8 @@ export default function Blog() {
         <nav className="blog-pagination justify-content-center d-flex">
           <ul className="pagination">
             {/* Previous Button */}
-            <li className={`page-item ${currentPage === 1 ? "disabled " : ""}`}>
-              <a
-                href="#"
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <button
                 className="page-link"
                 aria-label="Previous"
                 onClick={() =>
@@ -168,22 +167,21 @@ export default function Blog() {
                 }
               >
                 <i className="ti-angle-left"></i>
-              </a>
+              </button>
             </li>
 
             {/* Page Numbers */}
             {nopage.map((page) => (
               <li
                 key={page}
-                className={`page-item ${page === currentPage ? "active " : ""}`}
+                className={`page-item ${page === currentPage ? "active" : ""}`}
               >
-                <a
-                  href="#"
+                <button
                   className="page-link"
                   onClick={() => handlePageClick(page)}
                 >
                   {page}
-                </a>
+                </button>
               </li>
             ))}
 
@@ -193,8 +191,7 @@ export default function Blog() {
                 currentPage === totalPage ? "disabled" : ""
               }`}
             >
-              <a
-                href="#"
+              <button
                 className="page-link"
                 aria-label="Next"
                 onClick={() =>
@@ -202,7 +199,7 @@ export default function Blog() {
                 }
               >
                 <i className="ti-angle-right"></i>
-              </a>
+              </button>
             </li>
           </ul>
         </nav>
@@ -328,8 +325,7 @@ export default function Blog() {
                             currentPage === 1 ? "disabled" : ""
                           }`}
                         >
-                          <a
-                            href="#"
+                          <button
                             className="page-link"
                             aria-label="Previous"
                             onClick={() =>
@@ -338,7 +334,7 @@ export default function Blog() {
                             }
                           >
                             <i className="ti-angle-left"></i>
-                          </a>
+                          </button>
                         </li>
 
                         {/* Page Numbers */}
@@ -349,13 +345,12 @@ export default function Blog() {
                               page === currentPage ? "active" : ""
                             }`}
                           >
-                            <a
-                              href="#"
+                            <button
                               className="page-link"
                               onClick={() => handlePageClick(page)}
                             >
                               {page}
-                            </a>
+                            </button>
                           </li>
                         ))}
 
@@ -365,8 +360,7 @@ export default function Blog() {
                             currentPage === totalPages ? "disabled" : ""
                           }`}
                         >
-                          <a
-                            href="#"
+                          <button
                             className="page-link"
                             aria-label="Next"
                             onClick={() =>
@@ -375,7 +369,7 @@ export default function Blog() {
                             }
                           >
                             <i className="ti-angle-right"></i>
-                          </a>
+                          </button>
                         </li>
                       </ul>
                     </nav>
@@ -389,7 +383,11 @@ export default function Blog() {
                 <div className="blog_right_sidebar">
                   <SearchBar setQuery={setQuery} />
 
-                  <Category setItem={setItem} setTag={setTag} />
+                  <Category
+                    setItem={setItem}
+                    setTag={setTag}
+                    currentProducts={blogs}
+                  />
                   {/** Popular Posts Widget */}
                   <RecentPost lifoItems={lifoItems} handleClick={handleClick} />
 
