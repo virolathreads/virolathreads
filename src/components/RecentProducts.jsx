@@ -13,7 +13,7 @@ export default function RecentProducts({ lifoItems, handleClick }) {
           onClick={() => handleClick(post.id)}
         >
           <img
-            src={post.image || post.imageUrls}
+            src={post.images[0]?.src}
             alt={`post ${post.title}`}
             className="w-50"
           />

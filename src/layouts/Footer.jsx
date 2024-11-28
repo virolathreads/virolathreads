@@ -34,14 +34,14 @@ export default function Footer() {
                  Size Guide
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a
                   href="/privacy"
                   className="text-white hover:text-[#254f43] transition-colors"
                 >
                   Privacy Policy
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a
                   href="/refund"

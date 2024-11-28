@@ -5,8 +5,8 @@ export default function CommentList({ comment }) {
   return (
     <div class="comments-area">
       <h4>
-        {comment && comment.length} Comment
-        {+comment && comment.length > 0 ? "s" : ""}
+        {comment && comment.length}
+        {+"" + comment && comment.length > 0 ? "Comments" : "Comment"}
       </h4>
       <div class="comment-list">
         {comment &&

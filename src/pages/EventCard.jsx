@@ -1,7 +1,38 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-export default function EventCard() {
+export default function EventSlider() {
+  const events = [
+    {
+      id: 1,
+      title: "Virola Threads Runway Debut",
+      date: "6th of December 2024, 19:00 – 21:00",
+      location: "Oriental Hotel, Victoria Island, Lagos, Nigeria",
+      image:
+        "https://vorlane.com/wp-content/uploads/2024/10/101970s-disco-inspired-runway-scene-with-disco-balls-and-reflectors-creating-a-vibrant-glittery-atmosphere.webp",
+    },
+    {
+      id: 2,
+      title: "Accra Fashion Fair 2024 || virola threads",
+      date: "22nd - 23rd of December 2024",
+      location: "Ghana Dubai, Circle, Accra",
+      image:
+        "https://vorlane.com/wp-content/uploads/2024/10/101970s-disco-inspired-runway-scene-with-disco-balls-and-reflectors-creating-a-vibrant-glittery-atmosphere.webp",
+    },
+  ];
+
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % events.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? events.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <div
       style={{
@@ -27,97 +58,141 @@ export default function EventCard() {
         Upcoming Events
       </motion.h2>
 
-      {/* Animated Event Card */}
-      <motion.div
+      {/* Event Slider */}
+      <div
         style={{
+          position: "relative",
           maxWidth: "900px",
           margin: "0 auto",
-          backgroundColor: "#ffffff",
-          borderRadius: "2px",
-          // boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
-          overflow: "hidden",
         }}
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.3 }}
       >
-        {/* Runway Image with Fade In */}
-        <motion.div
-          style={{ position: "relative", height: "500px", overflow: "hidden" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        >
-          <img
-            src="https://vorlane.com/wp-content/uploads/2024/10/101970s-disco-inspired-runway-scene-with-disco-balls-and-reflectors-creating-a-vibrant-glittery-atmosphere.webp"
-            alt="Runway"
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        </motion.div>
-
-        {/* Event Content */}
-        <motion.div
-          style={{ padding: "2rem", color: "#65867c", textAlign: "left" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5 }}
-        >
-          <h1
-            style={{
-              fontSize: "2.5rem",
-              fontWeight: "bold",
-              color: "gray",
-              marginBottom: "1rem",
-            }}
-          >
-            Virola Threads Runway Debut
-          </h1>
-          <p style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
-            <strong>When:</strong> 6th of December 2024, 19:00 – 21:00
-          </p>
-          <p style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
-            <strong>Where:</strong> Oriental Hotel, Victoria Island, Lagos,
-            Nigeria
-          </p>
-
-          {/* Call-to-Action Button centered with Hover animation */}
+        {/* Slider Content */}
+        <AnimatePresence mode="wait">
           <motion.div
+            key={events[currentIndex].id}
+            initial={{ x: 300, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300, opacity: 0 }}
+            transition={{ duration: 0.8 }}
             style={{
-              display: "flex",
-              justifyContent: "left", // Center the button
-              gap: "1rem",
-              marginTop: "1.5rem",
+              backgroundColor: "#ffffff",
+              borderRadius: "2px",
+              overflow: "hidden",
             }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 0.7 }}
           >
-            <motion.button
+            {/* Image */}
+            <div style={{ position: "relative", height: "500px" }}>
+              <img
+                src={events[currentIndex].image}
+                alt="Event"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </div>
+
+            {/* Event Content */}
+            <div
               style={{
-                padding: "1rem 2rem",
-                backgroundColor: "#65867c",
-                color: "#ffffff",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-                fontSize: "1.5rem",
-                transition: "all 0.3s",
-              }}
-              whileHover={{
-                scale: 1.1,
-                backgroundColor: "#4e6b5e",
+                padding: "2rem",
+                color: "#65867c",
+                textAlign: "left",
               }}
             >
-              <a
-                href="/events"
-                style={{ color: "white", textDecoration: "none" }}
+              <h1
+                style={{
+                  fontSize: "2.5rem",
+                  fontWeight: "bold",
+                  color: "gray",
+                  marginBottom: "1rem",
+                }}
               >
-                Register Now
-              </a>
-            </motion.button>
+                {events[currentIndex].title}
+              </h1>
+              <p style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+                <strong>When:</strong> {events[currentIndex].date}
+              </p>
+              <p style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+                <strong>Where:</strong> {events[currentIndex].location}
+              </p>
+
+              {/* Call-to-Action */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "left",
+                  marginTop: "1.5rem",
+                }}
+              >
+                <motion.button
+                  style={{
+                    padding: "1rem 2rem",
+                    backgroundColor: "#65867c",
+                    color: "#ffffff",
+                    border: "none",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontSize: "1.5rem",
+                    transition: "all 0.3s",
+                  }}
+                  whileHover={{
+                    scale: 1.1,
+                    backgroundColor: "#4e6b5e",
+                  }}
+                >
+                  <a
+                    href="/events"
+                    style={{ color: "white", textDecoration: "none" }}
+                  >
+                    Register Now
+                  </a>
+                </motion.button>
+              </div>
+            </div>
           </motion.div>
-        </motion.div>
-      </motion.div>
+        </AnimatePresence>
+
+        {/* Navigation Buttons */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "2rem",
+          }}
+        >
+          <motion.button
+            onClick={handlePrev}
+            whileHover={{ scale: 1.1 }}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#65867c",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Previous
+          </motion.button>
+
+          <motion.button
+            onClick={handleNext}
+            whileHover={{ scale: 1.1 }}
+            style={{
+              padding: "0.5rem 1rem",
+              backgroundColor: "#65867c",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Next
+          </motion.button>
+        </div>
+      </div>
     </div>
   );
 }

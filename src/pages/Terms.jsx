@@ -4,293 +4,180 @@ import React from "react";
 function Terms() {
   return (
     <Layout>
-      <div className="p-5 m-5">
-        <h2>
-          <strong>Terms and Conditions</strong>
-        </h2>
+      <div
+        style={{
+          padding: "2rem",
+          fontFamily: "Arial, sans-serif",
+          lineHeight: "1.6",
+        }}
+      >
+        <h1 style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          Terms of Service
+        </h1>
 
-        <p>Welcome to Virola Threads</p>
+        <section>
+          <h2>Shipping and Deliveries</h2>
+          <p>
+            Virola Threads aims to get most orders dispatched within 7-15
+            working days or sooner, subject to customers' specifications, stock,
+            and availability of items.
+          </p>
+          <p>
+            Please note that we require a contact number and email address for
+            all shipments. If any information is missing, this could lead to
+            delays in your order getting to you.
+          </p>
+          <p>
+            We will contact you via email or phone if there is an unreasonable
+            delay or if the items are out of stock.
+          </p>
+          <p>
+            For local deliveries (within Lagos), we aim to deliver within the
+            same day after the courier has picked up from our warehouse. This
+            also depends on address and communication with the customer.
+          </p>
+          <p>
+            For deliveries within Nigeria but outside Lagos, DHL aims to deliver
+            within 1-3 working days picking up from our warehouse. This also
+            depends on address and communication with the customer.
+          </p>
+          <p>
+            We ship to all countries via DHL, and it could take between 3-5
+            working days for delivery depending on the location.
+          </p>
+          <p>
+            Based on the item delivery destination, some items will be shipped
+            on a DDU (Delivery Duties Unpaid) basis, i.e., any duties and taxes
+            incurred in the country of destination are the responsibility of the
+            customer.
+          </p>
+          <p>
+            If you for any reason refuse delivery, or are unavailable or unable
+            to take the delivery despite reasonable attempts by the courier
+            company, your item will be returned to Virola Threads, and you will
+            be charged for the unpaid duties, taxes, and additional shipping
+            costs.
+          </p>
+        </section>
 
-        <p>
-          These terms and conditions outline the rules and regulations for the
-          use of Virola Threads's Website, located at{" "}
-          <a href="https://www.virolathreads.com/" target="_blank">
-            {" "}
-            virolathreads.com
-          </a>
-        </p>
+        <section>
+          <h2>Terms of Exchange / Returns / Refund</h2>
+          <p>
+            Virola Threads does not offer refunds; we only offer refunds for
+            damaged merchandise. We value all our customers and want them to be
+            100% satisfied with their purchases. To avoid any inconvenience or
+            delays, we always recommend that our customers review the SIZING
+            CHART in detail before making a purchase.
+          </p>
+          <p>
+            However, if for any reason the purchased item does not fit well, you
+            may email us at{" "}
+            <a href="mailto:info@virolathreads.com">info@virolathreads.com</a>{" "}
+            quoting your Order number and sizing issue within 1 week of
+            receiving your order, and we can offer an exchange for FULL PRICE
+            ITEMS ONLY. Kindly note that we do not offer refunds.
+          </p>
+          <p>
+            Once we receive the said information, a customer service
+            representative will contact you with size options. If the item is
+            not available in stock, we shall suggest alternative items or offer
+            a credit note that can be used on{" "}
+            <a
+              href="https://www.virolathreads.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              www.virolathreads.com
+            </a>{" "}
+            at any time within 6 months.
+          </p>
+          <p>
+            If you are dissatisfied with your order for any reason, you can
+            return your unused items for an exchange. Kindly note that we do not
+            exchange items made to customers' specific measurements.
+          </p>
+          <p>
+            All items on sale are final sale and cannot be exchanged or
+            returned. We also do not make alterations. Depending on the
+            situation, we may decide to help customers make alterations at an
+            extra charge provided by one of our production team members.
+          </p>
+          <p>
+            For all exchanges, items must be received at our store within 7
+            working days of receipt of the package. Merchandise must not be
+            worn, altered, or washed. Merchandise must include all the original
+            packaging and garment tags still attached.
+          </p>
+          <p>
+            Merchandise on Sale/Special Promotions may not be exchanged or
+            refunded. We do not accept any item with any indication that it was
+            used. In such cases, the item will be returned to the purchaser. It
+            is advisable to send returned items by known courier companies like
+            FedEx, DHL, or UPS and keep your proof of postage certificate, as we
+            cannot be responsible for goods lost or damaged in transit.
+          </p>
+          <p>
+            Please note that postal costs for returned goods are the customer’s
+            responsibility and will be reimbursed by us only in the case of
+            damaged, faulty, or incorrectly supplied goods.
+          </p>
+        </section>
 
-        <p>
-          By accessing this website we assume you accept these terms and
-          conditions. Do not continue to use Virola Threads if you do not agree
-          to take all of the terms and conditions stated on this page.
-        </p>
+        <section>
+          <h2>Damaged Goods</h2>
+          <p>
+            Although we are very thorough in checking all items before they are
+            dispatched, if you do receive a damaged item, please let us know by
+            email at{" "}
+            <a href="mailto:info@virolathreads.com">info@virolathreads.com</a>{" "}
+            quoting your Order Number, the description of the damage, and, if
+            possible, an image. Please note that any claim for damaged goods or
+            missing items must be received within 2 business days of receipt of
+            the package.
+          </p>
+          <p>
+            Once we receive this request, a member of our team will contact you.
+            Once your returned item is received and inspected, we will send you
+            an email to notify you that we have received your returned item and
+            notify you with a new estimated dispatch date of the replacement.
+            You will not be charged for the shipping fee of the replacement
+            item.
+          </p>
+          <p>
+            If the item is not available in stock, we will provide a credit note
+            that can be used on{" "}
+            <a
+              href="https://www.virolathreads.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              www.virolathreads.com
+            </a>{" "}
+            at any time within 6 months, or a refund will be processed.
+          </p>
+        </section>
 
-        <p>
-          The following terminology applies to these Terms and Conditions,
-          Privacy Statement and Disclaimer Notice and all Agreements: "Client",
-          "You" and "Your" refers to you, the person log on this website and
-          compliant to the Company's terms and conditions. "The Company",
-          "Ourselves", "We", "Our" and "Us", refers to our Company. "Party",
-          "Parties", or "Us", refers to both the Client and ourselves. All terms
-          refer to the offer, acceptance and consideration of payment necessary
-          to undertake the process of our assistance to the Client in the most
-          appropriate manner for the express purpose of meeting the Client's
-          needs in respect of provision of the Company's stated services, in
-          accordance with and subject to, prevailing law of ng. Any use of the
-          above terminology or other words in the singular, plural,
-          capitalization and/or he/she or they, are taken as interchangeable and
-          therefore as referring to same.
-        </p>
+        <section>
+          <h2>Sales</h2>
+          <p>
+            Please note that during specific sales events, we do experience a
+            high volume of orders, and your orders could take slightly longer to
+            be sent out. Our processing time during sales events is 10-21
+            working days.
+          </p>
+          <p>
+            Sale orders are final sale. We offer no returns or exchanges and no
+            alterations for sale orders.
+          </p>
+        </section>
 
-        <h3>
-          <strong>License</strong>
-        </h3>
-
-        <p>
-          Unless otherwise stated, Virola Threads and/or its licensors own the
-          intellectual property rights for all material on Virola Threads. All
-          intellectual property rights are reserved. You may access this from
-          Virola Threads for your own personal use subjected to restrictions set
-          in these terms and conditions.
-        </p>
-
-        <p>You must not:</p>
-        <ul>
-          <li>Republish material from Virola Threads</li>
-          <li>Sell, rent or sub-license material from Virola Threads</li>
-          <li>Reproduce, duplicate or copy material from Virola Threads</li>
-          <li>Redistribute content from Virola Threads</li>
-        </ul>
-
-        <p>
-          Parts of this website offer an opportunity for users to post and
-          exchange opinions and information in certain areas of the website.
-          MandF Interiors does not filter, edit, publish or review Comments
-          prior to their presence on the website. Comments do not reflect the
-          views and opinions of Virola Threads,its agents and/or affiliates.
-          Comments reflect the views and opinions of the person who post their
-          views and opinions. To the extent permitted by applicable laws, Virola
-          Threads shall not be liable for the Comments or for any liability,
-          damages or expenses caused and/or suffered as a result of any use of
-          and/or posting of and/or appearance of the Comments on this website.
-        </p>
-
-        <p>
-          Virola Threads reserves the right to monitor all Comments and to
-          remove any Comments which can be considered inappropriate, offensive
-          or causes breach of these Terms and Conditions.
-        </p>
-
-        <p>You warrant and represent that:</p>
-
-        <ul>
-          <li>
-            You are entitled to post the Comments on our website and have all
-            necessary licenses and consents to do so;
-          </li>
-          <li>
-            The Comments do not invade any intellectual property right,
-            including without limitation copyright, patent or trademark of any
-            third party;
-          </li>
-          <li>
-            The Comments do not contain any defamatory, libelous, offensive,
-            indecent or otherwise unlawful material which is an invasion of
-            privacy
-          </li>
-          <li>
-            The Comments will not be used to solicit or promote business or
-            custom or present commercial activities or unlawful activity.
-          </li>
-        </ul>
-
-        <p>
-          You hereby grant Virola Threads a non-exclusive license to use,
-          reproduce, edit and authorize others to use, reproduce and edit any of
-          your Comments in any and all forms, formats or media.
-        </p>
-
-        <h3>
-          <strong>Hyperlinking to our Content</strong>
-        </h3>
-
-        <p>
-          The following organizations may link to our Website without prior
-          written approval:
-        </p>
-
-        <ul>
-          <li>Government agencies;</li>
-          <li>Search engines;</li>
-          <li>News organizations;</li>
-          <li>
-            Online directory distributors may link to our Website in the same
-            manner as they hyperlink to the Websites of other listed businesses;
-            and
-          </li>
-          <li>
-            System wide Accredited Businesses except soliciting non-profit
-            organizations, charity shopping malls, and charity fundraising
-            groups which may not hyperlink to our Web site.
-          </li>
-        </ul>
-
-        <p>
-          These organizations may link to our home page, to publications or to
-          other Website information so long as the link: (a) is not in any way
-          deceptive; (b) does not falsely imply sponsorship, endorsement or
-          approval of the linking party and its products and/or services; and
-          (c) fits within the context of the linking party's site.
-        </p>
-
-        <p>
-          We may consider and approve other link requests from the following
-          types of organizations:
-        </p>
-
-        <ul>
-          <li>commonly-known consumer and/or business information sources;</li>
-
-          <li>associations or other groups representing charities;</li>
-          <li>online directory distributors;</li>
-          <li>internet portals;</li>
-          <li>accounting, law and consulting firms; and</li>
-          <li>educational institutions and trade associations.</li>
-        </ul>
-
-        <p>
-          We will approve link requests from these organizations if we decide
-          that: (a) the link would not make us look unfavorably to ourselves or
-          to our accredited businesses; (b) the organization does not have any
-          negative records with us; (c) the benefit to us from the visibility of
-          the hyperlink compensates the absence of Virola Threads; and (d) the
-          link is in the context of general resource information.
-        </p>
-
-        <p>
-          These organizations may link to our home page so long as the link: (a)
-          is not in any way deceptive; (b) does not falsely imply sponsorship,
-          endorsement or approval of the linking party and its products or
-          services; and (c) fits within the context of the linking party's site.
-        </p>
-
-        <p>
-          If you are one of the organizations listed in paragraph 2 above and
-          are interested in linking to our website, you must inform us by
-          sending an e-mail to Virola Threads. Please include your name, your
-          organization name, contact information as well as the URL of your
-          site, a list of any URLs from which you intend to link to our Website,
-          and a list of the URLs on our site to which you would like to link.
-          Wait 2-3 weeks for a response.
-        </p>
-
-        <p>Approved organizations may hyperlink to our Website as follows:</p>
-
-        <ul>
-          <li>By use of our corporate name; or</li>
-          <li>By use of the uniform resource locator being linked to; or</li>
-          <li>
-            By use of any other description of our Website being linked to that
-            makes sense within the context and format of content on the linking
-            party's site.
-          </li>
-        </ul>
-
-        <p>
-          No use of Virola Threads's logo or other artwork will be allowed for
-          linking absent a trademark license agreement.
-        </p>
-
-        <h3>
-          <strong>iFrames</strong>
-        </h3>
-
-        <p>
-          Without prior approval and written permission, you may not create
-          frames around our Webpages that alter in any way the visual
-          presentation or appearance of our Website.
-        </p>
-
-        <h3>
-          <strong>Content Liability</strong>
-        </h3>
-
-        <p>
-          We shall not be hold responsible for any content that appears on your
-          Website. You agree to protect and defend us against all claims that is
-          rising on your Website. No link(s) should appear on any Website that
-          may be interpreted as libelous, obscene or criminal, or which
-          infringes, otherwise violates, or advocates the infringement or other
-          violation of, any third party rights.
-        </p>
-
-        <h3>
-          <strong>Reservation of Rights</strong>
-        </h3>
-
-        <p>
-          We reserve the right to request that you remove all links or any
-          particular link to our Website. You approve to immediately remove all
-          links to our Website upon request. We also reserve the right to amen
-          these terms and conditions and it's linking policy at any time. By
-          continuously linking to our Website, you agree to be bound to and
-          follow these linking terms and conditions.
-        </p>
-
-        <h3>
-          <strong>Removal of links from our website</strong>
-        </h3>
-
-        <p>
-          If you find any link on our Website that is offensive for any reason,
-          you are free to contact and inform us any moment. We will consider
-          requests to remove links but we are not obligated to or so or to
-          respond to you directly.
-        </p>
-
-        <p>
-          We do not ensure that the information on this website is correct, we
-          do not warrant its completeness or accuracy; nor do we promise to
-          ensure that the website remains available or that the material on the
-          website is kept up to date.
-        </p>
-
-        <h3>
-          <strong>Disclaimer</strong>
-        </h3>
-
-        <p>
-          To the maximum extent permitted by applicable law, we exclude all
-          representations, warranties and conditions relating to our website and
-          the use of this website. Nothing in this disclaimer will:
-        </p>
-
-        <ul>
-          <li>
-            limit or exclude our or your liability for death or personal injury;
-          </li>
-          <li>
-            limit or exclude our or your liability for fraud or fraudulent
-            misrepresentation;
-          </li>
-          <li>
-            limit any of our or your liabilities in any way that is not
-            permitted under applicable law; or
-          </li>
-          <li>
-            exclude any of our or your liabilities that may not be excluded
-            under applicable law.
-          </li>
-        </ul>
-
-        <p>
-          The limitations and prohibitions of liability set in this Section and
-          elsewhere in this disclaimer: (a) are subject to the preceding
-          paragraph; and (b) govern all liabilities arising under the
-          disclaimer, including liabilities arising in contract, in tort and for
-          breach of statutory duty.
-        </p>
+        <section>
+          <h2>Cancellation Policy</h2>
+          <p>
+            After a customer places an order online, it is final. We do not
+            offer cancellations.
+          </p>
+        </section>
       </div>
     </Layout>
   );

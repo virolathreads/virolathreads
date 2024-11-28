@@ -25,6 +25,10 @@ import Refund from "./pages/Refund";
 import Terms from "./pages/Terms";
 import EmbeddedWixEvents from "./pages/EmbeddedWixEvents";
 import SizeChart from "./pages/SizeChart";
+import { CreateAccount } from "./pages/users/CreateAccount";
+import { UserLogin } from "./pages/users/UserLogin";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
 
 function App() {
   const router = createBrowserRouter([
@@ -53,6 +57,14 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <Shop />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/products",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Products />
             </Suspense>
           ),
         },
@@ -99,7 +111,7 @@ function App() {
         },
 
         {
-          path: "/login",
+          path: "/admin",
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <Login />
@@ -151,6 +163,39 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <EmbeddedWixEvents />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/cart",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <Cart />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/createaccount",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <CreateAccount />
+            </Suspense>
+          ),
+        },
+
+        // {
+        //   path: "/dashboard",
+        //   element: (
+        //     <Suspense fallback={<LoadingHelper />}>
+        //       <UserLogin />
+        //     </Suspense>
+        //   ),
+        // },
+        {
+          path: "/login",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <UserLogin />
             </Suspense>
           ),
         },

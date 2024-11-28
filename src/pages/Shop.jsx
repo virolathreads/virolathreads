@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import shopifyClient from "./shopifyClient";
 import Layout from "../layouts/Layout";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./firebaseConfig";
@@ -9,30 +10,23 @@ import Category from "@/components/Category";
 import Newsletter from "@/components/Newsletter";
 import ContactForm from "@/components/ContactForm";
 import RecentProducts from "@/components/RecentProducts";
+import Swal from "sweetalert2";
+import { useCart } from "@/CartContext";
 
 export default function Shop() {
-  const navigate = useNavigate();
+
+  const { cart, setCart, addToCart, products } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [tag, setTag] = useState("");
-  const [blogs, setBlogs] = useState("");
+
   const [item, setItem] = useState("all");
   const [query, setQuery] = useState("");
   const productsPerPage = 5;
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const querySnapshot = await getDocs(collection(db, "product"));
-      const blogList = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setBlogs(blogList);
-    };
-
-    fetchProducts();
-  }, []);
+  // handle new products on top
+  //handle pagination
   const sortedProduct =
-    blogs && blogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+    products && products.sort((a, b) => new Date(b.date) - new Date(a.date));
   // Calculate the indices of the products to be displayed on the current page
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -41,8 +35,9 @@ export default function Shop() {
     indexOfLastProduct
   );
 
+  //current products is the real product list
   // Calculate the total number of pages
-  const totalPages = Math.ceil(blogs.length / productsPerPage);
+  const totalPages = Math.ceil(products.length / productsPerPage);
 
   // Handle page change
   const lifoItems = [...currentProducts].slice(0, 3);
@@ -52,6 +47,7 @@ export default function Shop() {
   const handlePageClick = (page) => {
     setCurrentPage(page);
   };
+
   const handleClick = (blog) => {
     navigate(`/blog/${blog}`);
   };
@@ -112,11 +108,17 @@ export default function Shop() {
                   {currentProducts &&
                     currentProducts.map((prod) => {
                       return (
-                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                        <div
+                          key={prod.id}
+                          class="col-xl-4 col-lg-4 col-md-6 col-sm-6"
+                        >
                           <div class="single-new-arrival mb-50 text-center">
                             <div class="popular-img">
-                              <img src={prod.imageUrls} alt="" />
-                              <div class="favorit-items">
+                              <img src={prod.images[0]?.src} alt="" />
+                              <div
+                                class="favorit-items"
+                                onClick={() => addToCart(prod.variants[0].id)}
+                              >
                                 <span class="flaticon-heart"></span>
                                 <img
                                   src="assets/img/gallery/favorit-card.png"
@@ -133,7 +135,11 @@ export default function Shop() {
                               <div class="rating mb-10">
                                 <p> {prod.description}</p>
                               </div>
-                              <span>₦ {prod.price + "." + "00"}</span>
+                              <span>
+                                {" "}
+                                {prod.variants[0]?.price.currencyCode}{" "}
+                                {prod.variants[0]?.price.amount}
+                              </span>
                             </div>
                           </div>
                         </div>

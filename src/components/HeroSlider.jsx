@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-// Example image data
+// Example image data 
 const sliderData = [
   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581263/1731144144261_d97xed.png",
   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582471/1731157979871_wnnwiv.png",
@@ -14,11 +14,9 @@ const HeroSlider = () => {
   return (
     <div className="slider-active dot-style">
       <div
-        className="single-slider mt-5"
+        className="single-slider"
         style={{
           position: "relative",
-          // width: "100%",
-          // height: "100vh",
           overflow: "hidden",
           backgroundColor: "white",
           display: "flex",
@@ -31,25 +29,36 @@ const HeroSlider = () => {
           style={{
             display: "flex",
             whiteSpace: "nowrap",
+            width: "100%",
           }}
           animate={{
-            x: ["0%", "-100%"],
+            x: [0, `-${sliderData.length * 100}%`],
           }}
           transition={{
             repeat: Infinity,
+            repeatType: "loop",
             ease: "linear",
-            duration: 20,
+            duration: 30,
           }}
         >
-          {sliderData.concat(sliderData).map((image, index) => (
+          {[
+            ...sliderData, 
+            ...sliderData, 
+            ...sliderData, 
+            ...sliderData, 
+            ...sliderData
+          ].map((image, index) => (
             <img
               key={index}
               src={image}
               alt={`Slide ${index}`}
               style={{
-                height: "80vh",
+                height: "100vh",
+                maxHeight: "700px",
+                width: "auto",
                 marginRight: "1rem",
                 flexShrink: 0,
+                objectFit: "cover",
               }}
             />
           ))}
@@ -69,23 +78,44 @@ const HeroSlider = () => {
             justifyContent: "center",
             alignItems: "center",
             textAlign: "center",
-           // Subtle white overlay for better readability
             padding: "2rem",
+            zIndex: 10,
+            pointerEvents: "none",
           }}
         >
-           <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-xl-8 col-lg-9">
-                <div class="hero__caption">
-                  <h1  style={{ fontSize: "60px" }}>
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-xl-8 col-lg-9">
+                <div className="hero__caption">
+                  <h1
+                   style={{ fontSize: "60px" }}
+                    // style={{
+                    //   fontSize: "clamp(30px, 6vw, 60px)",
+                    //   color: "white",
+                    //   textShadow: "2px 2px 4px rgba(0,0,0,0.5)"
+                    // }}
+                  >
                     Style
                     <br />
                     That
                     <br />
                     Speaks
                   </h1>
-                  <a href="/shop" class="btn">
-                   SHOP NOW
+                  <a
+                    href="/shop"
+                    className="btn"
+                    // style={{
+                    //   pointerEvents: "auto",
+                    //   backgroundColor: "white",
+                    //   color: "black",
+                    //   padding: "10px 20px",
+                    //   textDecoration: "none",
+                    //   borderRadius: "5px",
+                    //   display: "inline-block",
+                    //   marginTop: "20px",
+                    // }}
+                  >
+                    SHOP NOW
                   </a>
                 </div>
               </div>

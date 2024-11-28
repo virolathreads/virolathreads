@@ -20,7 +20,7 @@ export default function LatestBlog() {
                     WHAT TO EXPECT AT AFRICA FASHION WEEK NIGERIA
                   </a>
                 </p>
-                <a href="/blog/1euJftDFKYl8ucMUveWT" class="btn">
+                <a href="/blog/1euJftDFKYl8ucMUveWT" class="btn wow ">
                   Read More
                 </a>
               </div>
@@ -41,7 +41,7 @@ export default function LatestBlog() {
                     {/* <br />  */}
                   </a>
                 </p>
-                <a href="/blog/sdNkpYPS5ufzioNZwLKL" class="btn">
+                <a href="/blog/sdNkpYPS5ufzioNZwLKL" class="btn wow">
                   Read More
                 </a>
               </div>

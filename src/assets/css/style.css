@@ -215,14 +215,14 @@ a {
 }
 a:hover {
   color: #fff;
+  text-decoration: none;
 }
 a:focus,
-a:hover,
 .portfolio-cat a:hover,
 .footer -menu li a:hover {
   text-decoration: none;
 }
-a,
+
 button {
   color: #fff;
   outline: medium none;
@@ -416,8 +416,13 @@ hr {
 .btn:hover::before {
   transform: scaleX(1);
   color: #65867c !important;
+  background: #fff !important;
   z-index: -1;
 }
+.wow:hover {
+  color: #65867c;
+}
+
 .btn.focus,
 .btn:focus {
   outline: 0;
@@ -443,7 +448,7 @@ hr {
   color: #072366 !important;
 }
 .white-btn::before {
-  background: #65867c;
+  background: #65867c !important;
   color: #fff !important;
 }
 .black-btn {
@@ -527,6 +532,7 @@ hr {
   width: 101%;
   height: 101%;
   background: #65867c;
+  color: #fff !important;
   z-index: -1;
   transition: transform 0.5s;
   transition-timing-function: ease;
@@ -538,7 +544,7 @@ hr {
 .border-btn:hover::before {
   transform: scaleY(1);
   border: 1px solid transparent;
-  color: #fff;
+  color: #fff !important;
 }
 .section-over1 {
   position: relative;
@@ -5291,9 +5297,9 @@ hr {
   );
 }
 
-a:hover{
+/* a:hover {
   color: #65867c !important;
-}
+} */
 .sample-text-area {
   background: #fff;
   padding: 100px 0 70px 0;

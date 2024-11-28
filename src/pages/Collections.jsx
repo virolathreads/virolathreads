@@ -22,7 +22,7 @@ function Collections() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        DISCOVER
+        Discover
       </motion.h2>
 
       <div class="container-fluid">

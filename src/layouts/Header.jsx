@@ -1,9 +1,26 @@
-import React, { useState } from "react";
-import { Menu, X, ShoppingCart } from "lucide-react";
-import { Instagram } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import { Menu, X, ShoppingCart, User2Icon } from "lucide-react";
+import Cart from "@/pages/Cart";
+import { useCart } from "@/CartContext";
+import { useUser } from "@/hooks/useUser";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useUser();
+  const { cart, isCartOpen, setIsCartOpen } = useCart(); // Access the cart from context
+  const [count, setCount] = useState(0); // State to hold the total cart count
+  useEffect(() => {
+    if (Array.isArray(cart && cart.lineItems)) {
+      // Calculate the total quantity of all items in the cart
+      const totalQuantity =
+        cart &&
+        cart.lineItems.reduce((acc, item) => acc + (item.quantity || 0), 0);
+
+      setCount(totalQuantity); // Update the count state
+    } else {
+      setCount(0); // If cart is not an array, set count to 0
+    }
+  }, [cart]);
 
   return (
     <header className="bg-white shadow-sm">
@@ -12,12 +29,12 @@ export default function Header() {
           <div className="container mx-auto px-4">
             <div className="flex justify-left items-center h-28">
               {/* Logo */}
-              <div className="d-flex  py-2 sm:py-4 lg:py-0">
+              <div className="d-flex py-2 sm:py-4 lg:py-0">
                 <a href="/">
                   <img
                     src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731457982/ef3tnweirfwsvvd1djwc.png"
                     alt="Logo"
-                    className="h-96 w-auto " // Adjust height for mobile
+                    className="h-96 w-auto" // Adjust height for mobile
                   />
                 </a>
               </div>
@@ -73,17 +90,27 @@ export default function Header() {
                 {/* Social Icons and Cart */}
                 <div className="flex items-center space-x-6">
                   <div className="hidden md:flex space-x-4">
-                    <a href="#" className="text-gray-400 hover:text-blue-500">
-                      <Instagram className="h-10 w-10" />
+                    <a
+                      href="/login"
+                      className="text-gray-400 hover:text-blue-500"
+                    >
+                      <User2Icon className="h-10 w-10" />
                     </a>
+                    {user && <div>{user.name}</div>}
                   </div>
 
                   <div className="hidden md:flex items-center space-x-4">
+                    {/* Cart Icon with Dropdown */}
                     <div className="relative">
-                      <ShoppingCart className="h-10 w-10 text-gray-400 hover:text-gray-500" />
-                      <span className="absolute -top-2 -right-2 h-5 w-5 bg-[#254f43] text-white rounded-full flex items-center justify-center text-xs">
-                        0
-                      </span>
+                      <button
+                        onClick={() => setIsCartOpen(!isCartOpen)}
+                        className="focus:outline-none"
+                      >
+                        <ShoppingCart className="h-10 w-10 text-gray-400 hover:text-gray-500" />
+                        <span className="absolute -top-2 -right-2 h-5 w-5 bg-[#fff] text-[#254f43] rounded-full flex items-center justify-center text-xs">
+                          {count || "0"}
+                        </span>
+                      </button>
                     </div>
                   </div>
 
@@ -143,13 +170,17 @@ export default function Header() {
                 {/* Mobile Social and Cart */}
                 <div className="border-t border-gray-200 pt-4 pb-3">
                   <div className="flex items-center justify-center space-x-4 px-4">
-                    <a href="#" className="text-gray-400 hover:text-blue-500">
-                      <Instagram className="h-5 w-5" />
+                    <a
+                      href="/login"
+                      className="text-gray-400 hover:text-blue-500"
+                    >
+                      <User2Icon className="h-5 w-5" />
                     </a>
+                    {user && <div>{user.name}</div>}
                     <div className="relative">
                       <ShoppingCart className="h-6 w-6 text-gray-400 hover:text-gray-500" />
-                      <span className="absolute -top-2 -right-2 h-5 w-5 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs">
-                        0
+                      <span className="absolute -top-2 -right-2 h-5 w-5 bg-white text-[#254f43] rounded-full flex items-center justify-center text-sm">
+                        {count || "0"}
                       </span>
                     </div>
                   </div>

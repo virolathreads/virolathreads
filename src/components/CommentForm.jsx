@@ -1,3 +1,4 @@
+import { useUser } from "@/hooks/useUser";
 import { db, firestore } from "@/pages/firebaseConfig";
 import {
   addDoc,
@@ -11,13 +12,18 @@ import { toast } from "react-toastify";
 
 export default function CommentForm({ fetchComments, id }) {
   const today = new Date().toISOString().split("T")[0];
+  const { user } = useUser();
   const access = sessionStorage.getItem("virolatoken");
   const [comment, setComment] = React.useState("");
   const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState(user?.email);
   const [date, setDate] = React.useState(today);
   const [isLoading, setIsLoading] = React.useState(false);
 
+  React.useEffect(() => {
+    setName(user?.name);
+    setEmail(user?.email);
+  }, [user]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -52,7 +58,7 @@ export default function CommentForm({ fetchComments, id }) {
       setDate(today);
     } catch (error) {
       setIsLoading(false);
-      console.error("Error adding comment: ", error);
+      // console.error("Error adding comment: ", error);
       toast.error("Failed to add comment.");
     }
   };

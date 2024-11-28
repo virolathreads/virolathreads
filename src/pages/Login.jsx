@@ -20,7 +20,7 @@ function Login() {
     setLoad(true);
     if (password === "virola123") {
       sessionStorage.setItem("virolatoken", "qwertyasd");
-      window.location.href = "/dashboard";
+      window.location.href = "/bloglist";
     }
     setLoad(false);
   };
