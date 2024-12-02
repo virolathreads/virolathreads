@@ -130,7 +130,7 @@ export default function Shop() {
                 </div>
 
                 <RecentProducts
-                  lifoItems={products.slice(0, 3)}
+                  lifoItems={sortedProduct.slice(0, 3)}
                   handleClick={handleClick}
                 />
                 <ContactForm />
@@ -178,7 +178,10 @@ export default function Shop() {
                             </div>
                             <span>
                               {prod.variants[0]?.price.currencyCode}{" "}
-                              {prod.variants[0]?.price.amount}
+                              {prod.variants[0]?.price.amount.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                             </span>
                           </div>
                         </div>

@@ -164,7 +164,7 @@ export default function Cart() {
                         <td className="px-6 py-4">
                           <span className="text-2xl font-medium text-gray-800">
                             {item.variant.price.currencyCode}{" "}
-                            {item.variant.price.amount}
+                            {item.variant.price.amount.toLocaleString()}
                           </span>
                         </td>
                       </tr>
@@ -200,7 +200,12 @@ export default function Cart() {
                       </span>
                       <span className="text-2xl text-gray-800">
                         {item.variant.price.currencyCode}{" "}
-                        {(item.variant.price.amount * item.quantity).toFixed(2)}
+                        {(
+                          item.variant.price.amount * item.quantity
+                        ).toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </span>
                     </div>
                   ))}
@@ -210,7 +215,11 @@ export default function Cart() {
                     Total:
                   </span>
                   <span className="text-3xl font-semibold text-gray-900">
-                    {cart?.currencyCode} {cart?.totalPrice?.amount}
+                    {cart?.currencyCode}{" "}
+                    {cart?.totalPrice?.amount.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </span>
                 </div>
                 <button
