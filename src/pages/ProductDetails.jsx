@@ -126,7 +126,7 @@ const ProductDetails = () => {
                   src={img.src}
                   alt={`Gallery ${index}`}
                   className={`thumbnail img-fluid border ${
-                    mainImage === img.src ? "active-thumbnail" : ""
+                    mainImage === img.src ? "border-[#000] border-2" : ""
                   }`}
                   onClick={() => setMainImage(img.src)}
                   style={{
@@ -222,7 +222,7 @@ const ProductDetails = () => {
             )}
 
             {/* Quantity */}
-            <p className="mt-8 text-3xl pb-3">Quantity</p>
+            <p className="mt-8 text-2xl pb-3">Quantity</p>
             <div className="d-flex align-items-center gap-2">
               <button
                 onClick={decrementQuantity}
@@ -258,7 +258,7 @@ const ProductDetails = () => {
             {/* Product Description */}
 
             {/* Social Share */}
-            <p className="text-3xl pb-2 pt-20">Share on:</p>
+            <p className="text-2xl pb-2 pt-20">Share on:</p>
             <div className="social-share mt-4 text-4xl flex flex-row items-center gap-4">
               <button
                 onClick={() =>
