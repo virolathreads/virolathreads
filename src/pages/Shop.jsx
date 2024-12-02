@@ -130,7 +130,7 @@ export default function Shop() {
                 </div>
 
                 <RecentProducts
-                  lifoItems={currentProducts.slice(0, 3)}
+                  lifoItems={products.slice(0, 3)}
                   handleClick={handleClick}
                 />
                 <ContactForm />
@@ -149,7 +149,7 @@ export default function Shop() {
                       >
                         <div className="single-new-arrival mb-50 text-center">
                           <div
-                            onClick={() => handleClick(prod.id)}
+                            onClick={() => handleClick(prod.title)}
                             className="popular-img"
                           >
                             <img src={prod.images[0]?.src} alt="" />

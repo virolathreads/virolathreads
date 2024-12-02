@@ -13,19 +13,19 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mainImage, setMainImage] = useState("");
-  const [quantity, setQuantity] = useState(1);
+
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const navigate = useNavigate();
 
-  const { addToCart } = useCart();
+  const { addToCart, setQuantity, quantity } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const products = await shopifyClient.product.fetchAll();
-        const selectedProduct = products.find((p) => p.id === productId);
+        const selectedProduct = products.find((p) => p.title === productId);
 
         if (selectedProduct) {
           setProduct(selectedProduct);
@@ -50,7 +50,11 @@ const ProductDetails = () => {
   const decrementQuantity = () => setQuantity(Math.max(1, quantity - 1));
 
   const handleBack = () => navigate(-1);
+  const ck = product?.variants.find((variant) => variant); // Returns the first variant
 
+  const cks = ck?.selectedOptions.map((opt) => opt);
+
+  console.log(ck, "this is", cks);
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image?.src || mainImage);
@@ -88,20 +92,13 @@ const ProductDetails = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <button
-                className="btn btn-back h-[40px] flex flex-row items-center gap-2"
-                onClick={handleBack}
-              >
-                <FaArrowLeft />
-                <p className="text-[#fff] text-2xl font-bold"> Back </p>
-              </button>
               <nav aria-label="breadcrumb ">
                 <ol className="breadcrumb justify-content-start pt-12">
-                  <li className="breadcrumb-item">
-                    <a href="/">Home</a>
+                  <li className="breadcrumb-item " onClick={handleBack}>
+                    <FaArrowLeft />
                   </li>
                   <li className="breadcrumb-item active" aria-current="page">
-                    {product.title}
+                    Go Back
                   </li>
                 </ol>
               </nav>
@@ -115,14 +112,14 @@ const ProductDetails = () => {
         <div className="row">
           {/* Product Images */}
           <div className="col-lg-6">
-            <div className="main-image mb-3 flex justify-center max-h-[400px] md:max-h-[400px]">
+            <div className="main-image mb-3 flex justify-center max-h-[auto] md:max-h-[auto]">
               <img
                 src={mainImage}
                 alt={product.title}
-                className="img-fluid border max-h-[400px] md:max-h-[450px] object-fit rounded"
+                className="img-fluid border max-h-[auto] md:max-h-[auto] w-auto object-fit rounded "
               />
             </div>
-            <div className="thumbnail-gallery d-flex gap-2">
+            <div className="thumbnail-gallery d-flex gap-2 pb-96">
               {product.images.map((img, index) => (
                 <img
                   key={index}
@@ -135,8 +132,8 @@ const ProductDetails = () => {
                   style={{
                     cursor: "pointer",
                     opacity: mainImage === img.src ? 1 : 0.7,
-                    width: "60px",
-                    height: "60px",
+                    width: "100px",
+                    height: "auto",
                   }}
                 />
               ))}
@@ -145,11 +142,15 @@ const ProductDetails = () => {
 
           {/* Product Info */}
           <div className="col-lg-6 pb-16">
-            <p className="pt-12 uppercase text-xl pb-2">Virola threads</p>
+            <p className="pt-12 uppercase text-xl pb-2"></p>
             <p className="text-5xl text-[#000] capitalize font-bold text-left">
               {product.title}
             </p>
-            <div className="price text-2xl pt-4">
+            <p
+              className="mt-10 text-3xl"
+              dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+            ></p>
+            <div className="price text-3xl pt-4 font-semiBold">
               {isOnSale ? (
                 <>
                   <span className="text-danger text-decoration-line-through">
@@ -172,48 +173,53 @@ const ProductDetails = () => {
             {isSoldOut && (
               <span className="badge bg-danger ms-2">Sold Out</span>
             )}
+            {cks?.length ? (
+              cks.map((option, i) => (
+                <div className="pt-8">
+                  {option.name !== "Title" && (
+                    <p className="text-3xl pb-3">{option.name}</p>
+                  )}
 
-            {/* Color Options */}
-            <div className="pt-8">
-              <p className="text-3xl pb-3">Color</p>
-              <div className="color-options">
-                {product.variants.map((variant) => (
-                  <button
-                    key={variant.id}
-                    style={{
-                      backgroundColor: variant.option1,
-                      border:
-                        selectedColor === variant.option1
-                          ? "2px solid #000"
-                          : "none",
-                    }}
-                    onClick={() => handleVariantChange(variant)}
-                  >
-                    {variant.option1}
-                  </button>
-                ))}
-              </div>
-            </div>
+                  {option.name !== "Color" &&
+                    option.name !== "Size" &&
+                    option.name !== "Title" && <p>{option.value}</p>}
 
-            {/* Size Options */}
-            <div>
-              <p className="text-3xl pb-3">Size</p>
-              <select
-                value={selectedSize}
-                onChange={(e) =>
-                  handleVariantChange(
-                    product.variants.find((v) => v.option2 === e.target.value)
-                  )
-                }
-                disabled={isSoldOut}
-              >
-                {product.variants.map((variant) => (
-                  <option key={variant.id} value={variant.option2}>
-                    {variant.option2}
-                  </option>
-                ))}
-              </select>
-            </div>
+                  {option.name === "Color" && (
+                    <div className="color-options">
+                      {" "}
+                      <button
+                        key={i}
+                        style={{
+                          backgroundColor: option.value,
+                          border:
+                            selectedColor === option.value
+                              ? "2px solid #000"
+                              : "none",
+                          text: "none",
+                        }}
+                        onClick={() => handleVariantChange(option.value)}
+                      >
+                        {option.value}
+                      </button>
+                    </div>
+                  )}
+
+                  {option.name === "Size" && (
+                    <select
+                      value={selectedSize}
+                      onChange={(e) => handleVariantChange(e.target.value)}
+                      disabled={isSoldOut}
+                    >
+                      <option key={i} value={option.value}>
+                        {option.value}
+                      </option>
+                    </select>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="text-lg text-red-600">No options available</p>
+            )}
 
             {/* Quantity */}
             <p className="mt-8 text-3xl pb-3">Quantity</p>
@@ -250,10 +256,6 @@ const ProductDetails = () => {
             </button>
 
             {/* Product Description */}
-            <p
-              className="mt-10 text-3xl"
-              dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-            ></p>
 
             {/* Social Share */}
             <p className="text-3xl pb-2 pt-20">Share on:</p>

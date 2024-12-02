@@ -10,7 +10,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   // const navigate = useNavigate();
   const [cart, setCart] = useState(null);
-
+  const [quantity, setQuantity] = useState(1);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutId, setCheckoutId] = useState(
     localStorage.getItem("checkoutId")
@@ -41,7 +41,7 @@ export const CartProvider = ({ children }) => {
       .addLineItems(checkoutId, [
         {
           variantId,
-          quantity: 1,
+          quantity: quantity,
         },
       ])
       .then((updatedCheckout) => {
@@ -63,7 +63,6 @@ export const CartProvider = ({ children }) => {
             window.location.href = "/cart"; // Replace with your cart page URL
           } else if (result.dismiss === Swal.DismissReason.cancel) {
             // Action for "Continue Shopping" button
-            console.log("Continue shopping clicked");
           }
         });
 
@@ -96,6 +95,8 @@ export const CartProvider = ({ children }) => {
         checkoutId,
         setCheckoutId,
         products,
+        setQuantity,
+        quantity,
       }}
     >
       {children}
