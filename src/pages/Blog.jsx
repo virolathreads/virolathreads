@@ -69,18 +69,29 @@ export default function Blog() {
     return <PreLoader />;
   }
 
-  const handleCategory = (currentProducts, catag) => {
-    const totalPage = Math.ceil(currentProducts.length / productsPerPage);
-    const nopage = Array.from({ length: totalPage }, (_, index) => index + 1);
-    const filteredProducts = currentProducts.filter(
-      (blog) => blog.category === catag
+  const handleCategory = (blogs, catag) => {
+    const filteredProducts = blogs.filter((blog) => blog.category === catag);
+    const sortedBlogs =
+      filteredProducts &&
+      filteredProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Now slice the sorted array to get the current page's products
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = sortedBlogs.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
     );
+    const totalPage = Math.ceil(filteredProducts.length / productsPerPage);
+    const nopage = Array.from({ length: totalPage }, (_, index) => index + 1);
+
+
 
     return (
       <>
         <div className="product-grid">
-          {filteredProducts.length > 0 ? (
-            filteredProducts
+          {currentProducts.length > 0 ? (
+            currentProducts
               .filter((product) => {
                 if (
                   query == "" ||
@@ -376,7 +387,7 @@ export default function Blog() {
                   </div>
                 )}
 
-                {item === tag && <>{handleCategory(currentProducts, tag)}</>}
+                {item === tag && <>{handleCategory(blogs, tag)}</>}
               </div>
 
               <div className="col-lg-4">
