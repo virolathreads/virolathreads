@@ -115,28 +115,28 @@ const ProductDetails = () => {
         <div className="row">
           {/* Product Images */}
           <div className="col-lg-6">
-            <div className="main-image mb-3 flex justify-center max-h-[400px] md:max-h-[400px]">
+            <div className="main-image mb-3 flex justify-center max-h-[400px] md:max-h-[480px]">
               <img
                 src={mainImage}
                 alt={product.title}
-                className="img-fluid border max-h-[400px] md:max-h-[450px] object-fit rounded"
+                className="img-fluid border max-h-[400px] md:max-h-[480px] object-fit rounded"
               />
             </div>
-            <div className="thumbnail-gallery d-flex gap-2">
+            <div className="thumbnail-gallery d-flex gap-6 pt-6">
               {product.images.map((img, index) => (
                 <img
                   key={index}
                   src={img.src}
                   alt={`Gallery ${index}`}
                   className={`thumbnail img-fluid border ${
-                    mainImage === img.src ? "active-thumbnail" : ""
+                    mainImage === img.src ? "border-[#000] border-2" : ""
                   }`}
                   onClick={() => setMainImage(img.src)}
                   style={{
                     cursor: "pointer",
                     opacity: mainImage === img.src ? 1 : 0.7,
-                    width: "60px",
-                    height: "60px",
+                    width: "80px",
+                    height: "100px",
                   }}
                 />
               ))}
@@ -175,7 +175,7 @@ const ProductDetails = () => {
 
             {/* Color Options */}
             <div className="pt-8">
-              <p className="text-3xl pb-3">Color</p>
+              <p className="text-2xl pb-3">Color</p>
               <div className="color-options">
                 {product.variants.map((variant) => (
                   <button
@@ -197,7 +197,7 @@ const ProductDetails = () => {
 
             {/* Size Options */}
             <div>
-              <p className="text-3xl pb-3">Size</p>
+              <p className="text-2xl pb-3">Size</p>
               <select
                 value={selectedSize}
                 onChange={(e) =>
@@ -216,7 +216,7 @@ const ProductDetails = () => {
             </div>
 
             {/* Quantity */}
-            <p className="mt-8 text-3xl pb-3">Quantity</p>
+            <p className="mt-8 text-2xl pb-3">Quantity</p>
             <div className="d-flex align-items-center gap-2">
               <button
                 onClick={decrementQuantity}
@@ -256,7 +256,7 @@ const ProductDetails = () => {
             ></p>
 
             {/* Social Share */}
-            <p className="text-3xl pb-2 pt-20">Share on:</p>
+            <p className="text-2xl pb-2 pt-20">Share on:</p>
             <div className="social-share mt-4 text-4xl flex flex-row items-center gap-4">
               <button
                 onClick={() =>
