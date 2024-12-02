@@ -1,3 +1,12 @@
+import React, { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import { useNavigate, useParams } from "react-router-dom";
+import Layout from "../layouts/Layout";
+import { FaArrowLeft } from "react-icons/fa";
+import shopifyClient from "./shopifyClient";
+import { useCart } from "@/CartContext";
+
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -95,7 +104,7 @@ const ProductDetails = () => {
               <img
                 src={mainImage}
                 alt={product.title}
-                className="img-fluid border w-[75%] max-h-[350px] object-fit rounded"
+                className="img-fluid border max-h-[400px] md:max-h-[500px] object-fit rounded"
               />
             </div>
             <div className="thumbnail-gallery d-flex gap-2">
