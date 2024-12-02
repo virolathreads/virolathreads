@@ -14,7 +14,6 @@ import Swal from "sweetalert2";
 import { useCart } from "@/CartContext";
 
 export default function Shop() {
-
   const { cart, setCart, addToCart, products } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [tag, setTag] = useState("");
@@ -148,6 +147,61 @@ export default function Shop() {
                 </div>
 
                 {/* pagination */}
+                <nav className="blog-pagination justify-content-center d-flex">
+                  <ul className="pagination">
+                    {/* Previous Button */}
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? "disabled" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        aria-label="Previous"
+                        onClick={() =>
+                          currentPage > 1 && handlePageClick(currentPage - 1)
+                        }
+                      >
+                        <i className="ti-angle-left"></i>
+                      </button>
+                    </li>
+
+                    {/* Page Numbers */}
+                    {pages.map((page) => (
+                      <li
+                        key={page}
+                        className={`page-item ${
+                          page === currentPage ? "active" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link"
+                          onClick={() => handlePageClick(page)}
+                        >
+                          {page}
+                        </button>
+                      </li>
+                    ))}
+
+                    {/* Next Button */}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? "disabled" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        aria-label="Next"
+                        onClick={() =>
+                          currentPage < totalPages &&
+                          handlePageClick(currentPage + 1)
+                        }
+                      >
+                        <i className="ti-angle-right"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
