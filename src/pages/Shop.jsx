@@ -1,69 +1,80 @@
 import React, { useEffect, useState } from "react";
-import shopifyClient from "./shopifyClient";
 import Layout from "../layouts/Layout";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
-import RecentPost from "@/components/RecentPost";
-import Category from "@/components/Category";
-import Newsletter from "@/components/Newsletter";
 import ContactForm from "@/components/ContactForm";
 import RecentProducts from "@/components/RecentProducts";
-import Swal from "sweetalert2";
 import { useCart } from "@/CartContext";
 
 export default function Shop() {
-
-  const { cart, setCart, addToCart, products } = useCart();
+  const navigate = useNavigate();
+  const { addToCart, products } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
-  const [tag, setTag] = useState("");
-
-  const [item, setItem] = useState("all");
   const [query, setQuery] = useState("");
+  const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
+  const [maxPrice, setMaxPrice] = useState(1000);
   const productsPerPage = 5;
 
-  // handle new products on top
-  //handle pagination
+  useEffect(() => {
+    if (products.length > 0) {
+      const maxProductPrice = Math.max(
+        ...products.map((prod) =>
+          parseFloat(prod.variants[0]?.price.amount || 0)
+        )
+      );
+      setMaxPrice(maxProductPrice);
+      setPriceRange([0, maxProductPrice]);
+    }
+  }, [products]);
+
+  // Sort products by newest
   const sortedProduct =
     products && products.sort((a, b) => new Date(b.date) - new Date(a.date));
-  // Calculate the indices of the products to be displayed on the current page
+
+  // Filter products by price range
+  const filteredProducts = sortedProduct.filter((prod) => {
+    const price = parseFloat(prod.variants[0]?.price.amount || 0);
+    return price >= priceRange[0] && price <= priceRange[1];
+  });
+
+  // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = sortedProduct.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
-  //current products is the real product list
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(products.length / productsPerPage);
-
-  // Handle page change
-  const lifoItems = [...currentProducts].slice(0, 3);
-
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   const handlePageClick = (page) => {
     setCurrentPage(page);
   };
 
-  const handleClick = (blog) => {
-    navigate(`/blog/${blog}`);
+  const handleClick = (productId) => {
+    navigate(`/product/${encodeURIComponent(productId)}`);
+  };
+
+  const handlePriceChange = (e) => {
+    const { value, name } = e.target;
+    const newRange = [...priceRange];
+    newRange[name === "min" ? 0 : 1] = parseFloat(value);
+    setPriceRange(newRange);
+    setCurrentPage(1); // Reset to the first page after filtering
   };
 
   return (
     <Layout>
-      <div class="page-notification">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
+      <div className="page-notification">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
               <nav aria-label="breadcrumb">
-                <ol class="breadcrumb justify-content-center">
-                  <li class="breadcrumb-item">
+                <ol className="breadcrumb justify-content-center">
+                  <li className="breadcrumb-item">
                     <a href="/">Home</a>
                   </li>
-                  <li class="breadcrumb-item">
+                  <li className="breadcrumb-item">
                     <a href="#">Shop</a>
                   </li>
                 </ol>
@@ -73,81 +84,167 @@ export default function Shop() {
         </div>
       </div>
 
-      <div class="category-area">
-        <div class="container">
-          <div class="row">
-            <div class="col-xl-7 col-lg-8 col-md-10">
-              <div class="section-tittle mb-50">
+      <div className="category-area">
+        <div className="container">
+          <div className="row">
+            <div className="col-xl-7 col-lg-8 col-md-10">
+              <div className="section-tittle mb-50">
                 <h2>Shop with us</h2>
-                <p>Browse from 230 latest items</p>
+                <p>Browse from {filteredProducts.length} items</p>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-xl-3 col-lg-3 col-md-4 ">
+          <div className="row">
+            {/* Sidebar */}
+            <div className="col-xl-3 col-lg-3 col-md-4">
               <div className="blog_right_sidebar">
                 <SearchBar setQuery={setQuery} />
 
-                {/* <Category setItem={setItem} setTag={setTag} /> */}
-                {/** Popular Posts Widget */}
+                {/* Price Filter */}
+                <div className="price-filter mt-4">
+                  <h5>Filter by Price</h5>
+                  <div className="price-range-slider">
+                    <label>
+                      Min Price: ${priceRange[0]}
+                      <input
+                        type="range"
+                        name="min"
+                        min="0"
+                        max={maxPrice}
+                        value={priceRange[0]}
+                        onChange={handlePriceChange}
+                      />
+                    </label>
+                    <label>
+                      Max Price: ${priceRange[1]}
+                      <input
+                        type="range"
+                        name="max"
+                        min="0"
+                        max={maxPrice}
+                        value={priceRange[1]}
+                        onChange={handlePriceChange}
+                      />
+                    </label>
+                  </div>
+                </div>
+
                 <RecentProducts
-                  lifoItems={lifoItems}
+                  lifoItems={products.slice(0, 3)}
                   handleClick={handleClick}
                 />
-
-                {/** Instagram Feeds Widget */}
-                {/* <IgFeeds /> */}
-
-                {/** Newsletter Widget */}
                 <ContactForm />
               </div>
             </div>
-            <div class="col-xl-9 col-lg-9 col-md-8 ">
-              <div class="new-arrival new-arrival2">
-                <div class="row">
-                  {currentProducts &&
-                    currentProducts.map((prod) => {
-                      return (
-                        <div
-                          key={prod.id}
-                          class="col-xl-4 col-lg-4 col-md-6 col-sm-6"
-                        >
-                          <div class="single-new-arrival mb-50 text-center">
-                            <div class="popular-img">
-                              <img src={prod.images[0]?.src} alt="" />
-                              <div
-                                class="favorit-items"
-                                onClick={() => addToCart(prod.variants[0].id)}
-                              >
-                                <span class="flaticon-heart"></span>
-                                <img
-                                  src="assets/img/gallery/favorit-card.png"
-                                  alt=""
-                                />
-                              </div>
-                            </div>
-                            <div class="popular-caption">
-                              <h3>
-                                <a href="product_details.html">
-                                  {prod.title.toUpperCase()}
-                                </a>
-                              </h3>
-                              <div class="rating mb-10">
-                                <p> {prod.description}</p>
-                              </div>
-                              <span>
-                                {" "}
-                                {prod.variants[0]?.price.currencyCode}{" "}
-                                {prod.variants[0]?.price.amount}
-                              </span>
+
+            {/* Product List */}
+            <div className="col-xl-9 col-lg-9 col-md-8">
+              <div className="new-arrival new-arrival2">
+                <div className="row">
+                  {currentProducts.length > 0 ? (
+                    currentProducts.map((prod) => (
+                      <div
+                        key={prod.id}
+                        className="col-xl-4 col-lg-4 col-md-6 col-sm-6"
+                      >
+                        <div className="single-new-arrival mb-50 text-center">
+                          <div
+                            onClick={() => handleClick(prod.title)}
+                            className="popular-img"
+                          >
+                            <img src={prod.images[0]?.src} alt="" />
+                            <div
+                              className="favorit-items"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Prevent navigation
+                                addToCart(prod.variants[0].id);
+                              }}
+                            >
+                              <span className="flaticon-heart"></span>
+                              <img
+                                src="assets/img/gallery/favorit-card.png"
+                                alt=""
+                              />
                             </div>
                           </div>
+                          <div className="popular-caption">
+                            <h3>
+                              <a onClick={() => handleClick(prod.id)}>
+                                {prod.title.toUpperCase()}
+                              </a>
+                            </h3>
+                            <div className="rating mb-10">
+                              <p>{prod.description}</p>
+                            </div>
+                            <span>
+                              {prod.variants[0]?.price.currencyCode}{" "}
+                              {prod.variants[0]?.price.amount}
+                            </span>
+                          </div>
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))
+                  ) : (
+                    <p>No products found in this price range.</p>
+                  )}
                 </div>
 
-                {/* pagination */}
+                {/* Pagination */}
+                <nav className="blog-pagination justify-content-center d-flex">
+                  <ul className="pagination">
+                    {/* Previous Button */}
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? "disabled" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        aria-label="Previous"
+                        onClick={() =>
+                          currentPage > 1 && handlePageClick(currentPage - 1)
+                        }
+                      >
+                        <i className="ti-angle-left"></i>
+                      </button>
+                    </li>
+
+                    {/* Page Numbers */}
+                    {pages.map((page) => (
+                      <li
+                        key={page}
+                        className={`page-item ${
+                          page === currentPage ? "active" : ""
+                        }`}
+                      >
+                        <button
+                          className="page-link"
+                          onClick={() => handlePageClick(page)}
+                        >
+                          {page}
+                        </button>
+                      </li>
+                    ))}
+
+                    {/* Next Button */}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? "disabled" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        aria-label="Next"
+                        onClick={() =>
+                          currentPage < totalPages &&
+                          handlePageClick(currentPage + 1)
+                        }
+                      >
+                        <i className="ti-angle-right"></i>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>

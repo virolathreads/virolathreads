@@ -29,6 +29,7 @@ import { CreateAccount } from "./pages/users/CreateAccount";
 import { UserLogin } from "./pages/users/UserLogin";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   const router = createBrowserRouter([
@@ -131,6 +132,14 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <BlogDetails />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/product/:productId",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <ProductDetails />
             </Suspense>
           ),
         },
