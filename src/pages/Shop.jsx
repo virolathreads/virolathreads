@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import { useCart } from "@/CartContext";
 
 export default function Shop() {
+  const navigate = useNavigate();
   const { cart, setCart, addToCart, products } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [tag, setTag] = useState("");
@@ -47,8 +48,8 @@ export default function Shop() {
     setCurrentPage(page);
   };
 
-  const handleClick = (blog) => {
-    navigate(`/blog/${blog}`);
+  const handleClick = (productId) => {
+    navigate(`/product/${encodeURIComponent(productId)}`);
   };
 
   return (
@@ -112,11 +113,17 @@ export default function Shop() {
                           class="col-xl-4 col-lg-4 col-md-6 col-sm-6"
                         >
                           <div class="single-new-arrival mb-50 text-center">
-                            <div class="popular-img">
+                            <div
+                              onClick={() => handleClick(prod.id)}
+                              class="popular-img"
+                            >
                               <img src={prod.images[0]?.src} alt="" />
                               <div
                                 class="favorit-items"
-                                onClick={() => addToCart(prod.variants[0].id)}
+                                onClick={(e) => {
+                                  e.stopPropagation(); // Prevent navigation
+                                  addToCart(prod.variants[0].id);
+                                }}
                               >
                                 <span class="flaticon-heart"></span>
                                 <img
@@ -127,7 +134,7 @@ export default function Shop() {
                             </div>
                             <div class="popular-caption">
                               <h3>
-                                <a href="product_details.html">
+                                <a onClick={() => handleClick(prod.id)}>
                                   {prod.title.toUpperCase()}
                                 </a>
                               </h3>
