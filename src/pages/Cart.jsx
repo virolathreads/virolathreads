@@ -4,6 +4,7 @@ import shopifyClient from "./shopifyClient";
 import { useNavigate } from "react-router-dom";
 import { Delete } from "lucide-react";
 import { useCart } from "@/CartContext";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export default function Cart() {
   const navigate = useNavigate();
@@ -51,7 +52,15 @@ export default function Cart() {
       });
   };
 
-  console.log(cart);
+  if (!cart) {
+    return (
+      <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
+        <p>
+          <Skeleton count={10} />
+        </p>
+      </SkeletonTheme>
+    );
+  }
 
   return (
     <Layout>
@@ -191,7 +200,7 @@ export default function Cart() {
                       </span>
                       <span className="text-2xl text-gray-800">
                         {item.variant.price.currencyCode}{" "}
-                        {item.variant.price.amount}
+                        {(item.variant.price.amount * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -206,7 +215,10 @@ export default function Cart() {
                 </div>
                 <button
                   className=" mt-6 btn py-4 rounded-md text-2xl font-medium hover:bg-blue-700"
-                  onClick={() => (window.location.href = cart?.webUrl)}
+                  onClick={() => {
+                    window.location.href = cart?.webUrl;
+                    localStorage.setItem("checkoutId", "");
+                  }}
                 >
                   Checkout
                 </button>

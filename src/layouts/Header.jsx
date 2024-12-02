@@ -27,14 +27,14 @@ export default function Header() {
       <div className="header-area">
         <div className="sticky top-0 bg-white">
           <div className="container mx-auto px-4">
-            <div className="flex justify-left items-center h-28">
+            <div className="flex justify-left items-center h-32">
               {/* Logo */}
-              <div className="d-flex py-2 sm:py-4 lg:py-0">
+              <div className="d-flex">
                 <a href="/">
                   <img
                     src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731457982/ef3tnweirfwsvvd1djwc.png"
                     alt="Logo"
-                    className="h-96 w-auto" // Adjust height for mobile
+                    className="h-auto w-96" // Adjust height for mobile
                   />
                 </a>
               </div>

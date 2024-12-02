@@ -85,6 +85,10 @@ const ProductDetails = () => {
     product.descriptionHtml || ""
   );
 
+  const handleClick = () => {
+    navigate(`/cart`);
+  };
+
   return (
     <Layout>
       {/* Breadcrumb and Back Navigation */}
@@ -194,7 +198,7 @@ const ProductDetails = () => {
                           border:
                             selectedColor === option.value
                               ? "2px solid #000"
-                              : "none",
+                              : "border solid #000 5px",
                           text: "none",
                         }}
                         onClick={() => handleVariantChange(option.value)}
@@ -251,8 +255,11 @@ const ProductDetails = () => {
             </button>
 
             {/* Buy Now */}
-            <button className="text-[#fff] w-[80%] mt-10 font-semibold py-4 bg-[#000] ">
-              Buy now
+            <button
+              className="text-[#fff] w-[80%] mt-10 font-semibold py-4 bg-[#000] "
+              onClick={() => handleClick()}
+            >
+              Proceed to Checkout
             </button>
 
             {/* Product Description */}
