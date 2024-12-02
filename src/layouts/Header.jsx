@@ -103,7 +103,7 @@ export default function Header() {
                     {/* Cart Icon with Dropdown */}
                     <div className="relative">
                       <button
-                        onClick={() => setIsCartOpen(!isCartOpen)}
+                        onClick={() => (window.href = "/cart")}
                         className="focus:outline-none"
                       >
                         <ShoppingCart className="h-10 w-10 text-gray-400 hover:text-gray-500" />
@@ -177,7 +177,10 @@ export default function Header() {
                       <User2Icon className="h-5 w-5" />
                     </a>
                     {user && <div>{user.name}</div>}
-                    <div className="relative">
+                    <div
+                      className="relative"
+                      onClick={() => (window.href = "/cart")}
+                    >
                       <ShoppingCart className="h-6 w-6 text-gray-400 hover:text-gray-500" />
                       <span className="absolute -top-2 -right-2 h-5 w-5 bg-white text-[#254f43] rounded-full flex items-center justify-center text-sm">
                         {count || "0"}
