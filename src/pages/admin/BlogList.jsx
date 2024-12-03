@@ -114,7 +114,7 @@ export function BlogList() {
 
   return (
     <LoginLayout>
-      <div className="flex flex-col gap-8 ">
+      <div className="flex flex-col gap-8 pt-24 ">
         <div className="bg-white shadow-sm rounded-md p-4 bg-[#0c392d]">
           {move === "add" || move === "edit" || move === "comments" ? (
             <Button onClick={() => setMove("")}>Close</Button>
