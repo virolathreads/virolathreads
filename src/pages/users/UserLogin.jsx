@@ -62,7 +62,10 @@ export const UserLogin = () => {
       localStorage.setItem("name", userData.name);
       // localStorage.setItem("name", email);
       toast.success("Login successful!");
-      // navigate("/"); // Replace with your actual dashboard route
+      setTimeout(() => {
+        navigate("/profile");
+      }, 3000);
+      // Replace with your actual dashboard route
     } catch (error) {
       console.error("Error logging in:", error);
       toast.error(`Error logging in: ${error.message}`);
@@ -82,7 +85,10 @@ export const UserLogin = () => {
           playsInline
           className="absolute inset-0 z-0 w-full h-full object-cover"
         >
-          <source src="https://res.cloudinary.com/dd0mdsb3h/video/upload/v1732832983/vife_ynyc7w.mp4" type="video/mp4" />
+          <source
+            src="https://res.cloudinary.com/dd0mdsb3h/video/upload/v1732832983/vife_ynyc7w.mp4"
+            type="video/mp4"
+          />
           Your browser does not support the video tag.
         </video>
 

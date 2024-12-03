@@ -16,9 +16,10 @@ export default function Blog() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [tag, setTag] = useState("");
+  const [item, setItem] = useState("all");
   const [blogs, setBlogs] = useState("");
   const [loading, setLoading] = useState(false);
-  const [item, setItem] = useState("all");
+
   const [query, setQuery] = useState("");
   const productsPerPage = 5;
 

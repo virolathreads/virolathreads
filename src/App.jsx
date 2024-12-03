@@ -30,6 +30,7 @@ import { UserLogin } from "./pages/users/UserLogin";
 import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import ProductDetails from "./pages/ProductDetails";
+import AccountDetailsCard from "./pages/users/AccountDetailsCard";
 
 function App() {
   const router = createBrowserRouter([
@@ -148,6 +149,14 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <BlogList />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/profile",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <AccountDetailsCard />
             </Suspense>
           ),
         },
