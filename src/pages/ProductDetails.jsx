@@ -13,13 +13,20 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [mainImage, setMainImage] = useState("");
-
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
   const navigate = useNavigate();
 
   const { addToCart, setQuantity, quantity } = useCart();
+
+  // Handle the "Add to Cart" button click
+  const handleAddToCart = () => {
+    if (!isSoldOut) {
+      // Pass the selected variant id along with quantity, color, and size to add to cart
+      addToCart(selectedVariant.id, quantity, selectedColor, selectedSize);
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -30,9 +37,9 @@ const ProductDetails = () => {
         if (selectedProduct) {
           setProduct(selectedProduct);
           setMainImage(selectedProduct.images[0]?.src || "");
-          setSelectedVariant(selectedProduct.variants[0]); // Default to the first variant
-          setSelectedColor(selectedProduct.variants[0]?.option1 || ""); // Default color
-          setSelectedSize(selectedProduct.variants[0]?.option2 || ""); // Default size
+          setSelectedVariant(selectedProduct.variants[0]);
+          setSelectedColor(selectedProduct.variants[0]?.option1 || "");
+          setSelectedSize(selectedProduct.variants[0]?.option2 || "");
         } else {
           console.warn("Product not found!");
         }
@@ -50,11 +57,11 @@ const ProductDetails = () => {
   const decrementQuantity = () => setQuantity(Math.max(1, quantity - 1));
 
   const handleBack = () => navigate(-1);
-  const ck = product?.variants.find((variant) => variant); // Returns the first variant
+  const ck = product?.variants.find((variant) => variant);
 
   const cks = ck?.selectedOptions.map((opt) => opt);
 
-  console.log(ck, "this is", cks);
+  console.log("this is", cks);
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image?.src || mainImage);
@@ -85,9 +92,46 @@ const ProductDetails = () => {
     product.descriptionHtml || ""
   );
 
+  // Share to social media function
+  const handleShare = (platform) => {
+    const url = window.location.href;
+    const title = product?.title || "Check out this product!";
+
+    if (platform === "whatsapp") {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(
+          title
+        )}%20${encodeURIComponent(url)}`,
+        "_blank"
+      );
+    } else if (platform === "facebook") {
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url
+        )}`,
+        "_blank"
+      );
+    } else if (platform === "twitter") {
+      window.open(
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          url
+        )}&text=${encodeURIComponent(title)}`,
+        "_blank"
+      );
+    }
+  };
+
   const handleClick = () => {
     navigate(`/cart`);
   };
+
+  const Moyo =
+    cks &&
+    cks.map((opt) => {
+      return opt.name;
+    });
+
+  console.log(Moyo);
 
   return (
     <Layout>
@@ -123,12 +167,12 @@ const ProductDetails = () => {
                 className="img-fluid border max-h-[auto] md:max-h-[auto] w-auto object-fit rounded "
               />
             </div>
-            <div className="thumbnail-gallery d-flex gap-2 pb-96">
-              {product.images.map((img, index) => (
+            <div className="thumbnail-gallery d-flex gap-2 pb-40">
+              {product.images.map((img) => (
                 <img
-                  key={index}
+                  key={img.src} // Use img.src or img.id for a unique key
                   src={img.src}
-                  alt={`Gallery ${index}`}
+                  alt={`Gallery ${img.src}`}
                   className={`thumbnail img-fluid border ${
                     mainImage === img.src ? "border-[#000] border-2" : ""
                   }`}
@@ -146,7 +190,7 @@ const ProductDetails = () => {
 
           {/* Product Info */}
           <div className="col-lg-6 pb-16">
-            <p className="pt-12 uppercase text-xl pb-2"></p>
+            <p className="pt-4 uppercase text-xl pb-2"></p>
             <p className="text-5xl text-[#000] capitalize font-bold text-left">
               {product.title}
             </p>
@@ -178,45 +222,47 @@ const ProductDetails = () => {
               <span className="badge bg-danger ms-2">Sold Out</span>
             )}
             {cks?.length ? (
-              cks.map((option, i) => (
-                <div className="pt-8">
+              cks.map((option) => (
+                <div key={option.name} className="pt-8">
+                  {" "}
                   {option.name !== "Title" && (
                     <p className="text-3xl pb-3">{option.name}</p>
                   )}
-
                   {option.name !== "Color" &&
                     option.name !== "Size" &&
                     option.name !== "Title" && <p>{option.value}</p>}
-
                   {option.name === "Color" && (
                     <div className="color-options">
-                      {" "}
                       <button
-                        key={i}
+                        key={option.value}
+                        className="rounded-full"
                         style={{
                           backgroundColor: option.value,
+                          width: "25px",
+                          height: "25px",
                           border:
                             selectedColor === option.value
                               ? "2px solid #000"
                               : "border solid #000 5px",
                           text: "none",
+                          fontSize: "1px",
+                          color: option.value,
                         }}
                         onClick={() => handleVariantChange(option.value)}
                       >
                         {option.value}
                       </button>
+                      <p>{option.value}</p>
                     </div>
                   )}
-
                   {option.name === "Size" && (
                     <select
+                      key={option.value}
                       value={selectedSize}
                       onChange={(e) => handleVariantChange(e.target.value)}
                       disabled={isSoldOut}
                     >
-                      <option key={i} value={option.value}>
-                        {option.value}
-                      </option>
+                      <option value={option.value}>{option.value}</option>
                     </select>
                   )}
                 </div>
@@ -246,7 +292,13 @@ const ProductDetails = () => {
             {/* Add to Cart */}
             <button
               onClick={() =>
-                !isSoldOut && addToCart(selectedVariant.id, quantity)
+                !isSoldOut &&
+                addToCart(
+                  selectedVariant.id,
+                  quantity,
+                  selectedColor,
+                  selectedSize
+                )
               }
               className="border-2 border-[#000] text-[#000] font-bold py-4 mt-10 w-[80%]"
               disabled={isSoldOut}
@@ -262,52 +314,29 @@ const ProductDetails = () => {
               Proceed to Checkout
             </button>
 
-            {/* Product Description */}
-
             {/* Social Share */}
-            <p className="text-2xl pb-2 pt-20">Share on:</p>
-            <div className="social-share mt-4 text-4xl flex flex-row items-center gap-4">
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                      window.location.href
-                    )}&text=${encodeURIComponent(
-                      `Check out this product: ${product.title}`
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaXTwitter />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      window.location.href
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaFacebookF />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://wa.me/?text=${encodeURIComponent(
-                      `Check this out: ${window.location.href}`
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaWhatsapp />
-              </button>
+            <div className="social-share pt-8">
+              <p className="text-3xl pb-3">Share this product</p>
+              <div className="d-flex gap-3">
+                <button
+                  onClick={() => handleShare("whatsapp")}
+                  className="share-icon"
+                >
+                  <FaWhatsapp size={24} />
+                </button>
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="share-icon"
+                >
+                  <FaFacebookF size={24} />
+                </button>
+                <button
+                  onClick={() => handleShare("twitter")}
+                  className="share-icon"
+                >
+                  <FaXTwitter size={24} />
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ export const CartProvider = ({ children }) => {
     }
   }, []);
 
-  const addToCart = (variantId) => {
+  const addToCart = (variantId, quantity, color, size) => {
     if (!checkoutId) {
       alert("Checkout session is not ready yet!");
       return;
@@ -42,27 +42,27 @@ export const CartProvider = ({ children }) => {
         {
           variantId,
           quantity: quantity,
+          properties: {
+            color,
+            size,
+          },
         },
       ])
       .then((updatedCheckout) => {
         setCart(updatedCheckout); // Update cart state
-        // console.log(cart);
 
         Swal.fire({
           title: "Added to Cart!",
           text: "The item has been added to your cart.",
           icon: "success",
-          showCancelButton: true, // Adds a second button
-          confirmButtonText: "Go to Cart", // Button for navigating to the cart
-          cancelButtonText: "Continue Shopping", // Button for staying on the page
-          confirmButtonColor: "#65867c", // Custom color for the 'Go to Cart' button
-          cancelButtonColor: "#d33", // Custom color for the 'Continue Shopping' button
+          showCancelButton: true,
+          confirmButtonText: "Go to Cart",
+          cancelButtonText: "Continue Shopping",
+          confirmButtonColor: "#65867c",
+          cancelButtonColor: "#d33",
         }).then((result) => {
           if (result.isConfirmed) {
-            // Action for "Go to Cart" button
-            window.location.href = "/cart"; // Replace with your cart page URL
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // Action for "Continue Shopping" button
+            window.location.href = "/cart";
           }
         });
 
@@ -72,6 +72,7 @@ export const CartProvider = ({ children }) => {
         console.error("Error adding to cart:", error);
       });
   };
+
   // Fetch cart data
   useEffect(() => {
     // if (!checkoutId) {
