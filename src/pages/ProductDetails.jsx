@@ -20,14 +20,6 @@ const ProductDetails = () => {
 
   const { addToCart, setQuantity, quantity } = useCart();
 
-  // Handle the "Add to Cart" button click
-  const handleAddToCart = () => {
-    if (!isSoldOut) {
-      // Pass the selected variant id along with quantity, color, and size to add to cart
-      addToCart(selectedVariant.id, quantity, selectedColor, selectedSize);
-    }
-  };
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -132,6 +124,17 @@ const ProductDetails = () => {
     });
 
   console.log(Moyo);
+
+  const handleAddToCart = () => {
+    if (selectedVariant) {
+      addToCart(
+        selectedVariant.id,
+        quantity,
+        selectedColor || selectedVariant.option1, // Use the selected color if available
+        selectedSize || selectedVariant.option2 // Use the selected size if available
+      );
+    }
+  };
 
   return (
     <Layout>
@@ -291,15 +294,16 @@ const ProductDetails = () => {
 
             {/* Add to Cart */}
             <button
-              onClick={() =>
-                !isSoldOut &&
-                addToCart(
-                  selectedVariant.id,
-                  quantity,
-                  selectedColor,
-                  selectedSize
-                )
-              }
+              // onClick={() =>
+              //   !isSoldOut &&
+              //   addToCart(
+              //     selectedVariant.id,
+              //     quantity,
+              //     selectedColor,
+              //     selectedSize
+              //   )
+              // }
+              onClick={handleAddToCart}
               className="border-2 border-[#000] text-[#000] font-bold py-4 mt-10 w-[80%]"
               disabled={isSoldOut}
             >

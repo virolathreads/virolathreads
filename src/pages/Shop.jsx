@@ -5,10 +5,11 @@ import SearchBar from "@/components/SearchBar";
 import ContactForm from "@/components/ContactForm";
 import RecentProducts from "@/components/RecentProducts";
 import { useCart } from "@/CartContext";
+import { FaNairaSign } from "react-icons/fa6";
 
 export default function Shop() {
   const navigate = useNavigate();
-  const { addToCart, products } = useCart();
+  const { addToCart, products, quantity, setQuantity } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
@@ -34,7 +35,11 @@ export default function Shop() {
   // Filter products by price range
   const filteredProducts = sortedProduct.filter((prod) => {
     const price = parseFloat(prod.variants[0]?.price.amount || 0);
-    return price >= priceRange[0] && price <= priceRange[1];
+    const matchesPrice = price >= priceRange[0] && price <= priceRange[1];
+    const matchesQuery =
+      prod.title.toLowerCase().includes(query.toLowerCase()) ||
+      prod.description.toLowerCase().includes(query.toLowerCase());
+    return matchesPrice && matchesQuery;
   });
 
   // Pagination logic
@@ -101,11 +106,18 @@ export default function Shop() {
                 <SearchBar setQuery={setQuery} />
 
                 {/* Price Filter */}
-                <div className="price-filter mt-4">
+                <div className="price-filter mt-4 w-full">
                   <h5>Filter by Price</h5>
-                  <div className="price-range-slider">
-                    <label>
-                      Min Price: ${priceRange[0]}
+                  <div className="price-range-slider text-4xl pt-4 flex flex-col gap-4 items-start">
+                    <label className="flex flex-col gap-2">
+                      <p className="flex flex-row gap-2 items-center">
+                        Min Price:
+                        <p className="flex flex-row items-center">
+                          <FaNairaSign />
+                          {priceRange[0]}
+                        </p>
+                      </p>
+
                       <input
                         type="range"
                         name="min"
@@ -115,8 +127,14 @@ export default function Shop() {
                         onChange={handlePriceChange}
                       />
                     </label>
-                    <label>
-                      Max Price: ${priceRange[1]}
+                    <label className="flex flex-col gap-2">
+                      <p className="flex flex-row gap-2 items-center">
+                        Max Price:
+                        <p className="flex flex-row items-center">
+                          <FaNairaSign />
+                          {priceRange[1]}
+                        </p>
+                      </p>
                       <input
                         type="range"
                         name="max"
@@ -157,7 +175,8 @@ export default function Shop() {
                               className="favorit-items"
                               onClick={(e) => {
                                 e.stopPropagation(); // Prevent navigation
-                                addToCart(prod.variants[0].id);
+                                setQuantity(1);
+                                addToCart(prod.variants[0].id, quantity);
                               }}
                             >
                               <span className="flaticon-heart"></span>
@@ -178,10 +197,13 @@ export default function Shop() {
                             </div>
                             <span>
                               {prod.variants[0]?.price.currencyCode}{" "}
-                              {prod.variants[0]?.price.amount.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
+                              {prod.variants[0]?.price.amount.toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )}
                             </span>
                           </div>
                         </div>

@@ -8,9 +8,7 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 export default function Cart() {
   const navigate = useNavigate();
-
   const { cart, setCart, checkoutId } = useCart();
-  // Fetch cart data
 
   // Function to update the quantity
   const updateCartQuantity = (lineItemId, quantity) => {
@@ -104,7 +102,6 @@ export default function Cart() {
                   <tbody>
                     {cart?.lineItems.map((item, i) => (
                       <tr key={item.id} className="border-t tr">
-                        {/* Product Details */}
                         <td className="px-6 py-4">
                           <div className="flex items-center">{i + 1}</div>
                         </td>
@@ -112,7 +109,10 @@ export default function Cart() {
                           <div className="flex items-center space-x-4">
                             <img
                               className="h-20 w-20 rounded-md object-cover"
-                              src={item.variant.image?.src}
+                              src={
+                                item.variant?.image?.src ||
+                                "/path/to/placeholder.jpg"
+                              }
                               alt={item.title}
                             />
                             <div>
@@ -121,15 +121,20 @@ export default function Cart() {
                               </h3>
                               <p className="text-2xl text-gray-500">
                                 Color:{" "}
-                                {item.variant.selectedOptions.find(
+                                {item.variant?.selectedOptions?.find(
                                   (opt) => opt.name === "Color"
+                                )?.value || "N/A"}
+                              </p>
+                              <p className="text-2xl text-gray-500">
+                                Size:{" "}
+                                {item.variant?.selectedOptions?.find(
+                                  (opt) => opt.name === "Size"
                                 )?.value || "N/A"}
                               </p>
                             </div>
                           </div>
                         </td>
 
-                        {/* Quantity Adjustment */}
                         <td className="px-6 py-4 ">
                           <div className="flex items-center">
                             <button
@@ -160,7 +165,6 @@ export default function Cart() {
                           </div>
                         </td>
 
-                        {/* Total Price */}
                         <td className="px-6 py-4">
                           <span className="text-2xl font-medium text-gray-800">
                             {item.variant.price.currencyCode}{" "}
@@ -173,81 +177,29 @@ export default function Cart() {
                 </table>
               </div>
 
-              {/* Order Summary */}
               <div className="mt-8 bg-gray-100 p-6 rounded-md shadow-md">
                 <h1 className="text-4xl font-bold text-gray-800 text-left p-5">
                   Order Summary
                 </h1>
-                <div className="mt-4 space-y-2">
-                  {/* Iterate through cart items */}
-                  {cart?.lineItems.map((item) => (
-                    <div key={item.id} className="flex justify-between">
-                      <span className="text-2xl text-gray-600  text-left">
-                        {item.title.toUpperCase()}
-                        {/* Variant descriptions */}
-                        <>
-                          {item.variant.selectedOptions.map((option) => (
-                            <p className="text-lg text-gray-600">
-                              {`${option.name}: ${option.value}`}
-                            </p>
-                          ))}
-                        </>
-
-                        {/* Quantity */}
-                        <p className="text-lg text-gray-600">
-                          Quantity: {item.quantity}
-                        </p>
-                      </span>
-                      <span className="text-2xl text-gray-800">
-                        {item.variant.price.currencyCode}{" "}
-                        {(
-                          item.variant.price.amount * item.quantity
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="border-t mt-4 pt-4 flex justify-between">
-                  <span className="text-3xl font-medium text-gray-800">
-                    Total:
-                  </span>
-                  <span className="text-3xl font-semibold text-gray-900">
-                    {cart?.currencyCode}{" "}
-                    {cart?.totalPrice?.amount.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                <div className="flex justify-between items-center">
+                  <h3 className="text-2xl font-medium text-gray-700">Total</h3>
+                  <span className="text-2xl font-medium text-gray-800">
+                    {cart?.totalPrice.currencyCode}{" "}
+                    {cart?.totalPrice.amount.toLocaleString()}
                   </span>
                 </div>
                 <button
-                  className=" mt-6 btn py-4 rounded-md text-2xl font-medium hover:bg-blue-700"
-                  onClick={() => {
-                    window.location.href = cart?.webUrl;
-                    localStorage.setItem("checkoutId", "");
-                  }}
+                  onClick={() => navigate("/checkout")}
+                  className="mt-6 w-full bg-green-500 text-white text-xl py-3 rounded-md"
                 >
-                  Checkout
+                  Proceed to Checkout
                 </button>
               </div>
             </>
           ) : (
-            // Empty Cart Message
-            <>
-              {!cart?.lineItems.length && (
-                <div className=" text-3xl text-center text-gray-500 space-y-96">
-                  <p>Your cart is empty.</p>
-                  <a
-                    href="/shop"
-                    className="mt-6 btn py-4 rounded-md text-2xl font-medium hover:bg-blue-700"
-                  >
-                    Continue Shopping
-                  </a>
-                </div>
-              )}
-            </>
+            <div className="text-center text-xl font-medium text-gray-800">
+              Your cart is empty.
+            </div>
           )}
         </div>
       </section>

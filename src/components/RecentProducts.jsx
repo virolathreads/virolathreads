@@ -10,7 +10,7 @@ export default function RecentProducts({ lifoItems, handleClick }) {
         <div
           className="media post_item"
           key={index}
-          onClick={() => handleClick(post.id)}
+          onClick={() => handleClick(post.title)}
         >
           <img
             src={post.images[0]?.src}

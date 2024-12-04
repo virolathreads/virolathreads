@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import shopifyClient from "./pages/shopifyClient";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 // Create the Cart Context
@@ -8,7 +7,6 @@ const CartContext = createContext();
 
 // Cart Provider Component
 export const CartProvider = ({ children }) => {
-  // const navigate = useNavigate();
   const [cart, setCart] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -16,36 +14,36 @@ export const CartProvider = ({ children }) => {
     localStorage.getItem("checkoutId")
   );
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
-    // Fetch products from Shopify
     shopifyClient.product.fetchAll().then((fetchedProducts) => {
       setProducts(fetchedProducts);
     });
 
-    // Create checkout session
     if (!checkoutId) {
       shopifyClient.checkout.create().then((checkout) => {
         setCheckoutId(checkout.id);
-        localStorage.setItem("checkoutId", checkout.id); // Store checkout ID for cart management
+        localStorage.setItem("checkoutId", checkout.id);
       });
     }
   }, []);
 
-  const addToCart = (variantId, quantity, color, size) => {
+  const addToCart = (variantId, quantity) => {
     if (!checkoutId) {
       alert("Checkout session is not ready yet!");
       return;
     }
 
+    // const customAttributes = [];
+    // if (color) customAttributes.push({ key: "Color", value: color });
+    // if (size) customAttributes.push({ key: "Size", value: size });
+
     shopifyClient.checkout
       .addLineItems(checkoutId, [
         {
           variantId,
-          quantity: quantity,
-          properties: {
-            color,
-            size,
-          },
+          quantity,
+          // customAttributes, // Add custom attributes here
         },
       ])
       .then((updatedCheckout) => {
@@ -73,16 +71,12 @@ export const CartProvider = ({ children }) => {
       });
   };
 
-  // Fetch cart data
   useEffect(() => {
-    // if (!checkoutId) {
-    //   window.href = "/shop"
-    //   navigate("/shop");
-    //   return;
-    // }
-    shopifyClient.checkout.fetch(checkoutId).then((fetchedCart) => {
-      setCart(fetchedCart);
-    });
+    if (checkoutId) {
+      shopifyClient.checkout.fetch(checkoutId).then((fetchedCart) => {
+        setCart(fetchedCart);
+      });
+    }
   }, [checkoutId]);
 
   return (
@@ -105,5 +99,4 @@ export const CartProvider = ({ children }) => {
   );
 };
 
-// Custom Hook to use the Cart Context
 export const useCart = () => useContext(CartContext);
