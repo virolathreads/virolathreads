@@ -7,7 +7,7 @@ import { useUser } from "@/hooks/useUser";
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { user } = useUser();
-  const { cart, isCartOpen, setIsCartOpen } = useCart(); // Access the cart from context
+  const { cart } = useCart(); // Access the cart from context
   const [count, setCount] = useState(0); // State to hold the total cart count
   useEffect(() => {
     if (Array.isArray(cart && cart.lineItems)) {
@@ -103,10 +103,17 @@ export default function Header() {
                     {/* Cart Icon with Dropdown */}
                     <div className="relative">
                       <button
-                        onClick={() => (window.href = "/cart")}
+                        onClick={() => {
+                          window.href = "/cart";
+                        }}
                         className="focus:outline-none"
                       >
-                        <ShoppingCart className="h-10 w-10 text-gray-400 hover:text-gray-500" />
+                        <ShoppingCart
+                          onClick={() => {
+                            window.href = "/cart";
+                          }}
+                          className="h-10 w-10 text-gray-400 hover:text-gray-500"
+                        />
                         <span className="absolute -top-2 -right-2 h-5 w-5 bg-[#fff] text-[#254f43] rounded-full flex items-center justify-center text-xs">
                           {count || "0"}
                         </span>
@@ -179,9 +186,16 @@ export default function Header() {
                     {user && <div>{user.name}</div>}
                     <div
                       className="relative"
-                      onClick={() => (window.href = "/cart")}
+                      onClick={() => {
+                        window.href = "/cart";
+                      }}
                     >
-                      <ShoppingCart className="h-6 w-6 text-gray-400 hover:text-gray-500" />
+                      <ShoppingCart
+                        onClick={() => {
+                          window.href = "/cart";
+                        }}
+                        className="h-6 w-6 text-gray-400 hover:text-gray-500"
+                      />
                       <span className="absolute -top-2 -right-2 h-5 w-5 bg-white text-[#254f43] rounded-full flex items-center justify-center text-sm">
                         {count || "0"}
                       </span>

@@ -11,7 +11,7 @@ import { FaWhatsapp, FaXTwitter, FaFacebookF } from "react-icons/fa6";
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [loading, setLoading] = useState(true);
+
   const [mainImage, setMainImage] = useState("");
 
   const [selectedVariant, setSelectedVariant] = useState(null);
@@ -19,42 +19,36 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const navigate = useNavigate();
 
-  const { addToCart, setQuantity, quantity } = useCart();
+  const { addToCart, setQuantity, quantity, products, loader, setLoader } =
+    useCart();
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const products = await shopifyClient.product.fetchAll();
-        const selectedProduct = products.find((p) => p.title === productId);
+    setLoader(true);
+    const selectedProduct =
+      products && products.find((p) => p.title === productId);
 
-        if (selectedProduct) {
-          setProduct(selectedProduct);
-          setMainImage(selectedProduct.images[0]?.src || "");
-          setSelectedVariant(selectedProduct.variants[0]); // Default to the first variant
-          setSelectedColor(selectedProduct.variants[0]?.option1 || ""); // Default color
-          setSelectedSize(selectedProduct.variants[0]?.option2 || ""); // Default size
-        } else {
-          console.warn("Product not found!");
-        }
-      } catch (error) {
-        console.error("Error fetching product:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [productId]);
+    if (selectedProduct) {
+      setProduct(selectedProduct);
+      setMainImage(selectedProduct.images.edges[0]?.node.src || "");
+      setSelectedVariant(selectedProduct?.variants?.edges[0]?.node); // Default to the first variant
+      setSelectedColor(selectedProduct.variants.edges[0]?.node.selectedOptions[0]?.value || ""); // Default color
+      setSelectedSize(selectedProduct.variants.edges[0]?.node.option2 || ""); // Default size
+      setLoader(false);
+    } else {
+      console.warn("Product not found!");
+      setLoader(false);
+    }
+  }, []);
 
   const incrementQuantity = () => setQuantity(quantity + 1);
   const decrementQuantity = () => setQuantity(Math.max(1, quantity - 1));
 
   const handleBack = () => navigate(-1);
-  const ck = product?.variants.find((variant) => variant); // Returns the first variant
+  const ck = product?.variants?.edges.find((variant) => variant); // Returns the first variant
 
-  const cks = ck?.selectedOptions.map((opt) => opt);
+  const cks = ck?.node.selectedOptions.map((opt) => opt);
 
-  console.log(ck, "this is", cks);
+
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image?.src || mainImage);
@@ -62,7 +56,7 @@ const ProductDetails = () => {
     setSelectedSize(variant.option2);
   };
 
-  if (loading) {
+  if (loader) {
     return (
       <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
         <p>
@@ -72,18 +66,9 @@ const ProductDetails = () => {
     );
   }
 
-  if (!product || !selectedVariant) {
-    return <div>Product not found</div>;
-  }
+  const isSoldOut = product?.variants?.edges[0]?.node.availableForSale;
 
-  const isSoldOut = selectedVariant.inventoryQuantity === 0;
-  const isOnSale =
-    selectedVariant.compareAtPrice &&
-    selectedVariant.compareAtPrice > selectedVariant.price;
-
-  const sanitizedDescription = DOMPurify.sanitize(
-    product.descriptionHtml || ""
-  );
+  const sanitizedDescription = DOMPurify.sanitize(product?.description || "");
 
   const handleClick = () => {
     navigate(`/cart`);
@@ -110,7 +95,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-
+    
       {/* Product Details */}
       <div className="product-details container">
         <div className="row">
@@ -119,23 +104,38 @@ const ProductDetails = () => {
             <div className="main-image mb-3 flex justify-center max-h-[auto] md:max-h-[auto]">
               <img
                 src={mainImage}
-                alt={product.title}
+                alt={product?.title}
                 className="img-fluid border max-h-[auto] md:max-h-[auto] w-auto object-fit rounded "
               />
             </div>
+            {/* {product.media
+              ? product.media
+                  .filter((media) => media.mediaContentType === "VIDEO")
+                  .map((video, index) => (
+                    <div key={video.id || index}>
+                      <video
+                        controls
+                        width="400"
+                        src={video.sources[0]?.url || ""}
+                      >
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  ))
+              : "no"} */}
             <div className="thumbnail-gallery d-flex gap-2 pb-96">
-              {product.images.map((img, index) => (
+              {product?.images?.edges.map((img, index) => (
                 <img
                   key={index}
-                  src={img.src}
+                  src={img.node.src}
                   alt={`Gallery ${index}`}
                   className={`thumbnail img-fluid border ${
-                    mainImage === img.src ? "border-[#000] border-2" : ""
+                    mainImage === img.node.src ? "border-[#000] border-2" : ""
                   }`}
-                  onClick={() => setMainImage(img.src)}
+                  onClick={() => setMainImage(img.node.src)}
                   style={{
                     cursor: "pointer",
-                    opacity: mainImage === img.src ? 1 : 0.7,
+                    opacity: mainImage === img.node.src ? 1 : 0.7,
                     width: "100px",
                     height: "auto",
                   }}
@@ -148,14 +148,14 @@ const ProductDetails = () => {
           <div className="col-lg-6 pb-16">
             <p className="pt-12 uppercase text-xl pb-2"></p>
             <p className="text-5xl text-[#000] capitalize font-bold text-left">
-              {product.title}
+              {product?.title}
             </p>
             <p
               className="mt-10 text-3xl"
               dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
             ></p>
             <div className="price text-3xl pt-4 font-semiBold">
-              {isOnSale ? (
+              {/* {isSoldOut ? (
                 <>
                   <span className="text-danger text-decoration-line-through">
                     {selectedVariant.compareAtPrice.currencyCode}{" "}
@@ -167,14 +167,14 @@ const ProductDetails = () => {
                   </span>
                   <span className="badge bg-success ms-2">Sale</span>
                 </>
-              ) : (
-                <span>
-                  {selectedVariant.price.currencyCode}{" "}
-                  {selectedVariant.price.amount}
-                </span>
-              )}
+              ) : ( */}
+              <span>
+                {selectedVariant?.price.currencyCode}{" "}
+                {selectedVariant?.price.amount}
+              </span>
+              {/* )} */}
             </div>
-            {isSoldOut && (
+            {!isSoldOut && (
               <span className="badge bg-danger ms-2">Sold Out</span>
             )}
             {cks?.length ? (
@@ -212,7 +212,7 @@ const ProductDetails = () => {
                     <select
                       value={selectedSize}
                       onChange={(e) => handleVariantChange(e.target.value)}
-                      disabled={isSoldOut}
+                      disabled={!isSoldOut}
                     >
                       <option key={i} value={option.value}>
                         {option.value}
@@ -246,12 +246,13 @@ const ProductDetails = () => {
             {/* Add to Cart */}
             <button
               onClick={() =>
-                !isSoldOut && addToCart(selectedVariant.id, quantity)
+                isSoldOut && addToCart(product?.variants?.edges[0]?.node.id)
               }
+              // onClick={() => addToCart(product.variants.edges[0]?.node.id)}
               className="border-2 border-[#000] text-[#000] font-bold py-4 mt-10 w-[80%]"
-              disabled={isSoldOut}
+              // disabled={isSoldOut}
             >
-              {isSoldOut ? "Sold Out" : "Add to Cart"}
+              {!isSoldOut ? "Sold Out" : "Add to Cart"}
             </button>
 
             {/* Buy Now */}

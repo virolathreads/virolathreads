@@ -1,39 +1,150 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import shopifyClient from "./pages/shopifyClient";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 
-// Create the Cart Context
 const CartContext = createContext();
 
-// Cart Provider Component
 export const CartProvider = ({ children }) => {
-  // const navigate = useNavigate();
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState();
+  const [loader, setLoader] = useState(false);
+  const [load, setLoad] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutId, setCheckoutId] = useState(
     localStorage.getItem("checkoutId")
   );
   const [products, setProducts] = useState([]);
-  useEffect(() => {
-    // Fetch products from Shopify
-    shopifyClient.product.fetchAll().then((fetchedProducts) => {
-      setProducts(fetchedProducts);
-    });
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
-    // Create checkout session
+  useEffect(() => {
+    async function fetchAllProducts() {
+      setLoader(true);
+      let allProducts = [];
+      let hasNextPage = true;
+      let cursor = null;
+
+      while (hasNextPage) {
+        try {
+          const response = await axios.post(
+            "https://91hjvt-c0.myshopify.com/api/2023-10/graphql.json",
+            {
+              query: `
+                query ($first: Int!, $cursor: String) {
+                  products(first: $first, after: $cursor) {
+                    pageInfo {
+                      hasNextPage
+                    }
+                    edges {
+                      cursor
+                      node {
+                        id
+                        title
+                        tags
+                        description
+                        vendor
+                        productType
+                        handle
+                        images(first: 10) {
+                          edges {
+                            node {
+                              id
+                              altText
+                              src: url
+                              width
+                              height
+                            }
+                          }
+                        }
+                        variants(first: 10) {
+                          edges {
+                            node {
+                              id
+                              title
+                              sku
+                              price {
+                                amount
+                                currencyCode
+                              }
+                              compareAtPrice {
+                                amount
+                                currencyCode
+                              }
+                              availableForSale
+                              selectedOptions {
+                                name
+                                value
+                              }
+                              image {
+                                id
+                                altText
+                                src: url
+                                width
+                                height
+                              }
+                            }
+                          }
+                        }
+                        options {
+                          id
+                          name
+                          values
+                        }
+                      }
+                    }
+                  }
+                }
+              `,
+              variables: { first: 50, cursor }, // Pagination with smaller batch size
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "X-Shopify-Storefront-Access-Token":
+                  "7d25e50b36cb469b6fc5b89398f6ceb7",
+              },
+            }
+          );
+
+          const products =
+            response.data?.data?.products?.edges?.map((edge) => edge.node) ||
+            [];
+          allProducts = [...allProducts, ...products];
+          hasNextPage =
+            response.data?.data?.products?.pageInfo?.hasNextPage || false;
+          cursor =
+            response.data?.data?.products?.edges?.slice(-1)[0]?.cursor || null;
+        } catch (error) {
+          console.error("Error fetching products via Axios:", error);
+          break;
+        }
+      }
+
+      return allProducts;
+    }
+
+    fetchAllProducts()
+      .then((fetchedProducts) => {
+        setProducts(fetchedProducts);
+        setLoader(false);
+      })
+      .catch((error) => console.error("Error fetching products:", error));
+
     if (!checkoutId) {
       shopifyClient.checkout.create().then((checkout) => {
         setCheckoutId(checkout.id);
-        localStorage.setItem("checkoutId", checkout.id); // Store checkout ID for cart management
+        localStorage.setItem("checkoutId", checkout.id);
       });
     }
-  }, []);
+  }, [checkoutId]);
 
   const addToCart = (variantId) => {
     if (!checkoutId) {
-      alert("Checkout session is not ready yet!");
+      Swal.fire({
+        title: "Error",
+        text: "Checkout session is not initialized yet!",
+        icon: "error",
+      });
       return;
     }
 
@@ -41,62 +152,45 @@ export const CartProvider = ({ children }) => {
       .addLineItems(checkoutId, [
         {
           variantId,
-          quantity: quantity,
+          quantity,
         },
       ])
       .then((updatedCheckout) => {
-        setCart(updatedCheckout); // Update cart state
-        // console.log(cart);
-
+        setCart(updatedCheckout);
         Swal.fire({
           title: "Added to Cart!",
           text: "The item has been added to your cart.",
           icon: "success",
-          showCancelButton: true, // Adds a second button
-          confirmButtonText: "Go to Cart", // Button for navigating to the cart
-          cancelButtonText: "Continue Shopping", // Button for staying on the page
-          confirmButtonColor: "#65867c", // Custom color for the 'Go to Cart' button
-          cancelButtonColor: "#d33", // Custom color for the 'Continue Shopping' button
+          showCancelButton: true,
+          confirmButtonText: "Go to Cart",
+          cancelButtonText: "Continue Shopping",
         }).then((result) => {
           if (result.isConfirmed) {
-            // Action for "Go to Cart" button
-            window.location.href = "/cart"; // Replace with your cart page URL
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            // Action for "Continue Shopping" button
+            window.location.href = "/cart"; // Navigate to cart page
           }
         });
-
-        console.log("Cart updated:", updatedCheckout);
       })
       .catch((error) => {
         console.error("Error adding to cart:", error);
       });
   };
-  // Fetch cart data
-  useEffect(() => {
-    // if (!checkoutId) {
-    //   window.href = "/shop"
-    //   navigate("/shop");
-    //   return;
-    // }
-    shopifyClient.checkout.fetch(checkoutId).then((fetchedCart) => {
-      setCart(fetchedCart);
-    });
-  }, [checkoutId]);
 
   return (
     <CartContext.Provider
       value={{
         cart,
         setCart,
-        setIsCartOpen,
-        isCartOpen,
         addToCart,
         checkoutId,
         setCheckoutId,
         products,
+        filteredProducts, // Expose filtered products
         setQuantity,
         quantity,
+        setLoader,
+        loader,
+        load,
+        setLoad,
       }}
     >
       {children}

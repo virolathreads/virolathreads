@@ -5,21 +5,24 @@ import SearchBar from "@/components/SearchBar";
 import ContactForm from "@/components/ContactForm";
 import RecentProducts from "@/components/RecentProducts";
 import { useCart } from "@/CartContext";
+import ShopCategory from "@/components/ShopCategory";
 
 export default function Shop() {
   const navigate = useNavigate();
   const { addToCart, products } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
+  const [tag, setTag] = useState("");
+  const [item, setItem] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
   const [maxPrice, setMaxPrice] = useState(1000);
-  const productsPerPage = 5;
+  const productsPerPage = 10;
 
   useEffect(() => {
     if (products.length > 0) {
       const maxProductPrice = Math.max(
         ...products.map((prod) =>
-          parseFloat(prod.variants[0]?.price.amount || 0)
+          parseFloat(prod.variants.edges[0]?.node.price.amount || 0)
         )
       );
       setMaxPrice(maxProductPrice);
@@ -33,7 +36,7 @@ export default function Shop() {
 
   // Filter products by price range
   const filteredProducts = sortedProduct.filter((prod) => {
-    const price = parseFloat(prod.variants[0]?.price.amount || 0);
+    const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
     return price >= priceRange[0] && price <= priceRange[1];
   });
 
@@ -63,6 +66,188 @@ export default function Shop() {
     setCurrentPage(1); // Reset to the first page after filtering
   };
 
+  const handleCategory = (catag) => {
+    console.log(catag);
+    const tagsToFilter = [catag];
+    const filteredProducts = products.filter((product) =>
+      product.tags.some((tag) => tagsToFilter.includes(tag))
+    );
+    const sortedBlogs =
+      filteredProducts &&
+      filteredProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+
+      const filteredProductPrice = sortedBlogs.filter((prod) => {
+        const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
+        return price >= priceRange[0] && price <= priceRange[1];
+      });
+    
+    // Now slice the sorted array to get the current page's products
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProductPrice.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+    const totalPage = Math.ceil(filteredProductPrice.length / productsPerPage);
+    const nopage = Array.from({ length: totalPage }, (_, index) => index + 1);
+
+    return (
+      <>
+        <div className="col-xl-9 col-lg-9 col-md-8 order-1 sm:order-2">
+          <div className="new-arrival new-arrival2">
+            <div className="row">
+              {currentProducts.length > 0 ? (
+                currentProducts
+                  .filter((produc) => {
+                    if (
+                      query == "" ||
+                      produc.title
+                        .toLowerCase()
+                        .includes(query.toLowerCase()) ||
+                      produc.description
+                        .toLowerCase()
+                        .includes(query.toLowerCase())
+                    ) {
+                      return true; // This product matches the query or query is empty
+                    }
+                    return false; // This product does not match the query
+                  })
+                  .map((prod) => (
+                    <div
+                      key={prod.id}
+                      className="col-xl-4 col-lg-4 col-md-6 col-sm-6"
+                    >
+                      <div className="single-new-arrival mb-50 text-center">
+                        <div
+                          onClick={() => handleClick(prod.title)}
+                          className="popular-img"
+                        >
+                          <img
+                            key={prod.images.edges[0]?.node.id}
+                            src={prod.images.edges[0]?.node.src}
+                            alt={prod.images.edges[0]?.node.altText}
+                            width={100}
+                          />
+
+                          {/* <img
+                                  src={prod.images.edges.image[0].node.src}
+                                  alt=""
+                                /> */}
+                          <div
+                            className="favorit-items"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent navigation
+
+                              addToCart(prod.variants.edges[0]?.node.id);
+                            }}
+                          >
+                            <span className="flaticon-heart"></span>
+                            <img
+                              src="assets/img/gallery/favorit-card.png"
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                        <div className="popular-caption">
+                          <h3>
+                            <a onClick={() => handleClick(prod.title)}>
+                              {prod.title.toUpperCase()}
+                            </a>
+                          </h3>
+                          <p
+                            className={
+                              !prod?.variants?.edges[0]?.node.availableForSale
+                                ? "badge bg-danger ms-2  text-[#000]"
+                                : "badge bg-info ms-2 text-[#000]"
+                            }
+                          >
+                            {prod?.variants?.edges[0]?.node.availableForSale
+                              ? " IN STOCK"
+                              : "SOLD OUT"}
+                          </p>
+                          <div className="rating mb-10">
+                            <p>{prod.description}</p>
+                          </div>
+                          <span>
+                            {/* {prod.variants.edges[0].node.availableForSale  } */}
+                            {prod.variants.edges[0].node.price.amount.toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
+                            )}{" "}
+                            {prod.variants.edges[0].node.price.currencyCode}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+              ) : (
+                <p>No products found in this price range.</p>
+              )}
+            </div>
+
+            {/* Pagination */}
+            <nav className="blog-pagination justify-content-center d-flex">
+              <ul className="pagination">
+                {/* Previous Button */}
+                <li
+                  className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
+                >
+                  <button
+                    className="page-link"
+                    aria-label="Previous"
+                    onClick={() =>
+                      currentPage > 1 && handlePageClick(currentPage - 1)
+                    }
+                  >
+                    <i className="ti-angle-left"></i>
+                  </button>
+                </li>
+
+                {/* Page Numbers */}
+                {nopage.map((page) => (
+                  <li
+                    key={page}
+                    className={`page-item ${
+                      page === currentPage ? "active" : ""
+                    }`}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageClick(page)}
+                    >
+                      {page}
+                    </button>
+                  </li>
+                ))}
+
+                {/* Next Button */}
+                <li
+                  className={`page-item ${
+                    currentPage === totalPage ? "disabled" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    aria-label="Next"
+                    onClick={() =>
+                      currentPage < totalPage &&
+                      handlePageClick(currentPage + 1)
+                    }
+                  >
+                    <i className="ti-angle-right"></i>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </>
+    );
+  };
   return (
     <Layout>
       <div className="page-notification">
@@ -96,16 +281,20 @@ export default function Shop() {
           </div>
           <div className="row">
             {/* Sidebar */}
-            <div className="col-xl-3 col-lg-3 col-md-4">
+            <div className="col-xl-3 col-lg-3 col-md-4 order-2 sm:order-1">
               <div className="blog_right_sidebar">
                 <SearchBar setQuery={setQuery} />
-
+                <ShopCategory
+                  setItem={setItem}
+                  setTag={setTag}
+                  currentProducts={sortedProduct}
+                />
                 {/* Price Filter */}
                 <div className="price-filter mt-4">
                   <h5>Filter by Price</h5>
                   <div className="price-range-slider">
                     <label>
-                      Min Price: ${priceRange[0]}
+                      Min Price: NGN {priceRange[0]}
                       <input
                         type="range"
                         name="min"
@@ -116,7 +305,7 @@ export default function Shop() {
                       />
                     </label>
                     <label>
-                      Max Price: ${priceRange[1]}
+                      Max Price: NGN {priceRange[1]}
                       <input
                         type="range"
                         name="max"
@@ -138,118 +327,168 @@ export default function Shop() {
             </div>
 
             {/* Product List */}
-            <div className="col-xl-9 col-lg-9 col-md-8">
-              <div className="new-arrival new-arrival2">
-                <div className="row">
-                  {currentProducts.length > 0 ? (
-                    currentProducts.map((prod) => (
-                      <div
-                        key={prod.id}
-                        className="col-xl-4 col-lg-4 col-md-6 col-sm-6"
-                      >
-                        <div className="single-new-arrival mb-50 text-center">
+            {item === "all" && (
+              <div className="col-xl-9 col-lg-9 col-md-8 order-1 sm:order-2">
+                <div className="new-arrival new-arrival2">
+                  <div className="row">
+                    {currentProducts.length > 0 ? (
+                      currentProducts
+                        .filter((produc) => {
+                          if (
+                            query == "" ||
+                            produc.title
+                              .toLowerCase()
+                              .includes(query.toLowerCase()) ||
+                            produc.description
+                              .toLowerCase()
+                              .includes(query.toLowerCase())
+                          ) {
+                            return true; // This product matches the query or query is empty
+                          }
+                          return false; // This product does not match the query
+                        })
+                        .map((prod) => (
                           <div
-                            onClick={() => handleClick(prod.title)}
-                            className="popular-img"
+                            key={prod.id}
+                            className="col-xl-4 col-lg-4 col-md-6 col-sm-6"
                           >
-                            <img src={prod.images[0]?.src} alt="" />
-                            <div
-                              className="favorit-items"
-                              onClick={(e) => {
-                                e.stopPropagation(); // Prevent navigation
-                                addToCart(prod.variants[0].id);
-                              }}
-                            >
-                              <span className="flaticon-heart"></span>
-                              <img
-                                src="assets/img/gallery/favorit-card.png"
-                                alt=""
-                              />
+                            <div className="single-new-arrival mb-50 text-center">
+                              <div
+                                onClick={() => handleClick(prod.title)}
+                                className="popular-img"
+                              >
+                                <img
+                                  key={prod.images.edges[0]?.node.id}
+                                  src={prod.images.edges[0]?.node.src}
+                                  alt={prod.images.edges[0]?.node.altText}
+                                  width={100}
+                                />
+
+                                {/* <img
+                                  src={prod.images.edges.image[0].node.src}
+                                  alt=""
+                                /> */}
+                                <div
+                                  className="favorit-items"
+                                  onClick={(e) => {
+                                    e.stopPropagation(); // Prevent navigation
+
+                                    addToCart(prod.variants.edges[0]?.node.id);
+                                  }}
+                                >
+                                  <span className="flaticon-heart"></span>
+                                  <img
+                                    src="assets/img/gallery/favorit-card.png"
+                                    alt=""
+                                  />
+                                </div>
+                              </div>
+                              <div className="popular-caption">
+                                <h3>
+                                  <a onClick={() => handleClick(prod.title)}>
+                                    {prod.title.toUpperCase()}
+                                  </a>
+                                </h3>
+                                <p
+                                  className={
+                                    !prod?.variants?.edges[0]?.node
+                                      .availableForSale
+                                      ? "badge bg-danger ms-2  text-[#000]"
+                                      : "badge bg-info ms-2 text-[#000]"
+                                  }
+                                >
+                                  {prod?.variants?.edges[0]?.node
+                                    .availableForSale
+                                    ? " IN STOCK"
+                                    : "SOLD OUT"}
+                                </p>
+                                <div className="rating mb-10">
+                                  <p>{prod.description}</p>
+                                </div>
+                                <span>
+                                  {/* {prod.variants.edges[0].node.availableForSale  } */}
+                                  {prod.variants.edges[0].node.price.amount.toLocaleString(
+                                    undefined,
+                                    {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    }
+                                  )}{" "}
+                                  {
+                                    prod.variants.edges[0].node.price
+                                      .currencyCode
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                          <div className="popular-caption">
-                            <h3>
-                              <a onClick={() => handleClick(prod.id)}>
-                                {prod.title.toUpperCase()}
-                              </a>
-                            </h3>
-                            <div className="rating mb-10">
-                              <p>{prod.description}</p>
-                            </div>
-                            <span>
-                              {prod.variants[0]?.price.currencyCode}{" "}
-                              {prod.variants[0]?.price.amount.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No products found in this price range.</p>
-                  )}
-                </div>
+                        ))
+                    ) : (
+                      <p>No products found in this price range.</p>
+                    )}
+                  </div>
 
-                {/* Pagination */}
-                <nav className="blog-pagination justify-content-center d-flex">
-                  <ul className="pagination">
-                    {/* Previous Button */}
-                    <li
-                      className={`page-item ${
-                        currentPage === 1 ? "disabled" : ""
-                      }`}
-                    >
-                      <button
-                        className="page-link"
-                        aria-label="Previous"
-                        onClick={() =>
-                          currentPage > 1 && handlePageClick(currentPage - 1)
-                        }
-                      >
-                        <i className="ti-angle-left"></i>
-                      </button>
-                    </li>
-
-                    {/* Page Numbers */}
-                    {pages.map((page) => (
+                  {/* Pagination */}
+                  <nav className="blog-pagination justify-content-center d-flex">
+                    <ul className="pagination">
+                      {/* Previous Button */}
                       <li
-                        key={page}
                         className={`page-item ${
-                          page === currentPage ? "active" : ""
+                          currentPage === 1 ? "disabled" : ""
                         }`}
                       >
                         <button
                           className="page-link"
-                          onClick={() => handlePageClick(page)}
+                          aria-label="Previous"
+                          onClick={() =>
+                            currentPage > 1 && handlePageClick(currentPage - 1)
+                          }
                         >
-                          {page}
+                          <i className="ti-angle-left"></i>
                         </button>
                       </li>
-                    ))}
 
-                    {/* Next Button */}
-                    <li
-                      className={`page-item ${
-                        currentPage === totalPages ? "disabled" : ""
-                      }`}
-                    >
-                      <button
-                        className="page-link"
-                        aria-label="Next"
-                        onClick={() =>
-                          currentPage < totalPages &&
-                          handlePageClick(currentPage + 1)
-                        }
+                      {/* Page Numbers */}
+                      {pages.map((page) => (
+                        <li
+                          key={page}
+                          className={`page-item ${
+                            page === currentPage ? "active" : ""
+                          }`}
+                        >
+                          <button
+                            className="page-link"
+                            onClick={() => handlePageClick(page)}
+                          >
+                            {page}
+                          </button>
+                        </li>
+                      ))}
+
+                      {/* Next Button */}
+                      <li
+                        className={`page-item ${
+                          currentPage === totalPages ? "disabled" : ""
+                        }`}
                       >
-                        <i className="ti-angle-right"></i>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
+                        <button
+                          className="page-link"
+                          aria-label="Next"
+                          onClick={() =>
+                            currentPage < totalPages &&
+                            handlePageClick(currentPage + 1)
+                          }
+                        >
+                          <i className="ti-angle-right"></i>
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
               </div>
-            </div>
+            )}
+
+            {item === tag && <>{handleCategory(tag)}</>}
           </div>
         </div>
       </div>

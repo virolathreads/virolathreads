@@ -9,8 +9,16 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 export default function Cart() {
   const navigate = useNavigate();
 
-  const { cart, setCart, checkoutId } = useCart();
+  const { cart, setCart, checkoutId, setLoad, load } = useCart();
   // Fetch cart data
+  useEffect(() => {
+    setLoad(true);
+    shopifyClient.checkout.fetch(checkoutId).then((fetchedCart) => {
+      console.log(fetchedCart);
+      setCart(fetchedCart);
+      setLoad(false)
+    });
+  }, [checkoutId]);
 
   // Function to update the quantity
   const updateCartQuantity = (lineItemId, quantity) => {
@@ -52,7 +60,7 @@ export default function Cart() {
       });
   };
 
-  if (!cart) {
+  if (load) {
     return (
       <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
         <p>
@@ -100,7 +108,7 @@ export default function Cart() {
                         Total
                       </th>
                     </tr>
-                  </thead>
+                  </thead>{" "}
                   <tbody>
                     {cart?.lineItems.map((item, i) => (
                       <tr key={item.id} className="border-t tr">
@@ -174,6 +182,7 @@ export default function Cart() {
               </div>
 
               {/* Order Summary */}
+              {/* Order Summary */}
               <div className="mt-8 bg-gray-100 p-6 rounded-md shadow-md">
                 <h1 className="text-4xl font-bold text-gray-800 text-left p-5">
                   Order Summary
@@ -182,26 +191,39 @@ export default function Cart() {
                   {/* Iterate through cart items */}
                   {cart?.lineItems.map((item) => (
                     <div key={item.id} className="flex justify-between">
-                      <span className="text-2xl text-gray-600  text-left">
-                        {item.title.toUpperCase()}
-                        {/* Variant descriptions */}
-                        <>
-                          {item.variant.selectedOptions.map((option) => (
-                            <p className="text-lg text-gray-600">
-                              {`${option.name}: ${option.value}`}
-                            </p>
-                          ))}
-                        </>
+                      <span className="text-2xl text-gray-600 text-left">
+                        {item.title.toUpperCase() || "Product Name Unavailable"}
+
+                        {/* Check if variant and options exist */}
+                        {item.variant?.selectedOptions ? (
+                          <>
+                            {item.variant.selectedOptions.map(
+                              (option, index) => (
+                                <p
+                                  key={index}
+                                  className="text-lg text-gray-600"
+                                >
+                                  {`${option.name}: ${option.value}`}
+                                </p>
+                              )
+                            )}
+                          </>
+                        ) : (
+                          <p className="text-lg text-gray-400 italic">
+                            Details unavailable
+                          </p>
+                        )}
 
                         {/* Quantity */}
                         <p className="text-lg text-gray-600">
-                          Quantity: {item.quantity}
+                          Quantity: {item.quantity || "N/A"}
                         </p>
                       </span>
                       <span className="text-2xl text-gray-800">
-                        {item.variant.price.currencyCode}{" "}
+                        {item.variant?.price?.currencyCode || "N/A"}{" "}
                         {(
-                          item.variant.price.amount * item.quantity
+                          (item.variant?.price?.amount || 0) *
+                          (item.quantity || 0)
                         ).toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -215,8 +237,8 @@ export default function Cart() {
                     Total:
                   </span>
                   <span className="text-3xl font-semibold text-gray-900">
-                    {cart?.currencyCode}{" "}
-                    {cart?.totalPrice?.amount.toLocaleString(undefined, {
+                    {cart?.currencyCode || "N/A"}{" "}
+                    {(cart?.totalPrice?.amount || 0).toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -225,7 +247,7 @@ export default function Cart() {
                 <button
                   className=" mt-6 btn py-4 rounded-md text-2xl font-medium hover:bg-blue-700"
                   onClick={() => {
-                    window.location.href = cart?.webUrl;
+                    window.location.href = cart?.webUrl || "/";
                     localStorage.setItem("checkoutId", "");
                   }}
                 >

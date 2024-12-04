@@ -10,15 +10,15 @@ export default function RecentProducts({ lifoItems, handleClick }) {
         <div
           className="media post_item"
           key={index}
-          onClick={() => handleClick(post.id)}
+          onClick={() => handleClick(post.title)}
         >
           <img
-            src={post.images[0]?.src}
+            src={post.images.edges[0]?.node.src}
             alt={`post ${post.title}`}
             className="w-50"
           />
-          <div className="media-body">
-            <a href="#" onClick={() => handleClick(post.id)}>
+          <div className="media-body" onClick={() => handleClick(post.title)}>
+            <a href="">
               <h3 style={{ color: "#2d2d2d" }}>{post.title}</h3>
             </a>
           </div>
