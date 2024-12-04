@@ -55,7 +55,7 @@ export default function Shop() {
   };
 
   const handleClick = (productId) => {
-    navigate(`/product/${encodeURIComponent(productId)}`);
+    navigate(`/product/${productId}`);
   };
 
   const handlePriceChange = (e) => {
@@ -67,7 +67,7 @@ export default function Shop() {
   };
 
   const handleCategory = (catag) => {
-    console.log(catag);
+    // console.log(catag);
     const tagsToFilter = [catag];
     const filteredProducts = products.filter((product) =>
       product.tags.some((tag) => tagsToFilter.includes(tag))
@@ -76,12 +76,11 @@ export default function Shop() {
       filteredProducts &&
       filteredProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+    const filteredProductPrice = sortedBlogs.filter((prod) => {
+      const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
+      return price >= priceRange[0] && price <= priceRange[1];
+    });
 
-      const filteredProductPrice = sortedBlogs.filter((prod) => {
-        const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
-        return price >= priceRange[0] && price <= priceRange[1];
-      });
-    
     // Now slice the sorted array to get the current page's products
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
