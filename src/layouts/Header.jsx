@@ -6,8 +6,9 @@ import { useUser } from "@/hooks/useUser";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const { user } = useUser();
-  const { cart } = useCart(); // Access the cart from context
+  const { cart, handleCurrencyChange, currency } = useCart(); // Access the cart from context
   const [count, setCount] = useState(0); // State to hold the total cart count
   useEffect(() => {
     if (Array.isArray(cart && cart.lineItems)) {
@@ -38,10 +39,20 @@ export default function Header() {
                   />
                 </a>
               </div>
-
+              <div className="flex-1 flex items-center justify-end">
+                <select
+                  onChange={(e) => handleCurrencyChange(e.target.value)}
+                  value={currency}
+                  class="p-2 border rounded-md focus:ring focus:ring-blue-300"
+                >
+                  <option value="NGN">Naira (NGN)</option>
+                  <option value="GBP">Pound (GBP)</option>
+                </select>
+              </div>
               {/* Right Section - Navigation, Social, and Cart */}
               <div className="flex-1 flex items-center justify-end">
                 {/* Desktop Navigation */}
+
                 <nav className="hidden lg:block mr-8">
                   <ul className="flex space-x-8">
                     <li>

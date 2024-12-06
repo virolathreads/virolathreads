@@ -87,8 +87,8 @@ const HeroSlider = () => {
             <div className="row justify-content-center">
               <div className="col-xl-8 col-lg-9">
                 <div className="hero__caption">
-                  <h1
-                   style={{ fontSize: "60px" }}
+                  {/* <h1
+                   style={{ fontSize: "70px" }}
                     // style={{
                     //   fontSize: "clamp(30px, 6vw, 60px)",
                     //   color: "white",
@@ -100,8 +100,8 @@ const HeroSlider = () => {
                     That
                     <br />
                     Speaks
-                  </h1>
-                  <a
+                  </h1> */}
+                  {/* <a
                     href="/shop"
                     className="btn"
                     // style={{
@@ -116,7 +116,7 @@ const HeroSlider = () => {
                     // }}
                   >
                     SHOP NOW
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

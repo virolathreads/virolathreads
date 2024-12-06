@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import shopifyClient from "./pages/shopifyClient";
 import Swal from "sweetalert2";
 import axios from "axios";
+import PreLoader from "./lib/PreLoader";
 
 const CartContext = createContext();
 
@@ -9,7 +10,16 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState();
   const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
+
+  const [countryLog, setCountryLog] = useState(
+    localStorage.getItem("Virolacountry") || "NG"
+  );
+  const [loads, setLoads] = useState(false);
+
   const [quantity, setQuantity] = useState(1);
+  const [currency, setCurrency] = useState(
+    localStorage.getItem("Virolacurrency") || "NGN"
+  );
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [checkoutId, setCheckoutId] = useState(
     localStorage.getItem("checkoutId")
@@ -18,6 +28,35 @@ export const CartProvider = ({ children }) => {
   const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
+    async function fetchCountry() {
+      setLoads(true);
+      try {
+        const response = await fetch(
+          "https://ipinfo.io/json?token=d47e87dea8cf70"
+        );
+        const data = await response.json();
+        if (data) {
+          if (data.country === "NG") {
+            localStorage.setItem("Virolacurrency", "NGN");
+            setCurrency("NGN");
+            setCountryLog(data.country);
+            localStorage.setItem("Virolacountry", data.country);
+          } else {
+            localStorage.setItem("Virolacurrency", "GBP");
+            setCurrency("GBP");
+            setCountryLog(data.country);
+            localStorage.setItem("Virolacountry", data.country);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching country:", error);
+      } finally {
+        setLoads(false);
+      }
+    }
+
+    fetchCountry();
+
     async function fetchAllProducts() {
       setLoader(true);
       let allProducts = [];
@@ -95,7 +134,7 @@ export const CartProvider = ({ children }) => {
                   }
                 }
               `,
-              variables: { first: 50, cursor }, // Pagination with smaller batch size
+              variables: { first: 250, cursor }, // Pagination with smaller batch size
             },
             {
               headers: {
@@ -126,6 +165,7 @@ export const CartProvider = ({ children }) => {
     fetchAllProducts()
       .then((fetchedProducts) => {
         setProducts(fetchedProducts);
+
         setLoader(false);
       })
       .catch((error) => console.error("Error fetching products:", error));
@@ -138,6 +178,31 @@ export const CartProvider = ({ children }) => {
     }
   }, [checkoutId]);
 
+  const handleCurrencyChange = (newCurrency) => {
+    setCurrency(newCurrency);
+    localStorage.setItem("Virolacurrency", newCurrency);
+  };
+
+  const handleAmountChange = (amount) => {
+    if (currency === "NGN") {
+      const finalAmount = amount * 2300;
+      return finalAmount.toLocaleString(undefined, {
+    
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    } else {
+      return amount.toLocaleString(undefined, {
+        style: "currency",
+     
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
+  };
+  if (loads) {
+    return <PreLoader />;
+  }
   const addToCart = (variantId) => {
     if (!checkoutId) {
       Swal.fire({
@@ -191,6 +256,11 @@ export const CartProvider = ({ children }) => {
         loader,
         load,
         setLoad,
+        handleCurrencyChange,
+        currency,
+        handleAmountChange,
+
+        countryLog,
       }}
     >
       {children}

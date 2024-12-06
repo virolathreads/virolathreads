@@ -9,7 +9,7 @@ import ShopCategory from "@/components/ShopCategory";
 
 export default function Shop() {
   const navigate = useNavigate();
-  const { addToCart, products } = useCart();
+  const { addToCart, products, currency, handleAmountChange } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("");
@@ -22,7 +22,9 @@ export default function Shop() {
     if (products.length > 0) {
       const maxProductPrice = Math.max(
         ...products.map((prod) =>
-          parseFloat(prod.variants.edges[0]?.node.price.amount || 0)
+          parseFloat(
+            handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+          )
         )
       );
       setMaxPrice(maxProductPrice);
@@ -36,7 +38,9 @@ export default function Shop() {
 
   // Filter products by price range
   const filteredProducts = sortedProduct.filter((prod) => {
-    const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
+    const price = parseFloat(
+      handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+    );
     return price >= priceRange[0] && price <= priceRange[1];
   });
 
@@ -77,7 +81,9 @@ export default function Shop() {
       filteredProducts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const filteredProductPrice = sortedBlogs.filter((prod) => {
-      const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
+      const price = parseFloat(
+        handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+      );
       return price >= priceRange[0] && price <= priceRange[1];
     });
 
@@ -138,7 +144,7 @@ export default function Shop() {
                             onClick={(e) => {
                               e.stopPropagation(); // Prevent navigation
 
-                              addToCart(prod.variants.edges[0]?.node.id);
+                              addToCart(prod?.variants?.edges[0]?.node.id);
                             }}
                           >
                             <span className="flaticon-heart"></span>
@@ -177,7 +183,8 @@ export default function Shop() {
                                 maximumFractionDigits: 2,
                               }
                             )}{" "}
-                            {prod.variants.edges[0].node.price.currencyCode}
+                            {/* {prod.variants.edges[0].node.price.currencyCode} */}
+                            {currency}
                           </span>
                         </div>
                       </div>
@@ -293,7 +300,8 @@ export default function Shop() {
                   <h5>Filter by Price</h5>
                   <div className="price-range-slider">
                     <label>
-                      Min Price: NGN {priceRange[0]}
+                      Min Price: {currency === "NGN" ? "NGN" : "GBP"}{" "}
+                      {priceRange[0]}
                       <input
                         type="range"
                         name="min"
@@ -304,7 +312,8 @@ export default function Shop() {
                       />
                     </label>
                     <label>
-                      Max Price: NGN {priceRange[1]}
+                      Max Price: {currency === "NGN" ? "NGN" : "GBP"}{" "}
+                      {priceRange[1]}
                       <input
                         type="range"
                         name="max"
@@ -372,7 +381,9 @@ export default function Shop() {
                                   onClick={(e) => {
                                     e.stopPropagation(); // Prevent navigation
 
-                                    addToCart(prod.variants.edges[0]?.node.id);
+                                    addToCart(
+                                      prod?.variants?.edges[0]?.node.id
+                                    );
                                   }}
                                 >
                                   <span className="flaticon-heart"></span>
@@ -406,17 +417,17 @@ export default function Shop() {
                                 </div>
                                 <span>
                                   {/* {prod.variants.edges[0].node.availableForSale  } */}
-                                  {prod.variants.edges[0].node.price.amount.toLocaleString(
-                                    undefined,
-                                    {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    }
-                                  )}{" "}
-                                  {
+                                  {handleAmountChange(
+                                    prod.variants.edges[0].node.price.amount
+                                  ).toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })}{" "}
+                                  {/* {
                                     prod.variants.edges[0].node.price
                                       .currencyCode
-                                  }
+                                  } */}
+                                  {currency}
                                 </span>
                               </div>
                             </div>

@@ -4,7 +4,7 @@ import shopifyClient from "./shopifyClient";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [checkoutId, setCheckoutId] = useState(null);
-  const [cart, setCart] = useState(null);
+  const [cart, setCart, currency, handleAmountChange] = useState(null);
 
   useEffect(() => {
     // Fetch products from Shopify
@@ -82,7 +82,8 @@ const Products = () => {
               <p>{item.title}</p>
               <p>
                 Quantity: {item.quantity} | Price: {item.variant.price.amount}{" "}
-                {item.variant.price.currencyCode}
+                {/* {item.variant.price.currencyCode } */}
+                {currency}
               </p>
             </div>
           ))}

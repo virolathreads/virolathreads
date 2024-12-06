@@ -7,6 +7,7 @@ import { FaArrowLeft } from "react-icons/fa";
 import shopifyClient from "./shopifyClient";
 import { useCart } from "@/CartContext";
 import { FaWhatsapp, FaXTwitter, FaFacebookF } from "react-icons/fa6";
+import PreLoader from "@/lib/PreLoader";
 
 const ProductDetails = () => {
   const { productId } = useParams();
@@ -19,8 +20,16 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState("");
   const navigate = useNavigate();
 
-  const { addToCart, setQuantity, quantity, products, loader, setLoader } =
-    useCart();
+  const {
+    addToCart,
+    setQuantity,
+    quantity,
+    products,
+    loader,
+    setLoader,
+    currency,
+    handleAmountChange,
+  } = useCart();
 
   useEffect(() => {
     setLoader(true);
@@ -31,7 +40,9 @@ const ProductDetails = () => {
       setProduct(selectedProduct);
       setMainImage(selectedProduct.images.edges[0]?.node.src || "");
       setSelectedVariant(selectedProduct?.variants?.edges[0]?.node); // Default to the first variant
-      setSelectedColor(selectedProduct.variants.edges[0]?.node.selectedOptions[0]?.value || ""); // Default color
+      setSelectedColor(
+        selectedProduct.variants.edges[0]?.node.selectedOptions[0]?.value || ""
+      ); // Default color
       setSelectedSize(selectedProduct.variants.edges[0]?.node.option2 || ""); // Default size
       setLoader(false);
     } else {
@@ -48,7 +59,6 @@ const ProductDetails = () => {
 
   const cks = ck?.node.selectedOptions.map((opt) => opt);
 
-
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image?.src || mainImage);
@@ -57,13 +67,14 @@ const ProductDetails = () => {
   };
 
   if (loader) {
-    return (
-      <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
-        <p>
-          <Skeleton count={10} />
-        </p>
-      </SkeletonTheme>
-    );
+    // return (
+    //   <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
+    //     <p>
+    //       <Skeleton count={10} />
+    //     </p>
+    //   </SkeletonTheme>
+    // );
+    <PreLoader />;
   }
 
   const isSoldOut = product?.variants?.edges[0]?.node.availableForSale;
@@ -95,7 +106,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
-    
+
       {/* Product Details */}
       <div className="product-details container">
         <div className="row">
@@ -155,22 +166,8 @@ const ProductDetails = () => {
               dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
             ></p>
             <div className="price text-3xl pt-4 font-semiBold">
-              {/* {isSoldOut ? (
-                <>
-                  <span className="text-danger text-decoration-line-through">
-                    {selectedVariant.compareAtPrice.currencyCode}{" "}
-                    {selectedVariant.compareAtPrice.amount}
-                  </span>
-                  <span className="text-success ms-2">
-                    {selectedVariant.price.currencyCode}{" "}
-                    {selectedVariant.price.amount}
-                  </span>
-                  <span className="badge bg-success ms-2">Sale</span>
-                </>
-              ) : ( */}
               <span>
-                {selectedVariant?.price.currencyCode}{" "}
-                {selectedVariant?.price.amount}
+                {currency} {handleAmountChange(selectedVariant?.price.amount)}
               </span>
               {/* )} */}
             </div>
