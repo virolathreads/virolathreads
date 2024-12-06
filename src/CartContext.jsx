@@ -11,16 +11,13 @@ export const CartProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
 
-  const [countryLog, setCountryLog] = useState(
-    localStorage.getItem("Virolacountry") || "NG"
-  );
   const [loads, setLoads] = useState(false);
 
   const [quantity, setQuantity] = useState(1);
   const [currency, setCurrency] = useState(
     localStorage.getItem("Virolacurrency") || "NGN"
   );
-  const [isCartOpen, setIsCartOpen] = useState(false);
+
   const [checkoutId, setCheckoutId] = useState(
     localStorage.getItem("checkoutId")
   );
@@ -36,16 +33,20 @@ export const CartProvider = ({ children }) => {
         );
         const data = await response.json();
         if (data) {
-          if (data.country === "NG") {
-            localStorage.setItem("Virolacurrency", "NGN");
-            setCurrency("NGN");
-            setCountryLog(data.country);
-            localStorage.setItem("Virolacountry", data.country);
-          } else {
+          if (localStorage.getItem("Virolacurrency") === "GBP") {
             localStorage.setItem("Virolacurrency", "GBP");
             setCurrency("GBP");
-            setCountryLog(data.country);
-            localStorage.setItem("Virolacountry", data.country);
+          } else if (localStorage.getItem("Virolacurrency") === "NGN") {
+            localStorage.setItem("Virolacurrency", "NGN");
+            setCurrency("NGN");
+          } else {
+            if (data.country === "NG") {
+              localStorage.setItem("Virolacurrency", "NGN");
+              setCurrency("NGN");
+            } else {
+              localStorage.setItem("Virolacurrency", "GBP");
+              setCurrency("GBP");
+            }
           }
         }
       } catch (error) {
@@ -186,18 +187,9 @@ export const CartProvider = ({ children }) => {
   const handleAmountChange = (amount) => {
     if (currency === "NGN") {
       const finalAmount = amount * 2300;
-      return finalAmount.toLocaleString(undefined, {
-    
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
+      return finalAmount;
     } else {
-      return amount.toLocaleString(undefined, {
-        style: "currency",
-     
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
+      return amount;
     }
   };
   if (loads) {
@@ -259,8 +251,6 @@ export const CartProvider = ({ children }) => {
         handleCurrencyChange,
         currency,
         handleAmountChange,
-
-        countryLog,
       }}
     >
       {children}

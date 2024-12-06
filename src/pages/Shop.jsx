@@ -22,9 +22,7 @@ export default function Shop() {
     if (products.length > 0) {
       const maxProductPrice = Math.max(
         ...products.map((prod) =>
-          parseFloat(
-            handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
-          )
+          parseFloat(prod.variants.edges[0]?.node.price.amount || 0)
         )
       );
       setMaxPrice(maxProductPrice);
@@ -38,9 +36,7 @@ export default function Shop() {
 
   // Filter products by price range
   const filteredProducts = sortedProduct.filter((prod) => {
-    const price = parseFloat(
-      handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
-    );
+    const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
     return price >= priceRange[0] && price <= priceRange[1];
   });
 
@@ -82,7 +78,7 @@ export default function Shop() {
 
     const filteredProductPrice = sortedBlogs.filter((prod) => {
       const price = parseFloat(
-        handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+      prod.variants.edges[0]?.node.price.amount || 0
       );
       return price >= priceRange[0] && price <= priceRange[1];
     });
@@ -176,12 +172,14 @@ export default function Shop() {
                           </div>
                           <span>
                             {/* {prod.variants.edges[0].node.availableForSale  } */}
-                            {prod.variants.edges[0].node.price.amount.toLocaleString(
-                              undefined,
-                              {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              }
+                            {handleAmountChange(
+                              prod.variants.edges[0].node.price.amount.toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )
                             )}{" "}
                             {/* {prod.variants.edges[0].node.price.currencyCode} */}
                             {currency}
@@ -301,13 +299,13 @@ export default function Shop() {
                   <div className="price-range-slider">
                     <label>
                       Min Price: {currency === "NGN" ? "NGN" : "GBP"}{" "}
-                      {priceRange[0]}
+                      {handleAmountChange(priceRange[0])}
                       <input
                         type="range"
                         name="min"
                         min="0"
-                        max={maxPrice}
-                        value={priceRange[0]}
+                        max={handleAmountChange(maxPrice)}
+                        value={handleAmountChange(priceRange[0])}
                         onChange={handlePriceChange}
                       />
                     </label>
@@ -318,8 +316,8 @@ export default function Shop() {
                         type="range"
                         name="max"
                         min="0"
-                        max={maxPrice}
-                        value={priceRange[1]}
+                        ax={handleAmountChange(maxPrice)}
+                        value={handleAmountChange(priceRange[1])}
                         onChange={handlePriceChange}
                       />
                     </label>

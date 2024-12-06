@@ -9,14 +9,22 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 export default function Cart() {
   const navigate = useNavigate();
 
-  const { cart, setCart, checkoutId, setLoad, load } = useCart();
+  const {
+    cart,
+    setCart,
+    checkoutId,
+    setLoad,
+    load,
+    currency,
+    handleAmountChange,
+  } = useCart();
   // Fetch cart data
   useEffect(() => {
     setLoad(true);
     shopifyClient.checkout.fetch(checkoutId).then((fetchedCart) => {
       console.log(fetchedCart);
       setCart(fetchedCart);
-      setLoad(false)
+      setLoad(false);
     });
   }, [checkoutId]);
 
@@ -171,8 +179,11 @@ export default function Cart() {
                         {/* Total Price */}
                         <td className="px-6 py-4">
                           <span className="text-2xl font-medium text-gray-800">
-                            {item.variant.price.currencyCode}{" "}
-                            {item.variant.price.amount.toLocaleString()}
+                            {/* {item.variant.price.currencyCode}{" "} */}
+                            {currency}{" "}
+                            {handleAmountChange(
+                              item.variant.price.amount
+                            ).toLocaleString()}
                           </span>
                         </td>
                       </tr>
@@ -220,10 +231,10 @@ export default function Cart() {
                         </p>
                       </span>
                       <span className="text-2xl text-gray-800">
-                        {item.variant?.price?.currencyCode || "N/A"}{" "}
-                        {(
+                        {currency || "N/A"}{" "}
+                        {handleAmountChange(
                           (item.variant?.price?.amount || 0) *
-                          (item.quantity || 0)
+                            (item.quantity || 0)
                         ).toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -237,8 +248,10 @@ export default function Cart() {
                     Total:
                   </span>
                   <span className="text-3xl font-semibold text-gray-900">
-                    {cart?.currencyCode || "N/A"}{" "}
-                    {(cart?.totalPrice?.amount || 0).toLocaleString(undefined, {
+                    {currency || "N/A"}{" "}
+                    {handleAmountChange(
+                      cart?.totalPrice?.amount || 0
+                    ).toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
