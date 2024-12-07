@@ -175,7 +175,10 @@ export default function Cart() {
                             {currency}{" "}
                             {handleAmountChange(
                               item.variant.price.amount
-                            ).toLocaleString()}
+                            ).toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
                           </span>
                         </td>
                       </motion.tr>
