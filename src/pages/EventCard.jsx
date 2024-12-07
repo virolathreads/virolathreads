@@ -127,20 +127,22 @@ export default function EventSlider() {
                 }}
               >
                 <motion.button
-                  style={{
-                    padding: "1rem 2rem",
-                    backgroundColor: "#65867c",
-                    color: "#ffffff",
-                    border: "none",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    fontSize: "1.5rem",
-                    transition: "all 0.3s",
-                  }}
+                  // style={{
+                  //   padding: "1rem 2rem",
+                  //   backgroundColor: "#65867c",
+                  //   color: "#ffffff",
+                  //   border: "none",
+                  //   borderRadius: "5px",
+                  //   cursor: "pointer",
+                  //   fontSize: "1.5rem",
+                  //   transition: "all 0.3s",
+                  // }}
                   whileHover={{
-                    scale: 1.1,
-                    backgroundColor: "#4e6b5e",
+                    // scale: 1.1,
+                    color: "#4e6b5e",
+                    backgroundColor: "#fff",
                   }}
+                  className="btn"
                 >
                   <a
                     href="/events"

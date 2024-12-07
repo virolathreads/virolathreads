@@ -53,12 +53,14 @@ export default function ContactForm() {
       <div class="row ">
         <div class="col-xl-12">
           <div class="small-tittle mb-30">
-            <h2>Contact</h2>
+          <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
+        Contact
+      </h4>
           </div>
         </div>
       </div>
       <form id="contact-form" onSubmit={handleSubmit}>
-        <div class="row">
+        <div class="row ">
           <div class="col-lg-12">
             <div class="form-box user-icon mb-15">
               <input
@@ -80,7 +82,7 @@ export default function ContactForm() {
             </div>
           </div>
           <div class="col-lg-12">
-            <div class="form-box message-icon mb-15">
+            <div class="form-box email-icon mb-15">
               <textarea
                 name="message"
                 id="message"

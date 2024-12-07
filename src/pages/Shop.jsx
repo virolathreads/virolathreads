@@ -22,7 +22,9 @@ export default function Shop() {
     if (products.length > 0) {
       const maxProductPrice = Math.max(
         ...products.map((prod) =>
-          parseFloat(prod.variants.edges[0]?.node.price.amount || 0)
+          parseFloat(
+            handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+          )
         )
       );
       setMaxPrice(maxProductPrice);
@@ -36,7 +38,9 @@ export default function Shop() {
 
   // Filter products by price range
   const filteredProducts = sortedProduct.filter((prod) => {
-    const price = parseFloat(prod.variants.edges[0]?.node.price.amount || 0);
+    const price = parseFloat(
+      handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+    );
     return price >= priceRange[0] && price <= priceRange[1];
   });
 
@@ -78,7 +82,7 @@ export default function Shop() {
 
     const filteredProductPrice = sortedBlogs.filter((prod) => {
       const price = parseFloat(
-      prod.variants.edges[0]?.node.price.amount || 0
+        handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
       );
       return price >= priceRange[0] && price <= priceRange[1];
     });
@@ -287,19 +291,15 @@ export default function Shop() {
             {/* Sidebar */}
             <div className="col-xl-3 col-lg-3 col-md-4 order-2 sm:order-1">
               <div className="blog_right_sidebar">
-                <SearchBar setQuery={setQuery} />
-                <ShopCategory
-                  setItem={setItem}
-                  setTag={setTag}
-                  currentProducts={sortedProduct}
-                />
                 {/* Price Filter */}
-                <div className="price-filter mt-4">
-                  <h5>Filter by Price</h5>
+                <aside className="single_sidebar_widget post_category_widget">
+                  <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
+                    Filter by Price
+                  </h4>
+
                   <div className="price-range-slider">
-                    <label>
-                      Min Price: {currency === "NGN" ? "NGN" : "GBP"}{" "}
-                      {handleAmountChange(priceRange[0])}
+                    <label className="font-light">
+                      Min Price: {currency} {handleAmountChange(priceRange[0])}
                       <input
                         type="range"
                         name="min"
@@ -309,20 +309,25 @@ export default function Shop() {
                         onChange={handlePriceChange}
                       />
                     </label>
-                    <label>
-                      Max Price: {currency === "NGN" ? "NGN" : "GBP"}{" "}
-                      {priceRange[1]}
+                    <label className="font-light">
+                      Max Price: {currency} {priceRange[1]}
                       <input
                         type="range"
                         name="max"
                         min="0"
-                        ax={handleAmountChange(maxPrice)}
+                        max={handleAmountChange(maxPrice)}
                         value={handleAmountChange(priceRange[1])}
                         onChange={handlePriceChange}
                       />
                     </label>
                   </div>
-                </div>
+                </aside>
+                <SearchBar setQuery={setQuery} />
+                <ShopCategory
+                  setItem={setItem}
+                  setTag={setTag}
+                  currentProducts={sortedProduct}
+                />
 
                 <RecentProducts
                   lifoItems={sortedProduct.slice(0, 3)}

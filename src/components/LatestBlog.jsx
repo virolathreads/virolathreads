@@ -37,7 +37,7 @@ export default function LatestBlog() {
               <div class="location-details">
                 <p>
                   <a href="/blog/sdNkpYPS5ufzioNZwLKL">
-                    The Impact of Fashion on Self-Expression
+                    {"The Impact of Fashion on Self-Expression".toUpperCase()}
                     {/* <br />  */}
                   </a>
                 </p>

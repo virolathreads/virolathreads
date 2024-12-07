@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function ShopCategory({ setItem, setTag, currentProducts }) {
+  const [activeTag, setActiveTag] = useState(null); // State to track active tag
+
   // Extract and count tags
   const tagCount =
     currentProducts &&
@@ -18,9 +20,9 @@ export default function ShopCategory({ setItem, setTag, currentProducts }) {
 
   // Handle tag selection
   const handleTagClick = (tag) => {
-
     setTag(tag); // Update the current selected tag
     setItem(tag);
+    setActiveTag(tag); // Update the active tag
   };
 
   return (
@@ -33,14 +35,33 @@ export default function ShopCategory({ setItem, setTag, currentProducts }) {
           <li key={index}>
             <a
               href="#"
-              className="d-flex justify-between"
+              className={`d-flex justify-between ${
+                activeTag === tagObj.tag ? "active" : ""
+              }`}
               onClick={(e) => {
                 e.preventDefault();
                 handleTagClick(tagObj?.tag);
               }}
+              style={{
+                color: activeTag === tagObj.tag ? "#fff" : "#2d2d2d",
+                backgroundColor:
+                  activeTag === tagObj.tag ? "#65867c" : "transparent",
+                padding: "5px 10px",
+                borderRadius: "5px",
+              }}
             >
-              <p style={{ marginRight: "auto" }}>{tagObj?.tag.toUpperCase()}</p>
-              <p>({tagObj.count})</p>
+              <p
+                style={{
+                  marginRight: "auto",
+                  color: activeTag === tagObj.tag ? "#fff" : "#2d2d2d",
+                }}
+              >
+                {tagObj?.tag.toUpperCase()}
+              </p>
+              <p style={{
+          
+                  color: activeTag === tagObj.tag ? "#fff" : "#2d2d2d",
+                }}>({tagObj.count})</p>
             </a>
           </li>
         ))}

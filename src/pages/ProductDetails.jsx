@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
 import DOMPurify from "dompurify";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,9 +13,7 @@ import PreLoader from "@/lib/PreLoader";
 const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-
   const [mainImage, setMainImage] = useState("");
-
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
@@ -53,12 +52,9 @@ const ProductDetails = () => {
 
   const incrementQuantity = () => setQuantity(quantity + 1);
   const decrementQuantity = () => setQuantity(Math.max(1, quantity - 1));
-
   const handleBack = () => navigate(-1);
   const ck = product?.variants?.edges.find((variant) => variant); // Returns the first variant
-
   const cks = ck?.node.selectedOptions.map((opt) => opt);
-
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image?.src || mainImage);
@@ -66,24 +62,13 @@ const ProductDetails = () => {
     setSelectedSize(variant.option2);
   };
 
-  if (loader) {
-    // return (
-    //   <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
-    //     <p>
-    //       <Skeleton count={10} />
-    //     </p>
-    //   </SkeletonTheme>
-    // );
-    <PreLoader />;
-  }
-
   const isSoldOut = product?.variants?.edges[0]?.node.availableForSale;
-
   const sanitizedDescription = DOMPurify.sanitize(product?.description || "");
-
-  const handleClick = () => {
-    navigate(`/cart`);
-  };
+  const handleClick = () => navigate(`/cart`);
+  console.log(productId, products);
+  if (!products && loader) {
+    return <PreLoader />;
+  }
 
   return (
     <Layout>
@@ -94,11 +79,11 @@ const ProductDetails = () => {
             <div className="col-lg-12">
               <nav aria-label="breadcrumb ">
                 <ol className="breadcrumb justify-content-start pt-12">
-                  <li className="breadcrumb-item " onClick={handleBack}>
+                  {/* <li className="breadcrumb-item " >
                     <FaArrowLeft />
-                  </li>
-                  <li className="breadcrumb-item active" aria-current="page">
-                    Go Back
+                  </li> */}
+                  <li className="breadcrumb-item active font-medium" aria-current="page" style={{cursor: "pointer"}} onClick={handleBack}>
+                 {"<"}   Go Back
                   </li>
                 </ol>
               </nav>
@@ -108,7 +93,17 @@ const ProductDetails = () => {
       </div>
 
       {/* Product Details */}
-      <div className="product-details container">
+      <motion.div
+        className="product-details container"
+        initial={{ x: "100%", opacity: 0 }} // Start position
+        animate={{ x: 0, opacity: 1 }} // End position
+        transition={{
+          type: "spring",
+          stiffness: 50,
+          damping: 15,
+          duration: 1.5,
+        }}
+      >
         <div className="row">
           {/* Product Images */}
           <div className="col-lg-6">
@@ -119,21 +114,6 @@ const ProductDetails = () => {
                 className="img-fluid border max-h-[auto] md:max-h-[auto] w-auto object-fit rounded "
               />
             </div>
-            {/* {product.media
-              ? product.media
-                  .filter((media) => media.mediaContentType === "VIDEO")
-                  .map((video, index) => (
-                    <div key={video.id || index}>
-                      <video
-                        controls
-                        width="400"
-                        src={video.sources[0]?.url || ""}
-                      >
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  ))
-              : "no"} */}
             <div className="thumbnail-gallery d-flex gap-2 pb-96">
               {product?.images?.edges.map((img, index) => (
                 <img
@@ -169,7 +149,6 @@ const ProductDetails = () => {
               <span>
                 {currency} {handleAmountChange(selectedVariant?.price.amount)}
               </span>
-              {/* )} */}
             </div>
             {!isSoldOut && (
               <span className="badge bg-danger ms-2">Sold Out</span>
@@ -221,7 +200,6 @@ const ProductDetails = () => {
             ) : (
               <p className="text-lg text-red-600">No options available</p>
             )}
-
             {/* Quantity */}
             <p className="mt-8 text-2xl pb-3">Quantity</p>
             <div className="d-flex align-items-center gap-2">
@@ -239,29 +217,22 @@ const ProductDetails = () => {
                 +
               </button>
             </div>
-
             {/* Add to Cart */}
             <button
               onClick={() =>
                 isSoldOut && addToCart(product?.variants?.edges[0]?.node.id)
               }
-              // onClick={() => addToCart(product.variants.edges[0]?.node.id)}
               className="border-2 border-[#000] text-[#000] font-bold py-4 mt-10 w-[80%]"
-              // disabled={isSoldOut}
             >
               {!isSoldOut ? "Sold Out" : "Add to Cart"}
             </button>
-
             {/* Buy Now */}
             <button
               className="text-[#fff] w-[80%] mt-10 font-semibold py-4 bg-[#000] "
               onClick={() => handleClick()}
             >
               Proceed to Checkout
-            </button>
-
-            {/* Product Description */}
-
+            </button>{" "}
             {/* Social Share */}
             <p className="text-2xl pb-2 pt-20">Share on:</p>
             <div className="social-share mt-4 text-4xl flex flex-row items-center gap-4">
@@ -309,7 +280,7 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Layout>
   );
 };

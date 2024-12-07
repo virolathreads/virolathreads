@@ -154,24 +154,18 @@ function BlogDetails() {
           </div>
         </div>
         <section class="blog_area single-post-area section-padding">
-          <button
-            className="text-xl widget_title font-light"
-            onClick={handleBack}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
+          <li
+            className="breadcrumb-item active font-medium px-24 justify-content-start"
+            aria-current="page"
+            style={{ cursor: "pointer", 
+              paddingBottom: "32px",
 
-              padding: "10px 15px",
-              // backgroundColor: "#007BFF",
-              color: "#000",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
             }}
+            onClick={handleBack}
           >
-            <FaArrowLeft /> GO BACK
-          </button>
+            {"<"} Go Back
+          </li>
+
           <div class="container">
             <div class="row">
               <div class="col-lg-8 posts-list">

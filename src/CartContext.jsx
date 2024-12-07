@@ -33,19 +33,19 @@ export const CartProvider = ({ children }) => {
         );
         const data = await response.json();
         if (data) {
-          if (localStorage.getItem("Virolacurrency") === "GBP") {
-            localStorage.setItem("Virolacurrency", "GBP");
-            setCurrency("GBP");
+          if (localStorage.getItem("Virolacurrency") === "£") {
+            localStorage.setItem("Virolacurrency", "£");
+            setCurrency("£");
           } else if (localStorage.getItem("Virolacurrency") === "NGN") {
             localStorage.setItem("Virolacurrency", "NGN");
-            setCurrency("NGN");
+            setCurrency("₦");
           } else {
             if (data.country === "NG") {
-              localStorage.setItem("Virolacurrency", "NGN");
-              setCurrency("NGN");
+              localStorage.setItem("Virolacurrency", "₦");
+              setCurrency("₦");
             } else {
-              localStorage.setItem("Virolacurrency", "GBP");
-              setCurrency("GBP");
+              localStorage.setItem("Virolacurrency", "£");
+              setCurrency("£");
             }
           }
         }
@@ -185,7 +185,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const handleAmountChange = (amount) => {
-    if (currency === "NGN") {
+    if (currency === "₦") {
       const finalAmount = amount * 2300;
       return finalAmount;
     } else {

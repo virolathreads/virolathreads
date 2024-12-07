@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { categories } from "../mocks/mocks";
 
 export default function Category({ setItem, setTag, currentProducts }) {
-  console.log(currentProducts);
+  const [activeCategory, setActiveCategory] = useState(null); // State to track active category
 
   const categoryCount =
     currentProducts &&
@@ -16,8 +16,6 @@ export default function Category({ setItem, setTag, currentProducts }) {
     .sort((a, b) => b[1] - a[1]) // Sort by count in descending order
     .map(([category, count]) => ({ category, count }));
 
-  console.log(sortedCategories);
-
   return (
     <aside className="single_sidebar_widget post_category_widget">
       <h4 className="widget_title" style={{ color: "#2d2d2d" }}>
@@ -28,14 +26,65 @@ export default function Category({ setItem, setTag, currentProducts }) {
           <li key={index}>
             <a
               href="#"
-              className="d-flex"
-              onClick={() => {
+              className={`d-flex ${
+                activeCategory === category.category ? "active" : ""
+              }`}
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default link behavior
                 setItem(category.category);
                 setTag(category.category);
+                setActiveCategory(category.category); // Update the active category
+              }}
+              style={{
+                color:
+                  activeCategory === category.category ? "#ffffff" : "#2d2d2d",
+                backgroundColor:
+                  activeCategory === category.category
+                    ? "#65867c"
+                    : "transparent",
+                padding: "5px 10px",
+                borderRadius: "5px",
               }}
             >
-              <p>{category.category}</p>
-              <p>({category.count})</p>
+              <div
+                style={{
+                  marginRight: "auto",
+                  color:
+                    activeCategory === category.category
+                      ? "#ffffff"
+                      : "#2d2d2d",
+                }}
+              >
+                <p
+                  style={{
+                    color:
+                      activeCategory === category.category
+                        ? "#ffffff"
+                        : "#2d2d2d",
+                  }}
+                >
+                  {category.category}
+                </p>
+              </div>
+              <div
+                style={{
+                  color:
+                    activeCategory === category.category
+                      ? "#ffffff"
+                      : "#2d2d2d",
+                }}
+              >
+                <p
+                  style={{
+                    color:
+                      activeCategory === category.category
+                        ? "#ffffff"
+                        : "#2d2d2d",
+                  }}
+                >
+                  ({category.count})
+                </p>
+              </div>
             </a>
           </li>
         ))}
