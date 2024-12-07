@@ -173,12 +173,7 @@ export default function Cart() {
                         <td className="px-6 py-4">
                           <span className="text-2xl font-medium text-gray-800">
                             {currency}{" "}
-                            {handleAmountChange(
-                              item.variant.price.amount
-                            ).toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
+                            {handleAmountChange(item.variant.price.amount)}
                           </span>
                         </td>
                       </motion.tr>
@@ -229,10 +224,7 @@ export default function Cart() {
                         {handleAmountChange(
                           (item.variant?.price?.amount || 0) *
                             (item.quantity || 0)
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
+                        )}
                       </span>
                     </div>
                   ))}
@@ -243,12 +235,7 @@ export default function Cart() {
                   </span>
                   <span className="text-3xl font-semibold text-gray-900">
                     {currency || "N/A"}{" "}
-                    {handleAmountChange(
-                      cart?.totalPrice?.amount || 0
-                    ).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                    {handleAmountChange(cart?.totalPrice?.amount || 0)}
                   </span>
                 </div>
                 <button

@@ -189,7 +189,10 @@ export const CartProvider = ({ children }) => {
   const handleAmountChange = (amount) => {
     if (currency === "₦") {
       const finalAmount = amount * 2300;
-      return finalAmount;
+      return finalAmount.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
     } else {
       return amount;
     }

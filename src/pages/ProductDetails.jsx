@@ -156,13 +156,7 @@ const ProductDetails = () => {
             ></p>
             <div className="price text-3xl pt-4 font-semiBold">
               <span>
-                {currency}{" "}
-                {handleAmountChange(
-                  selectedVariant?.price.amount
-                ).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                {currency} {handleAmountChange(selectedVariant?.price.amount)}
               </span>
             </div>
             {!isSoldOut && (
