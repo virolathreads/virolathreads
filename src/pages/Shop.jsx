@@ -179,13 +179,13 @@ export default function Shop() {
                             <p>{prod.description}</p>
                           </div>
                           <span>
+                            {currency}
                             {handleAmountChange(
                               prod.variants.edges[0].node.price.amount
                             ).toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })}
-                            {currency}
                           </span>
                         </div>
                       </div>
@@ -425,13 +425,13 @@ export default function Shop() {
                                   <p>{prod.description}</p>
                                 </div>
                                 <span>
+                                  {currency}
                                   {handleAmountChange(
                                     prod.variants.edges[0].node.price.amount
                                   ).toLocaleString(undefined, {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,
                                   })}
-                                  {currency}
                                 </span>
                               </div>
                             </div>
