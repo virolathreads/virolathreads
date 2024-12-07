@@ -12,12 +12,12 @@ import LoginLayout from "@/layouts/LoginLayout";
 import { Upload } from "./Upload";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db, firestore, storage } from "../firebaseConfig";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { toast } from "react-toastify";
 import { Button } from "@/components/ui/button";
 import { deleteObject, ref } from "firebase/storage";
 import { Edit } from "./Edit";
 import CommentTable from "./CommentTable";
+import PreLoader from "@/lib/PreLoader";
 
 export function BlogList() {
   const access = sessionStorage.getItem("virolatoken");
@@ -104,11 +104,7 @@ export function BlogList() {
   };
   if (!blogs) {
     return (
-      <SkeletonTheme baseColor="#f5f5f5" highlightColor="#e0e0e0">
-        <div className="p-6">
-          <Skeleton count={6} height={40} />
-        </div>
-      </SkeletonTheme>
+    <PreLoader />
     );
   }
 

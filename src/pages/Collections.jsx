@@ -32,7 +32,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".1s"
-              onClick={() => handleClick()}
+              onClick={() => handleClick("bridal")}
             >
               <div class="popular-img">
                 <img
@@ -55,7 +55,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".2s"
-              onClick={() => handleClick()}
+              onClick={() => handleClick("modern")}
             >
               <div class="popular-img">
                 <img
@@ -79,7 +79,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".6s"
-              onClick={() => handleClick()}
+              onClick={() => handleClick("afro")}
             >
               <div class="popular-img">
                 <img
@@ -121,9 +121,9 @@ function Collections() {
             </div>
           </div>
         </div>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center  hover:text-[#fff]">
           <div class="room-btn my-20">
-            <a href="/shop" class="border-btn">
+            <a href="/shop" class="border-btn boxed-btn">
               Browse More
             </a>
           </div>

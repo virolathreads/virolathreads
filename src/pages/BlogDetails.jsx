@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DOMPurify from "dompurify";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../layouts/Layout";
-import { FaArrowLeft } from "react-icons/fa";
 import CommentForm from "@/components/CommentForm";
 import RecentPost from "@/components/RecentPost";
 import Newsletter from "@/components/Newsletter";
@@ -17,6 +16,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db, firestore } from "./firebaseConfig";
+import PreLoader from "@/lib/PreLoader";
 
 function BlogDetails() {
   const { id } = useParams();
@@ -120,16 +120,7 @@ function BlogDetails() {
 
   const sanitizedContent = DOMPurify.sanitize(product.content);
   if (!product) {
-    return (
-      <div>
-        {" "}
-        <SkeletonTheme baseColor="#ffffff" highlightColor="#a33e21">
-          <p>
-            <Skeleton count={40} />
-          </p>
-        </SkeletonTheme>
-      </div>
-    );
+    return <PreLoader />;
   }
 
   return (
@@ -157,10 +148,7 @@ function BlogDetails() {
           <li
             className="breadcrumb-item active font-medium px-24 justify-content-start"
             aria-current="page"
-            style={{ cursor: "pointer", 
-              paddingBottom: "32px",
-
-            }}
+            style={{ cursor: "pointer", paddingBottom: "32px" }}
             onClick={handleBack}
           >
             {"<"} Go Back

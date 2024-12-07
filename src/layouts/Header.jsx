@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Menu, X, ShoppingCart, User2Icon } from "lucide-react";
-import Cart from "@/pages/Cart";
 import { motion } from "framer-motion";
 import {
   DropdownMenu,
@@ -8,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { useCart } from "@/CartContext";
 import { useUser } from "@/hooks/useUser";
 
@@ -28,18 +26,28 @@ export default function Header() {
     handleCurrencyChange(value);
     setIsOpen(false);
   };
+
   useEffect(() => {
     if (Array.isArray(cart && cart.lineItems)) {
-      // Calculate the total quantity of all items in the cart
       const totalQuantity =
         cart &&
         cart.lineItems.reduce((acc, item) => acc + (item.quantity || 0), 0);
-
-      setCount(totalQuantity); // Update the count state
+      setCount(totalQuantity);
     } else {
-      setCount(0); // If cart is not an array, set count to 0
+      setCount(0);
     }
   }, [cart]);
+
+  // Animation Variants
+  const menuItemVariants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0 },
+  };
+
+  const staggeredMenu = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } },
+  };
 
   return (
     <header className="bg-white shadow-sm">
@@ -47,23 +55,23 @@ export default function Header() {
         <div className="sticky top-0 bg-white">
           <div className="container mx-auto px-4">
             <div className="flex justify-left items-center h-32">
-              {/* Logo */}
               <div className="d-flex">
                 <a href="/">
                   <img
                     src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731457982/ef3tnweirfwsvvd1djwc.png"
                     alt="Logo"
-                    className="h-auto w-96" // Adjust height for mobile
+                    className="h-auto w-96"
                   />
                 </a>
               </div>
-              <div className="flex-1 flex items-center justify-center  ">
+
+              <div className="flex-1 flex items-center justify-center">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="p-3 font-light underline   shadow-none text-2xl  text-gray-800 hover:text-gray-600 flex items-center justify-between w-auto">
+                    <button className="p-3 font-light underline shadow-none text-2xl text-gray-800 hover:text-gray-600 flex items-center justify-between w-auto">
                       {currency === "₦"
-                        ? "NIGERIA | (NGN) ₦"
-                        : "UNITED KINGDOM | (GBP) £"}
+                        ? "NIGERIA    (NGN) ₦"
+                        : "UNITED KINGDOM   (GBP) £"}
                       <svg
                         className="w-6 h-6 ml-2"
                         xmlns="http://www.w3.org/2000/svg"
@@ -82,83 +90,65 @@ export default function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="z-10 w-56 mt-2 shadow-md bg-white rounded-md">
                     <motion.ul
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={staggeredMenu}
                     >
                       <DropdownMenuItem
                         onClick={() => handleSelection("₦")}
                         className="p-3 text-lg font-semibold text-gray-800 hover:bg-gray-100 cursor-pointer"
                       >
-                        Nigeria | (NGN) ₦
+                        <motion.div variants={menuItemVariants}>
+                          Nigeria | (NGN) ₦
+                        </motion.div>
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => handleSelection("£")}
                         className="p-3 text-lg font-semibold text-gray-800 hover:bg-gray-100 cursor-pointer"
                       >
-                        United Kingdom | (GBP) £
+                        <motion.div variants={menuItemVariants}>
+                          United Kingdom | (GBP) £
+                        </motion.div>
                       </DropdownMenuItem>
                     </motion.ul>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
 
-              {/* Right Section - Navigation, Social, and Cart */}
-              <div className="flex-1 flex items-center text-2xl justify-end">
-                {/* Desktop Navigation */}
-
+              <div className="flex-1 flex items-center justify-end">
                 <nav className="hidden lg:block mr-8">
-                  <ul className="flex space-x-8">
-                    <li>
-                      <a
-                        href="/"
-                        className="text-gray-700 hover:text-blue-600 font-normal"
-                      >
-                        HOME
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/shop"
-                        className="text-gray-700 hover:text-blue-600 font-normal"
-                      >
-                        SHOP
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/about"
-                        className="text-gray-700 hover:text-blue-600 font-normal"
-                      >
-                        ABOUT
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/blog"
-                        className="text-gray-700 hover:text-blue-600 font-normal"
-                      >
-                        BLOG
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/contact"
-                        className="text-gray-700 hover:text-blue-600 font-normal"
-                      >
-                        CONTACT
-                      </a>
-                    </li>
-                  </ul>
+                  <motion.ul
+                    className="flex space-x-8"
+                    initial="hidden"
+                    animate="visible"
+                    variants={staggeredMenu}
+                  >
+                    {[
+                      { name: "HOME", href: "/" },
+                      { name: "SHOP", href: "/shop" },
+                      { name: "ABOUT", href: "/about" },
+                      { name: "BLOG", href: "/blog" },
+                      { name: "CONTACT", href: "/contact" },
+                    ].map((item, index) => (
+                      <motion.li key={index} variants={menuItemVariants}>
+                        <a
+                          href={item.href}
+                          className="text-gray-700 hover:text-blue-600 text-wrap font-normal"
+                        >
+                          {item.name}
+                        </a>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
                 </nav>
 
-                {/* Social Icons and Cart */}
-                <div className="flex items-center space-x-6 text-2xl font-semibold">
+                <div className="flex items-center space-x-6">
                   <a
                     href="/login"
                     className="text-gray-400 hover:text-blue-500"
                   >
-                    <User2Icon className="h-10 w-10" />
+                    <User2Icon className="h-10 w-10 color-[#65867c]" />
                   </a>
                   <div className="hidden md:flex space-x-4">
                     <a
@@ -186,7 +176,7 @@ export default function Header() {
                         />
                         <span className="absolute -top-2 -right-2 h-5 w-5 bg-[#65867c] text-[#fff] rounded-full flex items-center justify-center text-xs">
                           {count || "0"}
-                        </span>
+                        </span>{" "}
                       </button>
                     </div>
                   </div>

@@ -3,9 +3,12 @@ import Layout from "../layouts/Layout";
 import { useNavigate } from "react-router-dom";
 import SearchBar from "@/components/SearchBar";
 import ContactForm from "@/components/ContactForm";
+import { motion } from "framer-motion";
+
 import RecentProducts from "@/components/RecentProducts";
 import { useCart } from "@/CartContext";
 import ShopCategory from "@/components/ShopCategory";
+import { FaBagShopping } from "react-icons/fa6";
 
 export default function Shop() {
   const navigate = useNavigate();
@@ -65,7 +68,7 @@ export default function Shop() {
   const handlePriceChange = (e) => {
     const { value, name } = e.target;
     const newRange = [...priceRange];
-    newRange[name === "min" ? 0 : 1] = parseFloat(value);
+    newRange[name === "min" ? 0 : 1] = parseFloat(handleAmountChange(value));
     setPriceRange(newRange);
     setCurrentPage(1); // Reset to the first page after filtering
   };
@@ -118,10 +121,17 @@ export default function Shop() {
                     }
                     return false; // This product does not match the query
                   })
-                  .map((prod) => (
-                    <div
+                  .map((prod, index) => (
+                    <motion.div
                       key={prod.id}
                       className="col-xl-4 col-lg-4 col-md-6 col-sm-6"
+                      initial={{ x: index % 2 === 0 ? -200 : 200, opacity: 0 }} // Initial position (left for even, right for odd)
+                      animate={{ x: 0, opacity: 1 }} // Final position (slide to 0)
+                      transition={{
+                        type: "spring",
+                        stiffness: 50,
+                        delay: index * 0.1,
+                      }} // Delay each element slightly
                     >
                       <div className="single-new-arrival mb-50 text-center">
                         <div
@@ -134,16 +144,10 @@ export default function Shop() {
                             alt={prod.images.edges[0]?.node.altText}
                             width={100}
                           />
-
-                          {/* <img
-                                  src={prod.images.edges.image[0].node.src}
-                                  alt=""
-                                /> */}
                           <div
                             className="favorit-items"
                             onClick={(e) => {
                               e.stopPropagation(); // Prevent navigation
-
                               addToCart(prod?.variants?.edges[0]?.node.id);
                             }}
                           >
@@ -163,7 +167,7 @@ export default function Shop() {
                           <p
                             className={
                               !prod?.variants?.edges[0]?.node.availableForSale
-                                ? "badge bg-danger ms-2  text-[#000]"
+                                ? "badge bg-danger ms-2 text-[#000]"
                                 : "badge bg-info ms-2 text-[#000]"
                             }
                           >
@@ -175,22 +179,17 @@ export default function Shop() {
                             <p>{prod.description}</p>
                           </div>
                           <span>
-                            {/* {prod.variants.edges[0].node.availableForSale  } */}
                             {handleAmountChange(
-                              prod.variants.edges[0].node.price.amount.toLocaleString(
-                                undefined,
-                                {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                }
-                              )
-                            )}{" "}
-                            {/* {prod.variants.edges[0].node.price.currencyCode} */}
+                              prod.variants.edges[0].node.price.amount
+                            ).toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
                             {currency}
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))
               ) : (
                 <p>No products found in this price range.</p>
@@ -358,10 +357,20 @@ export default function Shop() {
                           }
                           return false; // This product does not match the query
                         })
-                        .map((prod) => (
-                          <div
+                        .map((prod, index) => (
+                          <motion.div
                             key={prod.id}
                             className="col-xl-4 col-lg-4 col-md-6 col-sm-6"
+                            initial={{
+                              x: index % 2 === 0 ? -200 : 200,
+                              opacity: 0,
+                            }} // Initial position (left for even, right for odd)
+                            animate={{ x: 0, opacity: 1 }} // Final position (slide to 0)
+                            transition={{
+                              type: "spring",
+                              stiffness: 50,
+                              delay: index * 0.1,
+                            }} // Delay each element slightly
                           >
                             <div className="single-new-arrival mb-50 text-center">
                               <div
@@ -374,26 +383,23 @@ export default function Shop() {
                                   alt={prod.images.edges[0]?.node.altText}
                                   width={100}
                                 />
-
-                                {/* <img
-                                  src={prod.images.edges.image[0].node.src}
-                                  alt=""
-                                /> */}
                                 <div
                                   className="favorit-items"
                                   onClick={(e) => {
                                     e.stopPropagation(); // Prevent navigation
-
                                     addToCart(
                                       prod?.variants?.edges[0]?.node.id
                                     );
                                   }}
                                 >
                                   <span className="flaticon-heart"></span>
-                                  <img
+                                  {/* <img
                                     src="assets/img/gallery/favorit-card.png"
                                     alt=""
-                                  />
+                                  /> */}
+                                  <div className="bag-icon-container">
+                                    <FaBagShopping />
+                                  </div>
                                 </div>
                               </div>
                               <div className="popular-caption">
@@ -406,7 +412,7 @@ export default function Shop() {
                                   className={
                                     !prod?.variants?.edges[0]?.node
                                       .availableForSale
-                                      ? "badge bg-danger ms-2  text-[#000]"
+                                      ? "badge bg-danger ms-2 text-[#000]"
                                       : "badge bg-info ms-2 text-[#000]"
                                   }
                                 >
@@ -419,22 +425,17 @@ export default function Shop() {
                                   <p>{prod.description}</p>
                                 </div>
                                 <span>
-                                  {/* {prod.variants.edges[0].node.availableForSale  } */}
                                   {handleAmountChange(
                                     prod.variants.edges[0].node.price.amount
                                   ).toLocaleString(undefined, {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,
-                                  })}{" "}
-                                  {/* {
-                                    prod.variants.edges[0].node.price
-                                      .currencyCode
-                                  } */}
+                                  })}
                                   {currency}
                                 </span>
                               </div>
                             </div>
-                          </div>
+                          </motion.div>
                         ))
                     ) : (
                       <p>No products found in this price range.</p>

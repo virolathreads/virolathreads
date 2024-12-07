@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 
-// Example image data 
+// Example image data
 const sliderData = [
   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581263/1731144144261_d97xed.png",
   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582471/1731157979871_wnnwiv.png",
@@ -42,13 +42,13 @@ const HeroSlider = () => {
           }}
         >
           {[
-            ...sliderData, 
-            ...sliderData, 
-            ...sliderData, 
-            ...sliderData, 
-            ...sliderData
+            ...sliderData,
+            ...sliderData,
+            ...sliderData,
+            ...sliderData,
+            ...sliderData,
           ].map((image, index) => (
-            <img
+            <motion.img
               key={index}
               src={image}
               alt={`Slide ${index}`}
@@ -59,6 +59,14 @@ const HeroSlider = () => {
                 marginRight: "1rem",
                 flexShrink: 0,
                 objectFit: "cover",
+              }}
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1.0, opacity: 1 }}
+              exit={{  opacity: 0 }}
+              transition={{
+                duration: 1.5,
+                delay: index * 0.1,
+                ease: "easeInOut",
               }}
             />
           ))}
@@ -83,44 +91,7 @@ const HeroSlider = () => {
             pointerEvents: "none",
           }}
         >
-          <div className="container">
-            <div className="row justify-content-center">
-              <div className="col-xl-8 col-lg-9">
-                <div className="hero__caption">
-                  {/* <h1
-                   style={{ fontSize: "70px" }}
-                    // style={{
-                    //   fontSize: "clamp(30px, 6vw, 60px)",
-                    //   color: "white",
-                    //   textShadow: "2px 2px 4px rgba(0,0,0,0.5)"
-                    // }}
-                  >
-                    Style
-                    <br />
-                    That
-                    <br />
-                    Speaks
-                  </h1> */}
-                  {/* <a
-                    href="/shop"
-                    className="btn"
-                    // style={{
-                    //   pointerEvents: "auto",
-                    //   backgroundColor: "white",
-                    //   color: "black",
-                    //   padding: "10px 20px",
-                    //   textDecoration: "none",
-                    //   borderRadius: "5px",
-                    //   display: "inline-block",
-                    //   marginTop: "20px",
-                    // }}
-                  >
-                    SHOP NOW
-                  </a> */}
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* You can add overlay content here */}
         </div>
       </div>
     </div>

@@ -2,6 +2,121 @@
 .white-bg {
   background: #ffffff;
 }
+/* Custom style for the "Go to Cart" button */
+.swal-btn-confirm {
+  background-color: #65867c; /* Button color */
+  border-color: #65867c; /* Border color */
+  color: white; /* Text color */
+}
+
+.swal-btn-confirm:hover {
+  background-color: #4e6b61; /* Darker shade for hover effect */
+  border-color: #4e6b61; /* Darker border color on hover */
+}
+
+/* Optional: Custom style for the "Continue Shopping" button */
+.swal-btn-cancel {
+  background-color: #ccc; /* Light grey background */
+  border-color: #bbb; /* Grey border */
+  color: black; /* Text color */
+}
+
+/* Style the track of the slider */
+input[type="range"] {
+  -webkit-appearance: none; /* Remove default styling for Webkit browsers */
+  -moz-appearance: none; /* Remove default styling for Firefox */
+  appearance: none; /* Remove default styling for other browsers */
+  width: 100%; /* Full width */
+  height: 8px; /* Height of the track */
+  background: #65867c; /* Set track color to #65867c */
+  border-radius: 5px; /* Round edges for the track */
+  outline: none; /* Remove outline */
+}
+
+/* Style the thumb (handle) of the slider */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styling for Webkit browsers */
+  height: 20px; /* Thumb height */
+  width: 20px; /* Thumb width */
+  background: #65867c; /* Set thumb color to #65867c */
+  border-radius: 50%; /* Round thumb */
+  cursor: pointer; /* Pointer cursor */
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+/* Style the thumb for Firefox */
+input[type="range"]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  background: #65867c; /* Set thumb color to #65867c */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Style the thumb for Edge */
+input[type="range"]::-ms-thumb {
+  height: 20px;
+  width: 20px;
+  background: #65867c; /* Set thumb color to #65867c */
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Optional: Change the track color on hover */
+/* Ensure high specificity */
+div.category-area input[type="range"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: #65867c;
+  border-radius: 5px;
+  outline: none;
+}
+.bag-icon-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* Set the width of the circle */
+  height: 40px; /* Set the height of the circle */
+  border-radius: 50%; /* Make the container circular */
+  background-color: white; /* White background for the circle */
+  padding: 5px; /* Optional padding to adjust the icon's positioning */
+}
+
+.bag-icon-container svg {
+  color: #65867c; /* Change the color of the bag icon */
+  width: 24px; /* Icon width */
+  height: 24px; /* Icon height */
+}
+
+/* Ensure thumb styling is applied with higher specificity */
+div.category-area input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  background: #65867c;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+input[type="range"]:hover {
+  background: #506a5f; /* Darker shade for hover effect */
+}
+
+/* Optional: Change the thumb color on hover */
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #506a5f; /* Darker shade for thumb on hover */
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  background: #506a5f; /* Darker shade for thumb on hover */
+}
+
+input[type="range"]::-ms-thumb:hover {
+  background: #506a5f; /* Darker shade for thumb on hover */
+}
 
 /* Mobile view: Display rows as block */
 @media (max-width: 768px) {
@@ -390,7 +505,7 @@ hr {
   border-radius: 4px;
 }
 
-a:hover{
+a:hover {
   background: inherit !important;
   color: #65867c !important;
 }

@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion"; // Import Framer Motion
 import DOMPurify from "dompurify";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../layouts/Layout";
-import { FaArrowLeft } from "react-icons/fa";
-import shopifyClient from "./shopifyClient";
 import { useCart } from "@/CartContext";
 import { FaWhatsapp, FaXTwitter, FaFacebookF } from "react-icons/fa6";
 import PreLoader from "@/lib/PreLoader";
@@ -34,19 +31,26 @@ const ProductDetails = () => {
     setLoader(true);
     const selectedProduct =
       products && products.find((p) => p.title === productId);
-
-    if (selectedProduct) {
-      setProduct(selectedProduct);
-      setMainImage(selectedProduct.images.edges[0]?.node.src || "");
-      setSelectedVariant(selectedProduct?.variants?.edges[0]?.node); // Default to the first variant
-      setSelectedColor(
-        selectedProduct.variants.edges[0]?.node.selectedOptions[0]?.value || ""
-      ); // Default color
-      setSelectedSize(selectedProduct.variants.edges[0]?.node.option2 || ""); // Default size
-      setLoader(false);
-    } else {
-      console.warn("Product not found!");
-      setLoader(false);
+    try {
+      if (selectedProduct.title) {
+        setProduct(selectedProduct);
+        setMainImage(selectedProduct.images.edges[0]?.node.src || "");
+        setSelectedVariant(selectedProduct?.variants?.edges[0]?.node); // Default to the first variant
+        setSelectedColor(
+          selectedProduct.variants.edges[0]?.node.selectedOptions[0]?.value ||
+            ""
+        ); // Default color
+        setSelectedSize(selectedProduct.variants.edges[0]?.node.option2 || ""); // Default size
+        setLoader(false);
+      } else {
+        console.warn("Product not found!");
+        setLoader(false);
+      }
+    } catch (e) {
+      console.error("Error fetching product:", e);
+      // setLoader(false);
+      // navigate("/404");
+      return;
     }
   }, []);
 
@@ -65,8 +69,8 @@ const ProductDetails = () => {
   const isSoldOut = product?.variants?.edges[0]?.node.availableForSale;
   const sanitizedDescription = DOMPurify.sanitize(product?.description || "");
   const handleClick = () => navigate(`/cart`);
-  console.log(productId, products);
-  if (!products && loader) {
+
+  if (!products && loader && !product) {
     return <PreLoader />;
   }
 
@@ -82,8 +86,13 @@ const ProductDetails = () => {
                   {/* <li className="breadcrumb-item " >
                     <FaArrowLeft />
                   </li> */}
-                  <li className="breadcrumb-item active font-medium" aria-current="page" style={{cursor: "pointer"}} onClick={handleBack}>
-                 {"<"}   Go Back
+                  <li
+                    className="breadcrumb-item active font-medium"
+                    aria-current="page"
+                    style={{ cursor: "pointer" }}
+                    onClick={handleBack}
+                  >
+                    {"<"} Go Back
                   </li>
                 </ol>
               </nav>
@@ -136,7 +145,7 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Info */}
-          <div className="col-lg-6 pb-16">
+          <div className="col-lg-6 pb-16" key={product?.id}>
             <p className="pt-12 uppercase text-xl pb-2"></p>
             <p className="text-5xl text-[#000] capitalize font-bold text-left">
               {product?.title}
@@ -147,7 +156,13 @@ const ProductDetails = () => {
             ></p>
             <div className="price text-3xl pt-4 font-semiBold">
               <span>
-                {currency} {handleAmountChange(selectedVariant?.price.amount)}
+                {currency}{" "}
+                {handleAmountChange(
+                  selectedVariant?.price.amount
+                ).toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
               </span>
             </div>
             {!isSoldOut && (

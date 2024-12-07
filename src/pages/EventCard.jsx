@@ -137,16 +137,12 @@ export default function EventSlider() {
                   //   fontSize: "1.5rem",
                   //   transition: "all 0.3s",
                   // }}
-                  whileHover={{
-                    // scale: 1.1,
-                    color: "#4e6b5e",
-                    backgroundColor: "#fff",
-                  }}
-                  className="btn"
+                 
+                  class="button button-contactForm boxed-btn hover:text-white"
                 >
                   <a
                     href="/events"
-                    style={{ color: "white", textDecoration: "none" }}
+                    style={{ textDecoration: "none" }}
                   >
                     Register Now
                   </a>

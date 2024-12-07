@@ -10,6 +10,8 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState();
   const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
+  const [tag, setTag] = useState("");
+  const [item, setItem] = useState("all");
 
   const [loads, setLoads] = useState(false);
 
@@ -221,6 +223,10 @@ export const CartProvider = ({ children }) => {
           showCancelButton: true,
           confirmButtonText: "Go to Cart",
           cancelButtonText: "Continue Shopping",
+          customClass: {
+            confirmButton: "swal-btn-confirm",
+            cancelButton: "swal-btn-cancel",
+          },
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.href = "/cart"; // Navigate to cart page
