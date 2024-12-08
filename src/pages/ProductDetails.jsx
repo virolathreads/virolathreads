@@ -16,6 +16,7 @@ const ProductDetails = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
   const navigate = useNavigate();
 
   const { addToCart, setQuantity, quantity } = useCart();
@@ -29,9 +30,11 @@ const ProductDetails = () => {
         if (selectedProduct) {
           setProduct(selectedProduct);
           setMainImage(selectedProduct.images[0]?.src || "");
-          setSelectedVariant(selectedProduct.variants[0]);
-          setSelectedColor(selectedProduct.variants[0]?.option1 || "");
-          setSelectedSize(selectedProduct.variants[0]?.option2 || "");
+          const initialVariant = selectedProduct.variants[0];
+          setSelectedVariant(initialVariant);
+          setSelectedColor(initialVariant?.option1 || "");
+          setSelectedSize(initialVariant?.option2 || "");
+          setSelectedGender(initialVariant?.option3 || "");
         } else {
           console.warn("Product not found!");
         }
@@ -49,16 +52,22 @@ const ProductDetails = () => {
   const decrementQuantity = () => setQuantity(Math.max(1, quantity - 1));
 
   const handleBack = () => navigate(-1);
-  const ck = product?.variants.find((variant) => variant);
 
-  const cks = ck?.selectedOptions.map((opt) => opt);
+  const handleVariantChange = (optionName, value) => {
+    const updatedVariant = product.variants.find(
+      (variant) =>
+        variant.option1 === (optionName === "Color" ? value : selectedColor) &&
+        variant.option2 === (optionName === "Size" ? value : selectedSize) &&
+        variant.option3 === (optionName === "Gender" ? value : selectedGender)
+    );
 
-  console.log("this is", cks);
-  const handleVariantChange = (variant) => {
-    setSelectedVariant(variant);
-    setMainImage(variant.image?.src || mainImage);
-    setSelectedColor(variant.option1);
-    setSelectedSize(variant.option2);
+    if (updatedVariant) {
+      setSelectedVariant(updatedVariant);
+      setMainImage(updatedVariant.image?.src || mainImage);
+      if (optionName === "Color") setSelectedColor(value);
+      if (optionName === "Size") setSelectedSize(value);
+      if (optionName === "Gender") setSelectedGender(value);
+    }
   };
 
   if (loading) {
@@ -84,54 +93,14 @@ const ProductDetails = () => {
     product.descriptionHtml || ""
   );
 
-  // Share to social media function
-  const handleShare = (platform) => {
-    const url = window.location.href;
-    const title = product?.title || "Check out this product!";
-
-    if (platform === "whatsapp") {
-      window.open(
-        `https://wa.me/?text=${encodeURIComponent(
-          title
-        )}%20${encodeURIComponent(url)}`,
-        "_blank"
-      );
-    } else if (platform === "facebook") {
-      window.open(
-        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          url
-        )}`,
-        "_blank"
-      );
-    } else if (platform === "twitter") {
-      window.open(
-        `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-          url
-        )}&text=${encodeURIComponent(title)}`,
-        "_blank"
-      );
-    }
-  };
-
-  const handleClick = () => {
-    navigate(`/cart`);
-  };
-
-  const Moyo =
-    cks &&
-    cks.map((opt) => {
-      return opt.name;
-    });
-
-  console.log(Moyo);
-
   const handleAddToCart = () => {
     if (selectedVariant) {
       addToCart(
         selectedVariant.id,
         quantity,
-        selectedColor || selectedVariant.option1, // Use the selected color if available
-        selectedSize || selectedVariant.option2 // Use the selected size if available
+        selectedColor,
+        selectedSize,
+        selectedGender
       );
     }
   };
@@ -170,10 +139,10 @@ const ProductDetails = () => {
                 className="img-fluid border max-h-[auto] md:max-h-[auto] w-auto object-fit rounded "
               />
             </div>
-            <div className="thumbnail-gallery d-flex gap-2 pb-40">
+            <div className="thumbnail-gallery d-flex gap-2 pb-96">
               {product.images.map((img) => (
                 <img
-                  key={img.src} // Use img.src or img.id for a unique key
+                  key={img.src}
                   src={img.src}
                   alt={`Gallery ${img.src}`}
                   className={`thumbnail img-fluid border ${
@@ -192,87 +161,91 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Info */}
-          <div className="col-lg-6 pb-16">
-            <p className="pt-4 uppercase text-xl pb-2"></p>
+          <div className="col-lg-6 pt-16 pb-[5rem]">
             <p className="text-5xl text-[#000] capitalize font-bold text-left">
-              {product.title}
+              {product?.title}
             </p>
             <p
               className="mt-10 text-3xl"
               dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
             ></p>
-            <div className="price text-3xl pt-4 font-semiBold">
+            <div className="price">
               {isOnSale ? (
                 <>
                   <span className="text-danger text-decoration-line-through">
-                    {selectedVariant.compareAtPrice.currencyCode}{" "}
-                    {selectedVariant.compareAtPrice.amount}
+                    {selectedVariant.compareAtPrice?.currencyCode}{" "}
+                    {selectedVariant.compareAtPrice?.amount}
                   </span>
                   <span className="text-success ms-2">
-                    {selectedVariant.price.currencyCode}{" "}
-                    {selectedVariant.price.amount}
+                    {selectedVariant.price?.currencyCode}{" "}
+                    {selectedVariant.price?.amount}
                   </span>
-                  <span className="badge bg-success ms-2">Sale</span>
                 </>
               ) : (
                 <span>
-                  {selectedVariant.price.currencyCode}{" "}
-                  {selectedVariant.price.amount}
+                  {selectedVariant.price?.currencyCode}{" "}
+                  {selectedVariant.price?.amount}
                 </span>
               )}
             </div>
-            {isSoldOut && (
-              <span className="badge bg-danger ms-2">Sold Out</span>
-            )}
-            {cks?.length ? (
-              cks.map((option) => (
-                <div key={option.name} className="pt-8">
-                  {" "}
-                  {option.name !== "Title" && (
-                    <p className="text-3xl pb-3">{option.name}</p>
-                  )}
-                  {option.name !== "Color" &&
-                    option.name !== "Size" &&
-                    option.name !== "Title" && <p>{option.value}</p>}
-                  {option.name === "Color" && (
-                    <div className="color-options">
-                      <button
-                        key={option.value}
-                        className="rounded-full"
-                        style={{
-                          backgroundColor: option.value,
-                          width: "25px",
-                          height: "25px",
-                          border:
-                            selectedColor === option.value
-                              ? "2px solid #000"
-                              : "border solid #000 5px",
-                          text: "none",
-                          fontSize: "1px",
-                          color: option.value,
-                        }}
-                        onClick={() => handleVariantChange(option.value)}
-                      >
-                        {option.value}
-                      </button>
-                      <p>{option.value}</p>
-                    </div>
-                  )}
-                  {option.name === "Size" && (
-                    <select
-                      key={option.value}
-                      value={selectedSize}
-                      onChange={(e) => handleVariantChange(e.target.value)}
-                      disabled={isSoldOut}
-                    >
-                      <option value={option.value}>{option.value}</option>
-                    </select>
-                  )}
-                </div>
-              ))
+            {isSoldOut && <span className="badge bg-danger">Sold Out</span>}
+
+            {/* Color Options */}
+            {/* <div>
+              <p>Color</p>
+              <div className="d-flex gap-2">
+                {product.options[0].values.map((color) => (
+                  <button
+                    key={color}
+                    style={{
+                      backgroundColor: color,
+                      width: "25px",
+                      height: "25px",
+                      border:
+                        selectedColor === color
+                          ? "2px solid #000"
+                          : "1px solid #ccc",
+                    }}
+                    onClick={() => handleVariantChange("Color", color)}
+                  ></button>
+                ))}
+              </div>
+            </div> */}
+
+            {/* Size Options */}
+            {product.options[0].name === "Size" ? (
+              <div className="pt-8">
+                <p className="text-3xl">{product.options[0].name}</p>
+                <select
+                  value={selectedSize}
+                  onChange={(e) => handleVariantChange("Size", e.target.value)}
+                  disabled={isSoldOut}
+                  className="mt-4"
+                >
+                  {product.options[0].values.map((size) => (
+                    <option value={size.value}>{size.value}</option>
+                  ))}
+                </select>
+              </div>
             ) : (
-              <p className="text-lg text-red-600">No options available</p>
+              ""
             )}
+
+            {/* Gender Options */}
+            {/* <div>
+              <p>Gender</p>
+              <select
+                value={selectedGender}
+                onChange={(e) => handleVariantChange("Gender", e.target.value)}
+                disabled={isSoldOut}
+              >
+                {product.options[2].values.map((gender) => (
+                  <option key={gender} value={gender}>
+                    {gender}
+                  </option>
+                ))}
+              </select>
+            </div> */}
 
             {/* Quantity */}
             <p className="mt-8 text-2xl pb-3">Quantity</p>
@@ -291,25 +264,13 @@ const ProductDetails = () => {
                 +
               </button>
             </div>
-
             {/* Add to Cart */}
             <button
-              // onClick={() =>
-              //   !isSoldOut &&
-              //   addToCart(
-              //     selectedVariant.id,
-              //     quantity,
-              //     selectedColor,
-              //     selectedSize
-              //   )
-              // }
-              onClick={handleAddToCart}
+              onClick={() => isSoldOut && handleAddToCart}
               className="border-2 border-[#000] text-[#000] font-bold py-4 mt-10 w-[80%]"
-              disabled={isSoldOut}
             >
-              {isSoldOut ? "Sold Out" : "Add to Cart"}
+              {!isSoldOut ? "Sold Out" : "Add to Cart"}
             </button>
-
             {/* Buy Now */}
             <button
               className="text-[#fff] w-[80%] mt-10 font-semibold py-4 bg-[#000] "
