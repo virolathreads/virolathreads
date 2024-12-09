@@ -36,11 +36,11 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582470/1731157997456_ym91xn.png"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762524/image0_2_ncv4ht.jpg"
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS22</span>
+                  <span>SS23</span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
@@ -59,11 +59,11 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581262/1731143198289_2_imcc54.png"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762531/image0_jyb7u2.jpg"
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS23 </span>
+                  <span>SS24 </span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
@@ -83,11 +83,11 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582683/1731141487560_tpoclu.png"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762817/image1_2_krxilt.jpg"
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS24 </span>
+                  <span>SS25 </span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
@@ -106,7 +106,7 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581263/1731144144261_d97xed.png"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762819/image1_gwehh4.jpg"
                   alt=""
                 />
                 <div class="img-cap">

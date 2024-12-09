@@ -2,12 +2,23 @@ import React from "react";
 import { motion } from "framer-motion";
 
 // Example image data
+// const sliderData = [
+//   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581263/1731144144261_d97xed.png",
+//   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582471/1731157979871_wnnwiv.png",
+//   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582470/1731157997456_ym91xn.png",
+//   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582477/1731158528565_o6lahu.png",
+//   "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582480/1731159377755_ccditd.png",
+// ];
+
 const sliderData = [
-  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731581263/1731144144261_d97xed.png",
-  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582471/1731157979871_wnnwiv.png",
-  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582470/1731157997456_ym91xn.png",
-  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582477/1731158528565_o6lahu.png",
-  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1731582480/1731159377755_ccditd.png",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762524/image0_2_ncv4ht.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762531/image0_jyb7u2.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762817/image1_2_krxilt.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762819/image1_gwehh4.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762524/image0_2_ncv4ht.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762531/image0_jyb7u2.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762817/image1_2_krxilt.jpg",
+  "https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762819/image1_gwehh4.jpg",
 ];
 
 const HeroSlider = () => {
@@ -62,7 +73,7 @@ const HeroSlider = () => {
               }}
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1.0, opacity: 1 }}
-              exit={{  opacity: 0 }}
+              exit={{ opacity: 0 }}
               transition={{
                 duration: 1.5,
                 delay: index * 0.1,
