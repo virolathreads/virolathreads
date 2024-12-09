@@ -4,11 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 function Collections() {
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate(`/shop`);
+
+  const handleClick = (tag) => {
+    console.log(`Navigating to tag: ${tag}`);
+    navigate(`/shop`, {state: {tag}});
+    // navigate(`/shop?collection=${encodeURIComponent(collection)}`);
   };
+
   return (
-    <div class="popular-items  pt-50">
+    <div class="popular-items pt-50">
       <motion.h2
         style={{
           textAlign: "center",
@@ -42,11 +46,6 @@ function Collections() {
                 <div class="img-cap">
                   <span>SS22</span>
                 </div>
-                {/* <div class="favorit-items">
-                  <a href="/shop" class="btn">
-                    Shop Now
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>
@@ -63,13 +62,8 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS23 </span>
+                  <span>SS23</span>
                 </div>
-                {/* <div class="favorit-items">
-                  <a href="/shop" class="btn">
-                    Shop Now
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>
@@ -87,13 +81,8 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS24 </span>
+                  <span>SS24</span>
                 </div>
-                {/* <div class="favorit-items">
-                  <a href="/shop" class="btn">
-                    Shop Now
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>
@@ -102,7 +91,7 @@ function Collections() {
               class="single-popular-items mb-50 text-center wow fadeInUp"
               data-wow-duration="1s"
               data-wow-delay=".6s"
-              onClick={() => handleClick()}
+              onClick={() => handleClick("All")}
             >
               <div class="popular-img">
                 <img
@@ -110,13 +99,8 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>All Collections </span>
+                  <span>All Collections</span>
                 </div>
-                {/* <div class="favorit-items">
-                  <a href="/shop" class="btn">
-                    Shop Now
-                  </a>
-                </div> */}
               </div>
             </div>
           </div>

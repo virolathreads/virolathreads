@@ -125,7 +125,10 @@ export default function Cart() {
                           <div className="flex items-center space-x-4">
                             <img
                               className="h-20 w-20 rounded-md object-cover"
-                              src={item.variant.image?.src}
+                              src={
+                                item.variant?.image?.src ||
+                                "/path/to/placeholder.jpg"
+                              }
                               alt={item.title}
                             />
                             <div>
@@ -134,7 +137,7 @@ export default function Cart() {
                               </h3>
                               <p className="text-2xl text-gray-500">
                                 Color:{" "}
-                                {item.variant.selectedOptions.find(
+                                {item.variant?.selectedOptions?.find(
                                   (opt) => opt.name === "Color"
                                 )?.value || ""}
                               </p>
