@@ -13,15 +13,24 @@ export default function ShopCategory({ setItem, setTag, currentProducts }) {
       return acc;
     }, {});
 
+  // Calculate total product count
+  const totalProductCount = currentProducts.length;
+
   // Sort tags by count in descending order
   const sortedTags = Object.entries(tagCount || {})
     .sort((a, b) => b[1] - a[1])
     .map(([tag, count]) => ({ tag, count }));
 
+  // Add the "All" tag at the top
+  const tagsWithAll = [
+    { tag: "all", count: totalProductCount },
+    ...sortedTags,
+  ];
+
   // Handle tag selection
   const handleTagClick = (tag) => {
     setTag(tag); // Update the current selected tag
-    setItem(tag);
+    setItem(tag === "all" ? null : tag); // Show all products if "All" is clicked, otherwise filter by the tag
     setActiveTag(tag); // Update the active tag
   };
 
@@ -31,7 +40,7 @@ export default function ShopCategory({ setItem, setTag, currentProducts }) {
         Category
       </h4>
       <ul className="list cat-list">
-        {sortedTags.map((tagObj, index) => (
+        {tagsWithAll.map((tagObj, index) => (
           <li key={index}>
             <a
               href="#"
@@ -58,10 +67,13 @@ export default function ShopCategory({ setItem, setTag, currentProducts }) {
               >
                 {tagObj?.tag.toUpperCase()}
               </p>
-              <p style={{
-          
+              <p
+                style={{
                   color: activeTag === tagObj.tag ? "#fff" : "#2d2d2d",
-                }}>({tagObj.count})</p>
+                }}
+              >
+                ({tagObj.count})
+              </p>
             </a>
           </li>
         ))}

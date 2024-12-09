@@ -59,12 +59,33 @@ const ProductDetails = () => {
   const handleBack = () => navigate(-1);
   const ck = product?.variants?.edges.find((variant) => variant); // Returns the first variant
   const cks = ck?.node.selectedOptions.map((opt) => opt);
+
   const handleVariantChange = (variant) => {
     setSelectedVariant(variant);
     setMainImage(variant.image?.src || mainImage);
     setSelectedColor(variant.option1);
     setSelectedSize(variant.option2);
   };
+
+  const handleSizeSelect = (size, variantId) => {
+    setSelectedSize(size);
+    setSelectedVariant(variantId); // Save the selected variant ID
+  };
+  const getSizes = (variants) => {
+    return variants?.edges.map((edge) => {
+      const sizeOption = edge.node.selectedOptions.find(
+        (opt) => opt.name === "Size"
+      );
+      return {
+        size: sizeOption ? sizeOption.value : null,
+        id: edge.node.id, // Store the variant ID for adding to cart later
+        price: edge.node.price.amount, // Store price for display
+        available: edge.node.availableForSale, // Check availability
+      };
+    });
+  };
+
+  const sizes = getSizes(product?.variants);
 
   const isSoldOut = product?.variants?.edges[0]?.node.availableForSale;
   const sanitizedDescription = DOMPurify.sanitize(product?.description || "");
@@ -73,6 +94,8 @@ const ProductDetails = () => {
   if (!products && loader && !product) {
     return <PreLoader />;
   }
+
+  console.log(product);
 
   return (
     <Layout>
@@ -186,7 +209,7 @@ const ProductDetails = () => {
                               : "border solid #000 5px",
                           text: "none",
                         }}
-                        onClick={() => handleVariantChange(option.value)}
+                        // onClick={() => handleVariantChange(option.value)}
                       >
                         {option.value}
                       </button>
@@ -194,15 +217,43 @@ const ProductDetails = () => {
                   )}
 
                   {option.name === "Size" && (
-                    <select
-                      value={selectedSize}
-                      onChange={(e) => handleVariantChange(e.target.value)}
-                      disabled={!isSoldOut}
-                    >
-                      <option key={i} value={option.value}>
-                        {option.value}
-                      </option>
-                    </select>
+                    //   <select
+                    //   value={selectedSize}
+                    //   onChange={(e) => handleVariantChange(e.target.value)}
+                    //   disabled={!isSoldOut}
+                    // >
+                    //   <option key={i} value={option.value}>
+                    //     {option.value}
+                    //   </option>
+                    // </select>
+                    <>
+                      {sizes.map((variant, index) => (
+                        <li key={index} style={{ margin: "5px 0" }}>
+                          <button
+                            disabled={!variant.available}
+                            onClick={() =>
+                              handleSizeSelect(variant.size, variant.id)
+                            }
+                            style={{
+                              padding: "10px 20px",
+                              backgroundColor:
+                                selectedSize === variant.size
+                                  ? "#65867c"
+                                  : "#f0f0f0",
+                              color:
+                                selectedSize === variant.size ? "#fff" : "#000",
+                              border: "1px solid #ccc",
+                              cursor: variant.available
+                                ? "pointer"
+                                : "not-allowed",
+                            }}
+                          >
+                            {variant.size}{" "}
+                            {variant.available ? "" : "(Out of Stock)"}
+                          </button>
+                        </li>
+                      ))}
+                    </>
                   )}
                 </div>
               ))

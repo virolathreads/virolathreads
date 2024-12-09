@@ -65,7 +65,7 @@ const Products = () => {
               {product.variants[0]?.price.amount}{" "}
               {product.variants[0]?.price.currencyCode}
             </p>
-            <button onClick={() => addToCart(product.variants[0].id)}>
+            <button onClick={() => addToCart(product?.variants[0].id)}>
               Add to Cart
             </button>
           </div>

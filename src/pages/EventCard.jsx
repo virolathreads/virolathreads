@@ -8,6 +8,7 @@ export default function EventSlider() {
       title: "Virola Threads Runway Debut",
       date: "6th of December 2024, 19:00 – 21:00",
       location: "Oriental Hotel, Victoria Island, Lagos, Nigeria",
+      type: "Past Events",
       image:
         "https://vorlane.com/wp-content/uploads/2024/10/101970s-disco-inspired-runway-scene-with-disco-balls-and-reflectors-creating-a-vibrant-glittery-atmosphere.webp",
     },
@@ -16,6 +17,7 @@ export default function EventSlider() {
       title: "Accra Fashion Fair 2024 || virola threads",
       date: "21st - 23rd of December 2024",
       location: "Ghana Dubai, Circle, Accra",
+      type: "Upcoming Events",
       image:
         "https://vorlane.com/wp-content/uploads/2024/10/101970s-disco-inspired-runway-scene-with-disco-balls-and-reflectors-creating-a-vibrant-glittery-atmosphere.webp",
     },
@@ -55,7 +57,7 @@ export default function EventSlider() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        Upcoming Events
+      {events[currentIndex].type}
       </motion.h2>
 
       {/* Event Slider */}
@@ -137,13 +139,10 @@ export default function EventSlider() {
                   //   fontSize: "1.5rem",
                   //   transition: "all 0.3s",
                   // }}
-                 
+
                   class="button button-contactForm boxed-btn hover:text-white"
                 >
-                  <a
-                    href="/events"
-                    style={{ textDecoration: "none" }}
-                  >
+                  <a href="/events" style={{ textDecoration: "none" }}>
                     Register Now
                   </a>
                 </motion.button>

@@ -12,6 +12,8 @@ export const CartProvider = ({ children }) => {
   const [load, setLoad] = useState(false);
   const [tag, setTag] = useState("");
   const [item, setItem] = useState("all");
+  const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
+  const [maxPrice, setMaxPrice] = useState(1000);
 
   const [loads, setLoads] = useState(false);
 
@@ -184,19 +186,37 @@ export const CartProvider = ({ children }) => {
   const handleCurrencyChange = (newCurrency) => {
     setCurrency(newCurrency);
     localStorage.setItem("Virolacurrency", newCurrency);
-  };
-
-  const handleAmountChange = (amount) => {
-    if (currency === "₦") {
-      const finalAmount = amount * 2300;
-      return finalAmount.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      });
-    } else {
-      return amount;
+    if (products.length > 0) {
+      const maxProductPrice = Math.max(
+        ...products.map((prod) =>
+          parseFloat(
+            handleAmountChange(prod.variants.edges[0]?.node.price.amount || 0)
+          )
+        )
+      );
+      setMaxPrice(maxProductPrice);
+      setPriceRange([0, maxProductPrice]);
     }
   };
+  const handleAmountChange = (amount) => {
+    if (amount == null || isNaN(amount)) {
+      console.error("Invalid amount:", amount);
+      return "Invalid amount";
+    }
+
+    if (currency === "₦") {
+      const finalAmount = amount * 2300;
+      return `${Number(finalAmount)
+        .toFixed(2)
+        .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
+    } else if (currency === "£") {
+      return `${Number(amount).toFixed(2)}`;
+    } else {
+      console.warn("Unsupported or default currency:", currency);
+      return amount.toFixed(2);
+    }
+  };
+
   if (loads) {
     return <PreLoader />;
   }
@@ -260,6 +280,10 @@ export const CartProvider = ({ children }) => {
         handleCurrencyChange,
         currency,
         handleAmountChange,
+        priceRange,
+        setPriceRange,
+        maxPrice,
+        setMaxPrice,
       }}
     >
       {children}

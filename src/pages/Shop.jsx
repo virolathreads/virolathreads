@@ -12,13 +12,21 @@ import { FaBagShopping } from "react-icons/fa6";
 
 export default function Shop() {
   const navigate = useNavigate();
-  const { addToCart, products, currency, handleAmountChange } = useCart();
+  const {
+    addToCart,
+    products,
+    currency,
+    handleAmountChange,
+    setMaxPrice,
+    setPriceRange,
+    priceRange,
+    maxPrice,
+  } = useCart();
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("");
   const [item, setItem] = useState("all");
-  const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
-  const [maxPrice, setMaxPrice] = useState(1000);
+
   const productsPerPage = 10;
 
   useEffect(() => {
