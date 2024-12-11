@@ -36,7 +36,7 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762524/image0_2_ncv4ht.jpg"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733947127/image2_h1ey7m.jpg"
                   alt=""
                 />
                 <div class="img-cap">
@@ -59,7 +59,7 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762531/image0_jyb7u2.jpg"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733947104/image0_ileal7.jpg"
                   alt=""
                 />
                 <div class="img-cap">
@@ -83,7 +83,7 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762817/image1_2_krxilt.jpg"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733947108/image1_eozutd.jpg"
                   alt=""
                 />
                 <div class="img-cap">
