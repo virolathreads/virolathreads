@@ -19,7 +19,7 @@ export const CartProvider = ({ children }) => {
 
   const [quantity, setQuantity] = useState(1);
   const [currency, setCurrency] = useState(
-    localStorage.getItem("Virolacurrency") || "NGN"
+    localStorage.getItem("Virolacurrency") || "£"
   );
 
   const [checkoutId, setCheckoutId] = useState(
@@ -40,8 +40,8 @@ export const CartProvider = ({ children }) => {
           if (localStorage.getItem("Virolacurrency") === "£") {
             localStorage.setItem("Virolacurrency", "£");
             setCurrency("£");
-          } else if (localStorage.getItem("Virolacurrency") === "NGN") {
-            localStorage.setItem("Virolacurrency", "NGN");
+          } else if (localStorage.getItem("Virolacurrency") === "₦") {
+            localStorage.setItem("Virolacurrency", "₦");
             setCurrency("₦");
           } else {
             if (data.country === "NG") {
@@ -204,13 +204,13 @@ export const CartProvider = ({ children }) => {
       return "Invalid amount";
     }
 
-    if (currency === "₦") {
-      const finalAmount = amount * 2300;
-      return `${Number(finalAmount)
+    if (currency === "£") {
+      const finalAmount = amount / 2300;
+      return `${Number(finalAmount).toFixed(2)}`;
+    } else if (currency === "₦") {
+      return `${Number(amount)
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
-    } else if (currency === "£") {
-      return `${Number(amount).toFixed(2)}`;
     } else {
       console.warn("Unsupported or default currency:", currency);
       return amount.toFixed(2);
