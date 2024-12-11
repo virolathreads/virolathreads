@@ -62,14 +62,6 @@ function App() {
             </Suspense>
           ),
         },
-        // {
-        //   path: "/shop/:category",
-        //   element: (
-        //     <Suspense fallback={<LoadingHelper />}>
-        //       <Shop />
-        //     </Suspense>
-        //   ),
-        // },
         {
           path: "/products",
           element: (

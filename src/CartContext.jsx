@@ -7,7 +7,16 @@ import PreLoader from "./lib/PreLoader";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState();
+  const [loader, setLoader] = useState(false);
+  const [load, setLoad] = useState(false);
+  const [tag, setTag] = useState("");
+  const [item, setItem] = useState("all");
+  const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
+  const [maxPrice, setMaxPrice] = useState(1000);
+
+  const [loads, setLoads] = useState(false);
+
   const [quantity, setQuantity] = useState(1);
   const [currency, setCurrency] = useState(
     localStorage.getItem("Virolacurrency") || "£"
@@ -17,6 +26,7 @@ export const CartProvider = ({ children }) => {
     localStorage.getItem("checkoutId")
   );
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
     async function fetchCountry() {
@@ -210,8 +220,7 @@ export const CartProvider = ({ children }) => {
   if (loads) {
     return <PreLoader />;
   }
-
-  const addToCart = (variantId, quantity) => {
+  const addToCart = (variantId) => {
     if (!checkoutId) {
       Swal.fire({
         title: "Error",
@@ -221,21 +230,15 @@ export const CartProvider = ({ children }) => {
       return;
     }
 
-    // const customAttributes = [];
-    // if (color) customAttributes.push({ key: "Color", value: color });
-    // if (size) customAttributes.push({ key: "Size", value: size });
-
     shopifyClient.checkout
       .addLineItems(checkoutId, [
         {
           variantId,
           quantity,
-          // customAttributes, // Add custom attributes here
         },
       ])
       .then((updatedCheckout) => {
-        setCart(updatedCheckout); // Update cart state
-
+        setCart(updatedCheckout);
         Swal.fire({
           title: "Added to Cart!",
           text: "The item has been added to your cart.",
@@ -243,11 +246,13 @@ export const CartProvider = ({ children }) => {
           showCancelButton: true,
           confirmButtonText: "Go to Cart",
           cancelButtonText: "Continue Shopping",
-          confirmButtonColor: "#65867c",
-          cancelButtonColor: "#d33",
+          customClass: {
+            confirmButton: "swal-btn-confirm",
+            cancelButton: "swal-btn-cancel",
+          },
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "/cart";
+            window.location.href = "/cart"; // Navigate to cart page
           }
         });
       })
@@ -255,14 +260,6 @@ export const CartProvider = ({ children }) => {
         console.error("Error adding to cart:", error);
       });
   };
-
-  useEffect(() => {
-    if (checkoutId) {
-      shopifyClient.checkout.fetch(checkoutId).then((fetchedCart) => {
-        setCart(fetchedCart);
-      });
-    }
-  }, [checkoutId]);
 
   return (
     <CartContext.Provider
@@ -294,4 +291,5 @@ export const CartProvider = ({ children }) => {
   );
 };
 
+// Custom Hook to use the Cart Context
 export const useCart = () => useContext(CartContext);
