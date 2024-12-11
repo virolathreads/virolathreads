@@ -14,6 +14,7 @@ const ProductDetails = () => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -216,6 +217,43 @@ const ProductDetails = () => {
                     </div>
                   )}
 
+                  {/* Size Options */}
+                  {product.options[0].name === "Size" ? (
+                    <div className="pt-8">
+                      <p className="text-3xl">{product.options[0].name}</p>
+                      <select
+                        value={selectedSize}
+                        onChange={(e) =>
+                          handleVariantChange("Size", e.target.value)
+                        }
+                        disabled={isSoldOut}
+                        className="mt-4"
+                      >
+                        {product.options[0].values.map((size) => (
+                          <option value={size.value}>{size.value}</option>
+                        ))}
+                      </select>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {/* Gender Options */}
+                  {/* <div>
+              <p>Gender</p>
+              <select
+                value={selectedGender}
+                onChange={(e) => handleVariantChange("Gender", e.target.value)}
+                disabled={isSoldOut}
+              >
+                {product.options[2].values.map((gender) => (
+                  <option key={gender} value={gender}>
+                    {gender}
+                  </option>
+                ))}
+              </select>
+            </div> */}
+
                   {option.name === "Size" && (
                     //   <select
                     //   value={selectedSize}
@@ -294,49 +332,28 @@ const ProductDetails = () => {
               Proceed to Checkout
             </button>{" "}
             {/* Social Share */}
-            <p className="text-2xl pb-2 pt-20">Share on:</p>
-            <div className="social-share mt-4 text-4xl flex flex-row items-center gap-4">
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                      window.location.href
-                    )}&text=${encodeURIComponent(
-                      `Check out this product: ${product.title}`
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaXTwitter />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      window.location.href
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaFacebookF />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://wa.me/?text=${encodeURIComponent(
-                      `Check this out: ${window.location.href}`
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaWhatsapp />
-              </button>
+            <div className="social-share pt-8">
+              <p className="text-3xl pb-3">Share this product</p>
+              <div className="d-flex gap-3">
+                <button
+                  onClick={() => handleShare("whatsapp")}
+                  className="share-icon"
+                >
+                  <FaWhatsapp size={24} />
+                </button>
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="share-icon"
+                >
+                  <FaFacebookF size={24} />
+                </button>
+                <button
+                  onClick={() => handleShare("twitter")}
+                  className="share-icon"
+                >
+                  <FaXTwitter size={24} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
