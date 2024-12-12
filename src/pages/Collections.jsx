@@ -36,11 +36,11 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733947127/image2_h1ey7m.jpg"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762524/image0_2_ncv4ht.jpg"
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS23</span>
+                  <span>SS21</span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
@@ -59,11 +59,11 @@ function Collections() {
             >
               <div class="popular-img">
                 <img
-                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733947104/image0_ileal7.jpg"
+                  src="https://res.cloudinary.com/dd0mdsb3h/image/upload/v1733762531/image0_jyb7u2.jpg"
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS24 </span>
+                  <span>SS23 </span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
