@@ -12,8 +12,12 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
-  const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
+  const [selectedVariantId, setSelectedVariantId] = useState("");
+
+  const [selectedColor, setSelectedColor] = useState("");
+
+  const [selectedGender, setSelectedGender] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -25,6 +29,7 @@ const ProductDetails = () => {
     setLoader,
     currency,
     handleAmountChange,
+    getSizes,
   } = useCart();
 
   useEffect(() => {
@@ -34,6 +39,9 @@ const ProductDetails = () => {
     try {
       if (selectedProduct.title) {
         setProduct(selectedProduct);
+
+        setSelectedVariantId(selectedProduct?.variants?.edges[0]?.node.id);
+
         setMainImage(selectedProduct.images.edges[0]?.node.src || "");
         setSelectedVariant(selectedProduct?.variants?.edges[0]?.node); // Default to the first variant
         setSelectedColor(
@@ -59,33 +67,17 @@ const ProductDetails = () => {
   const handleBack = () => navigate(-1);
   const ck = product?.variants?.edges.find((variant) => variant); // Returns the first variant
   const cks = ck?.node.selectedOptions.map((opt) => opt);
-
-  const handleVariantChange = (variant) => {
-    setSelectedVariant(variant);
-    setMainImage(variant.image?.src || mainImage);
-    setSelectedColor(variant.option1);
-    setSelectedSize(variant.option2);
-  };
+  const sizes = getSizes(product?.variants);
 
   const handleSizeSelect = (size, variantId) => {
     setSelectedSize(size);
-    setSelectedVariant(variantId); // Save the selected variant ID
-  };
-  const getSizes = (variants) => {
-    return variants?.edges.map((edge) => {
-      const sizeOption = edge.node.selectedOptions.find(
-        (opt) => opt.name === "Size"
-      );
-      return {
-        size: sizeOption ? sizeOption.value : null,
-        id: edge.node.id, // Store the variant ID for adding to cart later
-        price: edge.node.price.amount, // Store price for display
-        available: edge.node.availableForSale, // Check availability
-      };
-    });
+    setSelectedVariantId(variantId); // Save the selected variant ID
   };
 
-  const sizes = getSizes(product?.variants);
+  const handleColorSelect = (color, variantId) => {
+    setSelectedColor(color);
+    setSelectedVariantId(variantId); // Save the selected variant ID
+  };
 
   const isSoldOut = product?.variants?.edges[0]?.node.availableForSale;
   const sanitizedDescription = DOMPurify.sanitize(product?.description || "");
@@ -94,8 +86,6 @@ const ProductDetails = () => {
   if (!products && loader && !product) {
     return <PreLoader />;
   }
-
-  console.log(product);
 
   return (
     <Layout>
@@ -168,7 +158,7 @@ const ProductDetails = () => {
           </div>
 
           {/* Product Info */}
-          <div className="col-lg-6 pb-16" key={product?.id}>
+          <div className="col-lg-6 pb-16">
             <p className="pt-12 uppercase text-xl pb-2"></p>
             <p className="text-5xl text-[#000] capitalize font-bold text-left">
               {product?.title}
@@ -216,43 +206,49 @@ const ProductDetails = () => {
                     </div>
                   )}
 
+                  {/* Gender Options */}
+                  {/* <div>
+                    <p>Gender</p>
+                    <select
+                      value={selectedGender}
+                      onChange={(e) =>
+                        handleVariantChange("Gender", e.target.value)
+                      }
+                      disabled={isSoldOut}
+                    >
+                      {product?.options[2]?.values.map((gender) => (
+                        <option key={gender} value={gender}>
+                          {gender}
+                        </option>
+                      ))}
+                    </select>
+                  </div> */}
+
                   {option.name === "Size" && (
-                    //   <select
-                    //   value={selectedSize}
-                    //   onChange={(e) => handleVariantChange(e.target.value)}
-                    //   disabled={!isSoldOut}
-                    // >
-                    //   <option key={i} value={option.value}>
-                    //     {option.value}
-                    //   </option>
-                    // </select>
                     <>
-                      {sizes.map((variant, index) => (
-                        <li key={index} style={{ margin: "5px 0" }}>
-                          <button
+                      <select
+                        value={selectedSize} // Ensure `selectedSize` matches the selected value
+                        onChange={(e) => {
+                          const size = e.target.value;
+                          const id =
+                            e.target.options[
+                              e.target.selectedIndex
+                            ].getAttribute("data-id");
+                          handleSizeSelect(size, id);
+                        }}
+                      >
+                        {sizes.map((variant, index) => (
+                          <option
+                            key={index}
                             disabled={!variant.available}
-                            onClick={() =>
-                              handleSizeSelect(variant.size, variant.id)
-                            }
-                            style={{
-                              padding: "10px 20px",
-                              backgroundColor:
-                                selectedSize === variant.size
-                                  ? "#65867c"
-                                  : "#f0f0f0",
-                              color:
-                                selectedSize === variant.size ? "#fff" : "#000",
-                              border: "1px solid #ccc",
-                              cursor: variant.available
-                                ? "pointer"
-                                : "not-allowed",
-                            }}
+                            value={variant.size}
+                            data-id={variant.id} // Store the ID as a data attribute
                           >
                             {variant.size}{" "}
-                            {variant.available ? "" : "(Out of Stock)"}
-                          </button>
-                        </li>
-                      ))}
+                            {variant.available ? "" : "(Unavailable)"}
+                          </option>
+                        ))}
+                      </select>
                     </>
                   )}
                 </div>
@@ -279,9 +275,7 @@ const ProductDetails = () => {
             </div>
             {/* Add to Cart */}
             <button
-              onClick={() =>
-                isSoldOut && addToCart(product?.variants?.edges[0]?.node.id)
-              }
+              onClick={() => isSoldOut && addToCart(selectedVariantId)}
               className="border-2 border-[#000] text-[#000] font-bold py-4 mt-10 w-[80%]"
             >
               {!isSoldOut ? "Sold Out" : "Add to Cart"}
@@ -294,49 +288,28 @@ const ProductDetails = () => {
               Proceed to Checkout
             </button>{" "}
             {/* Social Share */}
-            <p className="text-2xl pb-2 pt-20">Share on:</p>
-            <div className="social-share mt-4 text-4xl flex flex-row items-center gap-4">
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                      window.location.href
-                    )}&text=${encodeURIComponent(
-                      `Check out this product: ${product.title}`
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaXTwitter />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      window.location.href
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaFacebookF />
-              </button>
-              <button
-                onClick={() =>
-                  window.open(
-                    `https://wa.me/?text=${encodeURIComponent(
-                      `Check this out: ${window.location.href}`
-                    )}`,
-                    "_blank"
-                  )
-                }
-                className=""
-              >
-                <FaWhatsapp />
-              </button>
+            <div className="social-share pt-8">
+              <p className="text-3xl pb-3">Share this product</p>
+              <div className="d-flex gap-3">
+                <button
+                  onClick={() => handleShare("whatsapp")}
+                  className="share-icon"
+                >
+                  <FaWhatsapp size={24} />
+                </button>
+                <button
+                  onClick={() => handleShare("facebook")}
+                  className="share-icon"
+                >
+                  <FaFacebookF size={24} />
+                </button>
+                <button
+                  onClick={() => handleShare("twitter")}
+                  className="share-icon"
+                >
+                  <FaXTwitter size={24} />
+                </button>
+              </div>
             </div>
           </div>
         </div>

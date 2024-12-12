@@ -11,6 +11,7 @@ export const CartProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
   const [tag, setTag] = useState("");
+  
   const [item, setItem] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -181,6 +182,7 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem("checkoutId", checkout.id);
       });
     }
+    
   }, [checkoutId]);
 
   const handleCurrencyChange = (newCurrency) => {
@@ -216,11 +218,28 @@ export const CartProvider = ({ children }) => {
       return amount.toFixed(2);
     }
   };
+  const getSizes = (variants) => {
+    return variants?.edges.map((edge) => {
+      const sizeOption = edge.node.selectedOptions.find(
+        (opt) => opt.name === "Size"
+      );
+
+      return {
+        size: sizeOption ? sizeOption.value : null,
+        id: edge.node.id, // Store the variant ID for adding to cart later
+        price: edge.node.price.amount, // Store price for display
+        available: edge.node.availableForSale, // Check availability
+      };
+    });
+  };
+
+ 
 
   if (loads) {
     return <PreLoader />;
   }
   const addToCart = (variantId) => {
+    console.log(variantId)
     if (!checkoutId) {
       Swal.fire({
         title: "Error",
@@ -284,6 +303,7 @@ export const CartProvider = ({ children }) => {
         setPriceRange,
         maxPrice,
         setMaxPrice,
+        getSizes,
       }}
     >
       {children}
