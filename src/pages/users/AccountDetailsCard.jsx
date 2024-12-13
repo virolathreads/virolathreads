@@ -71,7 +71,6 @@ export default function AccountDetailsCard() {
 
   return (
     <Layout>
-
       <section className="relative bg-cover bg-center min-h-screen flex items-center justify-center">
         {/* Video Background */}
         <video
@@ -155,13 +154,13 @@ export default function AccountDetailsCard() {
             >
               Edit Profile
             </a> */}
-            {/* <a
+            <a
               href="/"
-              onClick={localStorage.clear()}
+              onClick={() => localStorage.clear()}
               className=" btn w-full py-3 text-lg font-semibold text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
             >
               LOG OUT
-            </a> */}
+            </a>
           </div>
         </div>
       </section>
