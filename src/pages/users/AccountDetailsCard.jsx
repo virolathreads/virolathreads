@@ -29,12 +29,12 @@ export default function AccountDetailsCard() {
     if (user?.newsletter !== undefined) {
       setIsSubscribed(user.newsletter);
     }
-    // if (!localStorage.getItem("user.email")) {
-    //   setTimeout(() => {
-    //     window.location.href = "/login";
-    //   }, 3000);
-    //   toast.info("Please login to view your account details");
-    // }
+    if (!localStorage.getItem("user.email")) {
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 3000);
+      toast.info("Please login to view your account details");
+    }
     console.log(localStorage.getItem("user.email"));
   }, [user]);
 
@@ -120,7 +120,7 @@ export default function AccountDetailsCard() {
                 onClick={toggleSubscription}
                 disabled={loading}
                 className={`mt-4 px-4 py-2 text-lg font-semibold rounded-md ${
-                  isSubscribed ? " btn" : " btn"
+                  isSubscribed ? " btn " : " btn"
                 } `}
               >
                 {loading
@@ -157,7 +157,8 @@ export default function AccountDetailsCard() {
             <a
               href="/"
               onClick={() => localStorage.clear()}
-              className=" btn w-full py-3 text-lg font-semibold text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 transition"
+              π
+              className="btn w-full py-3 text-lg font-semibold text-gray-700 bg-gray-200 rounded-md   transition"
             >
               LOG OUT
             </a>

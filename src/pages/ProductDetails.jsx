@@ -62,6 +62,7 @@ const ProductDetails = () => {
     }
   }, []);
 
+  console.log(product);
   const incrementQuantity = () => setQuantity(quantity + 1);
   const decrementQuantity = () => setQuantity(Math.max(1, quantity - 1));
   const handleBack = () => navigate(-1);
@@ -192,6 +193,7 @@ const ProductDetails = () => {
                       <button
                         key={i}
                         style={{
+                          color: option.value,
                           backgroundColor: option.value,
                           border:
                             selectedColor === option.value
@@ -199,6 +201,7 @@ const ProductDetails = () => {
                               : "border solid #000 5px",
                           text: "none",
                         }}
+
                         // onClick={() => handleVariantChange(option.value)}
                       >
                         {option.value}

@@ -152,11 +152,18 @@ export const UserLogin = () => {
                 </div>
 
                 {isLoading ? (
-                  <button type="submit" disabled className="btn">
+                  <button
+                    type="submit"
+                    disabled
+                    className="btn w-full py-3 text-lg font-semibold text-gray-700 bg-gray-200 rounded-md   transition"
+                  >
                     Submitting
                   </button>
                 ) : (
-                  <button type="submit" className="btn ">
+                  <button
+                    type="submit"
+                    className="btn w-full py-3 text-lg font-semibold text-gray-700 bg-gray-200 rounded-md   transition "
+                  >
                     Submit
                   </button>
                 )}
