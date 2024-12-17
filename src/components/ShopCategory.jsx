@@ -22,15 +22,12 @@ export default function ShopCategory({ setItem, setTag, currentProducts }) {
     .map(([tag, count]) => ({ tag, count }));
 
   // Add the "All" tag at the top
-  const tagsWithAll = [
-    { tag: "all", count: totalProductCount },
-    ...sortedTags,
-  ];
+  const tagsWithAll = [{ tag: "all", count: totalProductCount }, ...sortedTags];
 
   // Handle tag selection
   const handleTagClick = (tag) => {
-    setTag(tag); // Update the current selected tag
-    setItem(tag === "all" ? null : tag); // Show all products if "All" is clicked, otherwise filter by the tag
+    setTag(tag === "all" ? "" : tag); // Update the current selected tag
+    setItem(tag === "all" ? "all" : tag); // Show all products if "All" is clicked, otherwise filter by the tag
     setActiveTag(tag); // Update the active tag
   };
 
