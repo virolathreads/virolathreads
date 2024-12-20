@@ -17,7 +17,7 @@ export default function EventSlider() {
       title: "Accra Fashion Fair 2024 || virola threads",
       date: "21st - 23rd of December 2024",
       location: "Ghana Dubai, Circle, Accra",
-      type: "Upcoming Events",
+      type: "Past Events",
       image:
         "https://vorlane.com/wp-content/uploads/2024/10/101970s-disco-inspired-runway-scene-with-disco-balls-and-reflectors-creating-a-vibrant-glittery-atmosphere.webp",
     },
