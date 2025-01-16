@@ -40,7 +40,7 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS21</span>
+                  <span>Modern</span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
@@ -63,7 +63,7 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS23 </span>
+                  <span>Afro </span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
@@ -87,7 +87,7 @@ function Collections() {
                   alt=""
                 />
                 <div class="img-cap">
-                  <span>SS25 </span>
+                  <span>Fusion </span>
                 </div>
                 {/* <div class="favorit-items">
                   <a href="/shop" class="btn">
