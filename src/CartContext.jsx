@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
   const [loader, setLoader] = useState(false);
   const [load, setLoad] = useState(false);
   const [tag, setTag] = useState("");
-  
+
   const [item, setItem] = useState("all");
   const [priceRange, setPriceRange] = useState([0, 1000]); // Default price range
   const [maxPrice, setMaxPrice] = useState(1000);
@@ -182,7 +182,6 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem("checkoutId", checkout.id);
       });
     }
-    
   }, [checkoutId]);
 
   const handleCurrencyChange = (newCurrency) => {
@@ -207,10 +206,10 @@ export const CartProvider = ({ children }) => {
     }
 
     if (currency === "£") {
-      const finalAmount = amount / 2300;
-      return `${Number(finalAmount).toFixed(2)}`;
+      return `${Number(amount).toFixed(2)}`;
     } else if (currency === "₦") {
-      return `${Number(amount)
+      const finalAmount = amount * 2300;
+      return `${Number(finalAmount)
         .toFixed(2)
         .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`;
     } else {
@@ -233,13 +232,11 @@ export const CartProvider = ({ children }) => {
     });
   };
 
- 
-
   if (loads) {
     return <PreLoader />;
   }
   const addToCart = (variantId) => {
-    console.log(variantId)
+    console.log(variantId);
     if (!checkoutId) {
       Swal.fire({
         title: "Error",
