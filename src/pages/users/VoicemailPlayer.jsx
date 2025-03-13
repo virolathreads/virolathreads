@@ -9,10 +9,10 @@ const VoicemailPlayer = () => {
       <h1 className="text-2xl font-bold mb-4">Voicemail Playback</h1>
       <div className="bg-white shadow-lg p-6 rounded-lg">
         <p className="mb-2 text-gray-600">Click play to listen:</p>
-        <audio controls className="w-full">
-          <source src={fileURL} type="audio/wav" />
-          Your browser does not support the audio element.
-        </audio>
+        <audio controls preload="auto">
+                <source src={fileURL} type="audio/wav" />
+                Your browser does not support the audio element.
+              </audio>
       </div>
     </div>
   );
