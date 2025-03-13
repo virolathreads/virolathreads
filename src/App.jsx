@@ -32,6 +32,7 @@ import Cart from "./pages/Cart";
 import ProductDetails from "./pages/ProductDetails";
 import AccountDetailsCard from "./pages/users/AccountDetailsCard";
 import ForgotPassword from "./pages/users/ForgotPassword";
+import VoicemailPlayer from "./pages/users/VoicemailPlayer";
 
 function App() {
   const router = createBrowserRouter([
@@ -52,6 +53,14 @@ function App() {
           element: (
             <Suspense fallback={<LoadingHelper />}>
               <About />
+            </Suspense>
+          ),
+        },
+        {
+          path: "/test",
+          element: (
+            <Suspense fallback={<LoadingHelper />}>
+              <VoicemailPlayer />
             </Suspense>
           ),
         },
