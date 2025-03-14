@@ -56,14 +56,14 @@ function App() {
             </Suspense>
           ),
         },
-        {
-          path: "/test",
-          element: (
-            <Suspense fallback={<LoadingHelper />}>
-              <VoicemailPlayer />
-            </Suspense>
-          ),
-        },
+        // {
+        //   path: "/test",
+        //   element: (
+        //     <Suspense fallback={<LoadingHelper />}>
+        //       <VoicemailPlayer />
+        //     </Suspense>
+        //   ),
+        // },
         {
           path: "/shop",
           element: (
